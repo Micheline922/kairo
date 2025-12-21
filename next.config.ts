@@ -23,12 +23,15 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
       {
-        protocol: 'https',
+        protocol: 'https,
         hostname: 'picsum.photos',
         port: '',
         pathname: '/**',
       },
     ],
+  },
+  serverRuntimeConfig: {
+    geminiApiKey: process.env.GEMINI_API_KEY,
   },
 };
 
