@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -31,7 +31,7 @@ const semanticSearchSchema = z.object({
 const verseSearchSchema = z.object({
     book: z.string().min(3, 'Livre requis'),
     chapter: z.string().min(1, 'Chapitre requis'),
-    verse: z.string().min(1, 'Verset requis'),
+    verse: z.string().optional(),
 });
 
 const savePearlSchema = z.object({
@@ -46,6 +46,27 @@ type PearlOfWisdom = {
     savedDate: any;
 };
 
+// Mock Bible content
+const bibleData: { [key: string]: { [key: string]: string[] } } = {
+  'Genèse': {
+    '1': [
+      "Au commencement, Dieu créa les cieux et la terre.",
+      "La terre était informe et vide: il y avait des ténèbres à la surface de l'abîme, et l'esprit of Dieu se mouvait au-dessus des eaux.",
+      "Dieu dit: Que la lumière soit! Et la lumière fut.",
+      "Dieu vit que la lumière était bonne; et Dieu sépara la lumière d'avec les ténèbres.",
+      "Dieu appela la lumière jour, et il appela les ténèbres nuit. Ainsi, il y eut un soir, et il y eut un matin: ce fut le premier jour.",
+      "Dieu dit: Qu'il y ait une étendue entre les eaux, et qu'elle sépare les eaux d'avec les eaux.",
+      "Et Dieu fit l'étendue, et il sépara les eaux qui sont au-dessous de l'étendue d'avec les eaux qui sont au-dessus de l'étendue. Et cela fut ainsi.",
+    ],
+    '2': [
+      "Ainsi furent achevés les cieux et la terre, et toute leur armée.",
+      "Dieu acheva au septième jour son oeuvre, qu'il avait faite; et il se reposa au septième jour de toute son oeuvre, qu'il avait faite.",
+      "Dieu bénit le septième jour, et il le sanctifia, parce qu'en ce jour il se reposa de toute son oeuvre qu'il avait créée en la faisant.",
+    ]
+  },
+};
+
+
 export default function BiblePage() {
   const { user } = useUser();
   const firestore = useFirestore();
@@ -54,6 +75,12 @@ export default function BiblePage() {
   const [selection, setSelection] = useState<Range | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
+
+  const [bibleDisplay, setBibleDisplay] = useState({
+    book: 'Genèse',
+    chapter: '1',
+    content: bibleData['Genèse']['1'],
+  });
 
   const pearlsOfWisdomQuery = useMemoFirebase(() => {
     if (!user) return null;
@@ -69,7 +96,7 @@ export default function BiblePage() {
 
   const verseForm = useForm<z.infer<typeof verseSearchSchema>>({
     resolver: zodResolver(verseSearchSchema),
-    defaultValues: { book: 'Genèse', chapter: '1', verse: '1' },
+    defaultValues: { book: 'Genèse', chapter: '1', verse: '' },
   });
 
   const pearlForm = useForm<z.infer<typeof savePearlSchema>>({
@@ -91,8 +118,28 @@ export default function BiblePage() {
   }
 
   function onVerseSubmit(values: z.infer<typeof verseSearchSchema>) {
-    console.log('Recherche de verset spécifique:', values);
-    // Logique de recherche de verset à implémenter
+    const bookData = bibleData[values.book as keyof typeof bibleData];
+    if (bookData) {
+      const chapterContent = bookData[values.chapter as keyof typeof bookData];
+      if (chapterContent) {
+        setBibleDisplay({
+          book: values.book,
+          chapter: values.chapter,
+          content: chapterContent,
+        });
+        // Scroll to verse if specified
+        if (values.verse) {
+          setTimeout(() => {
+            const verseElement = document.getElementById(`verse-${values.verse}`);
+            verseElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 0);
+        }
+      } else {
+        alert(`Le chapitre ${values.chapter} du livre ${values.book} n'a pas été trouvé.`);
+      }
+    } else {
+        alert(`Le livre ${values.book} n'a pas été trouvé.`);
+    }
   }
 
   const handleMouseUp = () => {
@@ -114,9 +161,7 @@ export default function BiblePage() {
     const verseText = selection.toString();
     const verseElement = selection.startContainer.parentElement;
     const verseNumber = verseElement?.querySelector('span.verse-number')?.textContent;
-    const book = "Genèse"; // Mock
-    const chapter = "1"; // Mock
-    const verseReference = `${book} ${chapter}:${verseNumber}`;
+    const verseReference = `${bibleDisplay.book} ${bibleDisplay.chapter}:${verseNumber}`;
 
     const newPearl = {
         userId: user.uid,
@@ -155,7 +200,7 @@ export default function BiblePage() {
                         <form onSubmit={verseForm.handleSubmit(onVerseSubmit)} className="grid sm:grid-cols-4 gap-4 items-end">
                             <FormField control={verseForm.control} name="book" render={({ field }) => ( <FormItem><FormLabel>Livre</FormLabel><FormControl><Input placeholder="ex: Genèse" {...field} /></FormControl><FormMessage /></FormItem> )} />
                             <FormField control={verseForm.control} name="chapter" render={({ field }) => ( <FormItem><FormLabel>Chapitre</FormLabel><FormControl><Input placeholder="ex: 1" {...field} /></FormControl><FormMessage /></FormItem> )} />
-                            <FormField control={verseForm.control} name="verse" render={({ field }) => ( <FormItem><FormLabel>Verset</FormLabel><FormControl><Input placeholder="ex: 1" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                            <FormField control={verseForm.control} name="verse" render={({ field }) => ( <FormItem><FormLabel>Verset (optionnel)</FormLabel><FormControl><Input placeholder="ex: 1" {...field} /></FormControl><FormMessage /></FormItem> )} />
                             <Button type="submit" className="w-full">Trouver</Button>
                         </form>
                     </Form>
@@ -164,7 +209,7 @@ export default function BiblePage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Genèse, Chapitre 1</CardTitle>
+                <CardTitle>{bibleDisplay.book}, Chapitre {bibleDisplay.chapter}</CardTitle>
                 <CardDescription>Sélectionnez du texte pour le surligner ou l'enregistrer comme "Perle de Sagesse".</CardDescription>
               </CardHeader>
               <CardContent onMouseUp={handleMouseUp} className="space-y-4 text-base leading-relaxed max-h-[60vh] overflow-y-auto">
@@ -201,13 +246,12 @@ export default function BiblePage() {
                   </PopoverContent>
                 </Popover>
 
-                <p><span className="font-bold text-primary pr-2 verse-number">1</span>Au commencement, Dieu créa les cieux et la terre.</p>
-                <p><span className="font-bold text-primary pr-2 verse-number">2</span>La terre était informe et vide: il y avait des ténèbres à la surface de l'abîme, et l'esprit of Dieu se mouvait au-dessus des eaux.</p>
-                <p><span className="font-bold text-primary pr-2 verse-number">3</span>Dieu dit: Que la lumière soit! Et la lumière fut.</p>
-                <p><span className="font-bold text-primary pr-2 verse-number">4</span>Dieu vit que la lumière était bonne; et Dieu sépara la lumière d'avec les ténèbres.</p>
-                <p><span className="font-bold text-primary pr-2 verse-number">5</span>Dieu appela la lumière jour, et il appela les ténèbres nuit. Ainsi, il y eut un soir, et il y eut un matin: ce fut le premier jour.</p>
-                <p><span className="font-bold text-primary pr-2 verse-number">6</span>Dieu dit: Qu'il y ait une étendue entre les eaux, et qu'elle sépare les eaux d'avec les eaux.</p>
-                <p><span className="font-bold text-primary pr-2 verse-number">7</span>Et Dieu fit l'étendue, et il sépara les eaux qui sont au-dessous de l'étendue d'avec les eaux qui sont au-dessus de l'étendue. Et cela fut ainsi.</p>
+                {bibleDisplay.content.map((verseText, index) => (
+                  <p key={index} id={`verse-${index + 1}`}>
+                    <span className="font-bold text-primary pr-2 verse-number">{index + 1}</span>
+                    {verseText}
+                  </p>
+                ))}
               </CardContent>
             </Card>
         </div>
