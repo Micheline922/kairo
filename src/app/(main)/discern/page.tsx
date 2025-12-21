@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -13,7 +14,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
 import { collection, query, orderBy, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
-
+import { useLanguage } from '@/context/language-provider';
+import { translations } from '@/lib/translations';
 
 const discernSchema = z.object({
   context: z.string().min(20, { message: 'Veuillez décrire votre situation en au moins 20 caractères.' }),
@@ -33,6 +35,8 @@ export default function DiscernPage() {
   const [isDiscerning, setIsDiscerning] = useState(false);
   const [guidance, setGuidance] = useState<string | null>(null);
   const [decisionContext, setDecisionContext] = useState<string | null>(null);
+  const { language } = useLanguage();
+  const t = translations[language];
 
   const guidancesQuery = useMemoFirebase(() => {
     if (!user) return null;
@@ -74,17 +78,17 @@ export default function DiscernPage() {
     addDocumentNonBlocking(collection(firestore, `users/${user.uid}/divineGuidances`), newGuidance);
     
     toast({
-        title: "Conseil sauvegardé !",
-        description: `Le conseil concernant votre décision a bien été enregistré.`,
+        title: t.guidanceSaved,
+        description: t.guidanceSavedDescription,
     });
   };
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">Discerner la Volonté de Dieu</h1>
+        <h1 className="text-4xl font-bold font-headline">{t.discernTitle}</h1>
         <p className="text-lg text-muted-foreground mt-2">
-          Un espace pour déposer vos projets et vos doutes, en cherchant la sagesse biblique pour vos décisions.
+          {t.discernDescription}
         </p>
       </div>
 
@@ -92,9 +96,9 @@ export default function DiscernPage() {
         <div className="lg:col-span-2">
             <Card>
                 <CardHeader>
-                <CardTitle>Espace Projets / Doutes</CardTitle>
+                <CardTitle>{t.doubtProjectSpace}</CardTitle>
                 <CardDescription>
-                    Décrivez la décision à laquelle vous êtes confronté. Plus vous fournirez de détails, plus les conseils seront personnalisés.
+                    {t.doubtProjectDescription}
                 </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -105,10 +109,10 @@ export default function DiscernPage() {
                         name="context"
                         render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Le contexte de votre décision</FormLabel>
+                            <FormLabel>{t.decisionContext}</FormLabel>
                             <FormControl>
                             <Textarea
-                                placeholder="J'envisage une nouvelle offre d'emploi dans une autre ville, mais cela signifierait déraciner ma famille..."
+                                placeholder={t.decisionContextPlaceholder}
                                 className="min-h-[150px]"
                                 {...field}
                             />
@@ -124,7 +128,7 @@ export default function DiscernPage() {
                         ) : (
                             <Wand2 className="mr-2 h-4 w-4" />
                         )}
-                        Chercher conseil
+                        {t.seekAdvice}
                         </Button>
                     </div>
                     </form>
@@ -133,7 +137,7 @@ export default function DiscernPage() {
                 {isDiscerning && (
                     <div className="mt-8 text-center text-muted-foreground">
                     <LoaderCircle className="mx-auto h-8 w-8 animate-spin" />
-                    <p className="mt-2">Consultation des écritures et prière pour la sagesse...</p>
+                    <p className="mt-2">{t.consultingScriptures}</p>
                     </div>
                 )}
 
@@ -142,11 +146,11 @@ export default function DiscernPage() {
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-xl font-semibold font-headline flex items-center gap-2">
                                 <Sparkles className="h-5 w-5 text-accent" />
-                                Conseils bibliques
+                                {t.biblicalGuidance}
                             </h3>
                              <Button variant="outline" size="sm" onClick={handleSaveGuidance}>
                                 <Save className="mr-2 h-4 w-4" />
-                                Enregistrer
+                                {t.save}
                             </Button>
                         </div>
                         <div className="p-6 border rounded-lg bg-secondary space-y-4">
@@ -159,24 +163,24 @@ export default function DiscernPage() {
         </div>
         <div className="space-y-8">
            <div>
-              <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-3"><BookCopy /> Mes Conseils Sauvegardés</h2>
+              <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-3"><BookCopy /> {t.mySavedGuidance}</h2>
               <Card>
                   <CardContent className="pt-6">
                       {isLoadingGuidances ? (
-                           <p className="text-sm text-muted-foreground text-center">Chargement des conseils...</p>
+                           <p className="text-sm text-muted-foreground text-center">{t.loadingGuidance}</p>
                       ) : savedGuidances && savedGuidances.length > 0 ? (
                           <div className="space-y-4">
                               {savedGuidances.map(item => (
                                   <div key={item.id} className="p-4 border rounded-md bg-secondary/50">
-                                      <p className="font-semibold text-primary/80 text-sm line-clamp-2">Pour: {item.decisionContext}</p>
+                                      <p className="font-semibold text-primary/80 text-sm line-clamp-2">{t.guidanceFor.replace('{context}', item.decisionContext)}</p>
                                       <blockquote className="italic border-l-2 border-accent pl-2 my-1 text-sm text-muted-foreground line-clamp-3">"{item.guidance}"</blockquote>
                                   </div>
                               ))}
                           </div>
                       ) : (
                           <div className="text-center text-muted-foreground py-8">
-                              <p>Vous n'avez pas encore de conseils sauvegardés.</p>
-                              <p className="text-xs">Enregistrez un conseil pour le retrouver ici.</p>
+                              <p>{t.noGuidanceSaved}</p>
+                              <p className="text-xs">{t.noGuidanceHint}</p>
                           </div>
                       )}
                   </CardContent>

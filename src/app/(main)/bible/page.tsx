@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -23,6 +24,8 @@ import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBl
 import { collection, query, orderBy, serverTimestamp } from 'firebase/firestore';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
+import { useLanguage } from '@/context/language-provider';
+import { translations } from '@/lib/translations';
 
 const semanticSearchSchema = z.object({
   query: z.string().min(3, { message: 'La requête de recherche doit contenir au moins 3 caractères.' }),
@@ -76,6 +79,8 @@ export default function BiblePage() {
   const [isSaving, setIsSaving] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [showVerseSearch, setShowVerseSearch] = useState(true);
+  const { language } = useLanguage();
+  const t = translations[language];
 
   const [bibleDisplay, setBibleDisplay] = useState({
     book: 'Genèse',
@@ -179,33 +184,33 @@ export default function BiblePage() {
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold font-headline">La Bible</h1>
+        <h1 className="text-4xl font-bold font-headline">{t.bibleTitle}</h1>
         <p className="text-lg text-muted-foreground mt-2 italic">
-          "Ta parole est une lampe à mes pieds, Et une lumière sur mon sentier." - Psaume 119:105
+          "{t.bibleQuote}"
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-3xl font-bold font-headline flex items-center gap-3"><BookOpen /> Parcourir les Écritures</h2>
+              <h2 className="text-3xl font-bold font-headline flex items-center gap-3"><BookOpen /> {t.browseScriptures}</h2>
               {!showVerseSearch && (
-                <Button variant="outline" onClick={() => setShowVerseSearch(true)}>Nouvelle Recherche</Button>
+                <Button variant="outline" onClick={() => setShowVerseSearch(true)}>{t.newSearch}</Button>
               )}
             </div>
             
             {showVerseSearch && (
                 <Card className="mb-6">
                     <CardHeader>
-                        <CardTitle>Rechercher un Verset</CardTitle>
+                        <CardTitle>{t.searchAVerse}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <Form {...verseForm}>
                             <form onSubmit={verseForm.handleSubmit(onVerseSubmit)} className="grid sm:grid-cols-4 gap-4 items-end">
-                                <FormField control={verseForm.control} name="book" render={({ field }) => ( <FormItem><FormLabel>Livre</FormLabel><FormControl><Input placeholder="ex: Genèse" {...field} /></FormControl><FormMessage /></FormItem> )} />
-                                <FormField control={verseForm.control} name="chapter" render={({ field }) => ( <FormItem><FormLabel>Chapitre</FormLabel><FormControl><Input placeholder="ex: 1" {...field} /></FormControl><FormMessage /></FormItem> )} />
-                                <FormField control={verseForm.control} name="verse" render={({ field }) => ( <FormItem><FormLabel>Verset (optionnel)</FormLabel><FormControl><Input placeholder="ex: 1" {...field} /></FormControl><FormMessage /></FormItem> )} />
-                                <Button type="submit" className="w-full">Trouver</Button>
+                                <FormField control={verseForm.control} name="book" render={({ field }) => ( <FormItem><FormLabel>{t.book}</FormLabel><FormControl><Input placeholder="ex: Genèse" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                                <FormField control={verseForm.control} name="chapter" render={({ field }) => ( <FormItem><FormLabel>{t.chapter}</FormLabel><FormControl><Input placeholder="ex: 1" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                                <FormField control={verseForm.control} name="verse" render={({ field }) => ( <FormItem><FormLabel>{t.verseOptional}</FormLabel><FormControl><Input placeholder="ex: 1" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                                <Button type="submit" className="w-full">{t.find}</Button>
                             </form>
                         </Form>
                     </CardContent>
@@ -214,8 +219,8 @@ export default function BiblePage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>{bibleDisplay.book}, Chapitre {bibleDisplay.chapter}</CardTitle>
-                <CardDescription>Sélectionnez du texte pour le surligner ou l'enregistrer comme "Perle de Sagesse".</CardDescription>
+                <CardTitle>{t.bibleChapterTitle.replace('{book}', bibleDisplay.book).replace('{chapter}', bibleDisplay.chapter)}</CardTitle>
+                <CardDescription>{t.selectToSave}</CardDescription>
               </CardHeader>
               <CardContent onMouseUp={handleMouseUp} className="space-y-4 text-base leading-relaxed max-h-[60vh] overflow-y-auto">
                 <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
@@ -226,7 +231,7 @@ export default function BiblePage() {
                      <Form {...pearlForm}>
                       <form onSubmit={pearlForm.handleSubmit(handleSavePearl)} className="space-y-4">
                         <div className="space-y-2">
-                          <h4 className="font-medium leading-none">Sauvegarder la Perle</h4>
+                          <h4 className="font-medium leading-none">{t.savePearl}</h4>
                           <p className="text-sm text-muted-foreground italic">"{selection?.toString()}"</p>
                         </div>
                         <FormField
@@ -234,9 +239,9 @@ export default function BiblePage() {
                             name="notes"
                             render={({ field }) => (
                                 <FormItem>
-                                <FormLabel>Vos notes (optionnel)</FormLabel>
+                                <FormLabel>{t.yourNotesOptional}</FormLabel>
                                 <FormControl>
-                                    <Textarea placeholder="Ce verset me parle parce que..." {...field} />
+                                    <Textarea placeholder={t.notesPlaceholder} {...field} />
                                 </FormControl>
                                 <FormMessage />
                                 </FormItem>
@@ -244,7 +249,7 @@ export default function BiblePage() {
                         />
                         <Button type="submit" disabled={isSaving} className="w-full">
                           {isSaving ? <LoaderCircle className="animate-spin" /> : <Save />}
-                          Enregistrer la Perle
+                          {t.savePearlButton}
                         </Button>
                       </form>
                     </Form>
@@ -262,11 +267,11 @@ export default function BiblePage() {
         </div>
         <div className="space-y-8">
             <div>
-                 <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-3"><Search /> Recherche Sémantique</h2>
+                 <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-3"><Search /> {t.semanticSearch}</h2>
                 <Card>
                     <CardHeader>
                     <CardDescription>
-                        Décrivez ce que vous ressentez ou votre situation pour trouver des versets pertinents.
+                        {t.semanticSearchDescription}
                     </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -279,7 +284,7 @@ export default function BiblePage() {
                             <FormItem className="flex-1">
                                 <FormControl>
                                 <Input
-                                    placeholder="J'ai du mal à pardonner..."
+                                    placeholder={t.semanticSearchPlaceholder}
                                     {...field}
                                 />
                                 </FormControl>
@@ -291,7 +296,7 @@ export default function BiblePage() {
                             {isSearching ? (
                             <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                             ) : null}
-                            Trouver des versets
+                            {t.findVerses}
                         </Button>
                         </form>
                     </Form>
@@ -302,7 +307,7 @@ export default function BiblePage() {
             {isSearching && (
                 <div className="text-center text-muted-foreground">
                     <LoaderCircle className="mx-auto h-8 w-8 animate-spin" />
-                    <p className="mt-2">Recherche dans les écritures...</p>
+                    <p className="mt-2">{t.searchingScriptures}</p>
                 </div>
             )}
             {searchResults && (
@@ -317,17 +322,17 @@ export default function BiblePage() {
                       </div>
                     ))
                   ) : (
-                    <p className="text-muted-foreground">Aucun verset trouvé pour votre requête.</p>
+                    <p className="text-muted-foreground">{t.noVersesFound}</p>
                   )}
                 </div>
             )}
             
             <div>
-                <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-3"><BookMarked /> Mes Perles de Sagesse</h2>
+                <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-3"><BookMarked /> {t.myPearls}</h2>
                 <Card>
                     <CardContent className="pt-6">
                         {isLoadingPearls ? (
-                             <p className="text-sm text-muted-foreground text-center">Chargement des perles...</p>
+                             <p className="text-sm text-muted-foreground text-center">{t.loadingPearls}</p>
                         ) : pearls && pearls.length > 0 ? (
                             <div className="space-y-4">
                                 {pearls.map(pearl => (
@@ -339,9 +344,9 @@ export default function BiblePage() {
                                 ))}
                             </div>
                         ) : (
-                            <div className="text-center text-muted-foreground">
-                                <p>Vous n'avez pas encore de versets soulignés.</p>
-                                <p className="text-xs">Sélectionnez du texte dans la Bible pour en ajouter.</p>
+                            <div className="text-center text-muted-foreground py-8">
+                                <p>{t.noPearlsSaved}</p>
+                                <p className="text-xs">{t.noPearlsHint}</p>
                             </div>
                         )}
                     </CardContent>
@@ -352,3 +357,5 @@ export default function BiblePage() {
     </div>
   );
 }
+
+    

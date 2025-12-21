@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -31,6 +32,8 @@ import { useFirestore, useUser, useCollection, useMemoFirebase, addDocumentNonBl
 import { collection, query, orderBy, serverTimestamp, where } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
+import { useLanguage } from '@/context/language-provider';
+import { translations } from '@/lib/translations';
 
 const journalSchema = z.object({
   title: z.string().min(3, { message: "Le titre doit contenir au moins 3 caractères." }),
@@ -58,6 +61,8 @@ export default function JournalPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isIncognitoLocked, setIsIncognitoLocked] = useState(true);
   const [password, setPassword] = useState('');
+  const { language } = useLanguage();
+  const t = translations[language];
   
   const journalEntriesQuery = useMemoFirebase(() => {
     if (!user) return null;
@@ -109,7 +114,7 @@ export default function JournalPage() {
   const handleUnlockSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user || !user.email) {
-      toast({ variant: 'destructive', title: 'Utilisateur non trouvé.' });
+      toast({ variant: 'destructive', title: t.unlockFailed });
       return;
     }
 
@@ -118,9 +123,9 @@ export default function JournalPage() {
       await reauthenticateWithCredential(user, credential);
       setIsIncognitoLocked(false);
       setPassword('');
-      toast({ title: 'Journal déverrouillé.' });
+      toast({ title: t.journalUnlocked });
     } catch (error) {
-      toast({ variant: 'destructive', title: 'Mot de passe incorrect.' });
+      toast({ variant: 'destructive', title: t.incorrectPassword });
       setPassword('');
     }
   };
@@ -128,19 +133,19 @@ export default function JournalPage() {
   const displayedEntries = entries?.map(e => ({
     ...e,
     excerpt: e.content.substring(0, 50) + '...',
-    date: e.creationDate?.toDate().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) || 'Date inconnue'
+    date: e.creationDate?.toDate().toLocaleDateString(language, { day: 'numeric', month: 'long', year: 'numeric' }) || 'Date inconnue'
   })) || [];
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="flex justify-between items-center mb-8">
         <div>
-            <h1 className="text-4xl font-bold font-headline">Journal Spirituel</h1>
+            <h1 className="text-4xl font-bold font-headline">{t.journalTitle}</h1>
             <p className="text-lg text-muted-foreground mt-2">
-            Enregistrez votre évolution spirituelle et vos réflexions quotidiennes.
+            {t.journalDescription}
             </p>
         </div>
-        <Button variant="ghost" size="icon" onClick={() => setIsIncognitoLocked(true)} title="Verrouiller le journal">
+        <Button variant="ghost" size="icon" onClick={() => setIsIncognitoLocked(true)} title={t.lockJournal}>
             <Shield className="h-6 w-6 text-primary" />
         </Button>
       </div>
@@ -148,39 +153,39 @@ export default function JournalPage() {
       {isIncognitoLocked ? (
         <Card className="flex flex-col items-center justify-center min-h-[60vh] text-center p-8 border-2 border-dashed">
             <Lock className="h-16 w-16 text-muted-foreground" />
-            <CardTitle className="mt-6 text-2xl">Mode Confidentiel Activé</CardTitle>
+            <CardTitle className="mt-6 text-2xl">{t.confidentialMode}</CardTitle>
             <CardDescription className="mt-2 max-w-sm">
-                Pour protéger votre vie privée, vos entrées sont masquées. Veuillez entrer votre mot de passe pour les afficher.
+                {t.confidentialPrompt}
             </CardDescription>
             <form onSubmit={handleUnlockSubmit} className="mt-6 flex max-w-xs w-full items-center space-x-2">
                 <Input
                     type="password"
-                    placeholder="Votre mot de passe"
+                    placeholder={t.yourPassword}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <Button type="submit">Déverrouiller</Button>
+                <Button type="submit">{t.unlock}</Button>
             </form>
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-1">
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-semibold font-headline">Entrées</h2>
+                <h2 className="text-2xl font-semibold font-headline">{t.entries}</h2>
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
                     <Button variant="outline" size="sm">
                     <PlusCircle className="h-4 w-4 mr-2"/>
-                    Nouvelle entrée
+                    {t.newEntry}
                     </Button>
                 </DialogTrigger>
                 <DialogContent>
                     <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                         <DialogHeader>
-                        <DialogTitle>Nouvelle entrée de journal</DialogTitle>
+                        <DialogTitle>{t.newEntryTitle}</DialogTitle>
                         <DialogDescription>
-                            Épanchez votre cœur. Qu'avez-vous sur le cœur aujourd'hui ?
+                            {t.newEntryDescription}
                         </DialogDescription>
                         </DialogHeader>
                         <FormField
@@ -188,9 +193,9 @@ export default function JournalPage() {
                         name="title"
                         render={({ field }) => (
                             <FormItem>
-                            <FormLabel>Titre</FormLabel>
+                            <FormLabel>{t.entryTitle}</FormLabel>
                             <FormControl>
-                                <Input placeholder="Réflexion sur la gratitude" {...field} />
+                                <Input placeholder={t.entryTitlePlaceholder} {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -201,10 +206,10 @@ export default function JournalPage() {
                         name="entry"
                         render={({ field }) => (
                             <FormItem>
-                            <FormLabel>Votre réflexion</FormLabel>
+                            <FormLabel>{t.yourReflection}</FormLabel>
                             <FormControl>
                                 <Textarea
-                                placeholder="Aujourd'hui, j'ai senti la présence de Dieu quand..."
+                                placeholder={t.reflectionPlaceholder}
                                 className="min-h-[200px]"
                                 {...field}
                                 />
@@ -215,11 +220,11 @@ export default function JournalPage() {
                         />
                         <DialogFooter>
                         <DialogClose asChild>
-                            <Button type="button" variant="secondary">Annuler</Button>
+                            <Button type="button" variant="secondary">{t.cancel}</Button>
                         </DialogClose>
                         <Button type="submit" disabled={isCreating}>
                             {isCreating && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
-                            Enregistrer
+                            {t.save}
                         </Button>
                         </DialogFooter>
                     </form>
@@ -229,7 +234,7 @@ export default function JournalPage() {
             </div>
             <div className="space-y-2">
                 {isLoadingEntries ? (
-                <p>Chargement des entrées...</p>
+                <p>{t.loading}...</p>
                 ) : displayedEntries.length > 0 ? (
                 displayedEntries.map(entry => (
                     <Card
@@ -245,7 +250,7 @@ export default function JournalPage() {
                     </Card>
                 ))
                 ) : (
-                <p className="text-sm text-muted-foreground text-center py-4">Aucune entrée pour le moment.</p>
+                <p className="text-sm text-muted-foreground text-center py-4">{t.noEntries}</p>
                 )}
             </div>
             </div>
@@ -255,7 +260,7 @@ export default function JournalPage() {
                 <Card className="min-h-[60vh]">
                 <CardHeader>
                     <CardTitle className="text-2xl">{selectedEntry.title}</CardTitle>
-                    <CardDescription>Réflexion du {selectedEntry.date}</CardDescription>
+                    <CardDescription>{t.reflectionDate.replace('{date}', selectedEntry.date)}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <p className="whitespace-pre-wrap text-base leading-relaxed">{selectedEntry.content}</p>
@@ -265,27 +270,27 @@ export default function JournalPage() {
                         <div className="space-y-6">
                         <h3 className="text-xl font-semibold font-headline flex items-center gap-2">
                             <Wand2 className="h-5 w-5 text-primary" />
-                            Parole de Lumière
+                            {t.wordOfLight}
                         </h3>
                         <div className="p-4 rounded-md bg-secondary">
-                            <h4 className="font-bold flex items-center gap-2"><Lightbulb className="h-4 w-4 text-accent-foreground"/>Climat Spirituel</h4>
+                            <h4 className="font-bold flex items-center gap-2"><Lightbulb className="h-4 w-4 text-accent-foreground"/>{t.spiritualClimate}</h4>
                             <p className="text-muted-foreground">{selectedEntry.analysis.spiritualClimate}</p>
                         </div>
                         <div className="p-4 rounded-md bg-secondary">
-                            <h4 className="font-bold flex items-center gap-2"><BookHeart className="h-4 w-4 text-accent-foreground"/>Versets de la Parole de Lumière</h4>
+                            <h4 className="font-bold flex items-center gap-2"><BookHeart className="h-4 w-4 text-accent-foreground"/>{t.wordOfLight}</h4>
                             <p className="text-muted-foreground italic">{selectedEntry.analysis.wordOfLightVerses}</p>
                         </div>
                         <div className="p-4 rounded-md bg-secondary">
-                            <h4 className="font-bold flex items-center gap-2"><Wand2 className="h-4 w-4 text-accent-foreground"/>Orientation Empathique</h4>
+                            <h4 className="font-bold flex items-center gap-2"><Wand2 className="h-4 w-4 text-accent-foreground"/>{t.empatheticGuidance}</h4>
                             <p className="text-muted-foreground">{selectedEntry.analysis.empatheticOrientation}</p>
                         </div>
                         </div>
                     ) : (
                         <div className="text-center p-8 border-2 border-dashed rounded-lg">
                         <Wand2 className="mx-auto h-12 w-12 text-muted-foreground" />
-                        <h3 className="mt-4 text-lg font-semibold">Recevoir un conseil de l'IA</h3>
+                        <h3 className="mt-4 text-lg font-semibold">{t.aiInsight}</h3>
                         <p className="mt-1 text-sm text-muted-foreground">
-                            Laissez l'IA analyser le climat spirituel de votre entrée.
+                            {t.aiAnalyzePrompt}
                         </p>
                         <Button className="mt-4" onClick={() => handleAnalyze(selectedEntry)} disabled={isAnalyzing}>
                             {isAnalyzing ? (
@@ -293,7 +298,7 @@ export default function JournalPage() {
                             ) : (
                                 <Wand2 className="mr-2 h-4 w-4" />
                             )}
-                            Analyser le journal
+                            {t.analyzeJournal}
                         </Button>
                         </div>
                     )}
@@ -303,7 +308,7 @@ export default function JournalPage() {
             ) : (
                 <div className="flex items-center justify-center min-h-[60vh] border-2 border-dashed rounded-lg">
                     <div className="text-center">
-                        <p className="text-muted-foreground">Sélectionnez une entrée ou créez-en une nouvelle.</p>
+                        <p className="text-muted-foreground">{t.selectEntry}</p>
                     </div>
                 </div>
             )}
@@ -313,3 +318,5 @@ export default function JournalPage() {
     </div>
   );
 }
+
+    

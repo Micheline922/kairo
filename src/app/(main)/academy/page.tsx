@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -13,6 +14,8 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
 import { collection, query, orderBy, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/context/language-provider';
+import { translations } from '@/lib/translations';
 
 const conceptSchema = z.object({
   concept: z.string().min(2, { message: 'Le concept doit contenir au moins 2 caractères.' }),
@@ -34,6 +37,8 @@ export default function AcademyPage() {
   const [explanation, setExplanation] = useState<string | null>(null);
   const [relevantVerses, setRelevantVerses] = useState<string | null>(null);
   const [explainedConcept, setExplainedConcept] = useState<string | null>(null);
+  const { language } = useLanguage();
+  const t = translations[language];
 
   const insightsQuery = useMemoFirebase(() => {
     if (!user) return null;
@@ -78,17 +83,17 @@ export default function AcademyPage() {
     addDocumentNonBlocking(collection(firestore, `users/${user.uid}/academyInsights`), newInsight);
     
     toast({
-        title: "Perspective sauvegardée !",
-        description: `L'explication pour "${explainedConcept}" a été ajoutée à vos perspectives.`,
+        title: t.insightSaved,
+        description: t.insightSavedDescription.replace('{concept}', explainedConcept),
     });
   };
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">L'Académie</h1>
+        <h1 className="text-4xl font-bold font-headline">{t.academyTitle}</h1>
         <p className="text-lg text-muted-foreground mt-2">
-          Faire le pont entre le monde moderne et la vérité biblique.
+          {t.academyDescription}
         </p>
       </div>
       
@@ -96,9 +101,9 @@ export default function AcademyPage() {
         <div className="lg:col-span-2">
             <Card className="max-w-4xl mx-auto">
               <CardHeader>
-                <CardTitle>Concept vs. Parole</CardTitle>
+                <CardTitle>{t.conceptVsWord}</CardTitle>
                 <CardDescription>
-                  Entrez un terme moderne (ex: "Métavers", "Équilibre vie pro/perso", "Anxiété") pour recevoir une perspective biblique.
+                  {t.conceptVsWordDescription}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -111,7 +116,7 @@ export default function AcademyPage() {
                         <FormItem className="flex-1">
                           <FormControl>
                             <Input
-                              placeholder="ex: Intelligence Artificielle"
+                              placeholder={t.conceptPlaceholder}
                               {...field}
                             />
                           </FormControl>
@@ -125,7 +130,7 @@ export default function AcademyPage() {
                       ) : (
                         <Wand2 className="mr-2 h-4 w-4" />
                       )}
-                      Expliquer
+                      {t.explain}
                     </Button>
                   </form>
                 </Form>
@@ -135,7 +140,7 @@ export default function AcademyPage() {
                       {isExplaining && (
                           <div className="text-center text-muted-foreground">
                           <LoaderCircle className="mx-auto h-8 w-8 animate-spin" />
-                          <p className="mt-2">Recherche de sagesse...</p>
+                          <p className="mt-2">{t.seekingWisdom}</p>
                           </div>
                       )}
                       {explanation && (
@@ -143,21 +148,21 @@ export default function AcademyPage() {
                               <div className="flex justify-between items-center mb-4">
                                 <h3 className="text-xl font-semibold font-headline flex items-center gap-2 capitalize">
                                     <Sparkles className="h-5 w-5 text-accent" />
-                                    Perspective sur "{explainedConcept}"
+                                    {t.perspectiveOn.replace('{concept}', explainedConcept || '')}
                                 </h3>
                                 <Button variant="outline" size="sm" onClick={handleSaveInsight}>
                                     <Save className="mr-2 h-4 w-4" />
-                                    Enregistrer
+                                    {t.save}
                                 </Button>
                               </div>
                               <div className="p-6 border rounded-lg bg-secondary space-y-6">
                                   <div className="space-y-2">
-                                      <h4 className="font-semibold text-lg">Explication</h4>
+                                      <h4 className="font-semibold text-lg">{t.explanation}</h4>
                                       <p className="whitespace-pre-wrap text-base leading-relaxed">{explanation}</p>
                                   </div>
                                   {relevantVerses && (
                                     <div className="space-y-2">
-                                        <h4 className="font-semibold text-lg flex items-center gap-2"><BookMarked className="h-5 w-5"/> Versets Clés</h4>
+                                        <h4 className="font-semibold text-lg flex items-center gap-2"><BookMarked className="h-5 w-5"/> {t.keyVerses}</h4>
                                         <p className="whitespace-pre-wrap text-base leading-relaxed italic text-muted-foreground">{relevantVerses}</p>
                                     </div>
                                   )}
@@ -170,9 +175,9 @@ export default function AcademyPage() {
                  {!isExplaining && !explanation && (
                    <div className="text-center py-16 border-2 border-dashed rounded-lg mt-8">
                       <School className="mx-auto h-12 w-12 text-muted-foreground" />
-                      <h3 className="mt-4 text-lg font-semibold">Prêt pour la Sagesse</h3>
+                      <h3 className="mt-4 text-lg font-semibold">{t.readyForWisdom}</h3>
                       <p className="mt-1 text-sm text-muted-foreground">
-                          Entrez un concept ci-dessus pour commencer.
+                          {t.readyForWisdomHint}
                       </p>
                   </div>
                  )}
@@ -181,25 +186,25 @@ export default function AcademyPage() {
         </div>
         <div className="space-y-8">
           <div>
-              <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-3"><BookCopy /> Mes Perspectives</h2>
+              <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-3"><BookCopy /> {t.myInsights}</h2>
               <Card>
                   <CardContent className="pt-6">
                       {isLoadingInsights ? (
-                           <p className="text-sm text-muted-foreground text-center">Chargement des perspectives...</p>
+                           <p className="text-sm text-muted-foreground text-center">{t.loadingInsights}</p>
                       ) : insights && insights.length > 0 ? (
                           <div className="space-y-4">
                               {insights.map(insight => (
                                   <div key={insight.id} className="p-4 border rounded-md bg-secondary/50">
                                       <p className="font-semibold text-primary/80 capitalize">{insight.concept}</p>
                                       <blockquote className="italic border-l-2 border-accent pl-2 my-1 text-sm text-muted-foreground line-clamp-2">"{insight.explanation}"</blockquote>
-                                      {insight.relevantVerses && <p className="text-xs text-muted-foreground mt-1 line-clamp-1">Verset(s): {insight.relevantVerses}</p>}
+                                      {insight.relevantVerses && <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{t.verseLabel.replace('{verses}', insight.relevantVerses)}</p>}
                                   </div>
                               ))}
                           </div>
                       ) : (
                           <div className="text-center text-muted-foreground py-8">
-                              <p>Vous n'avez pas encore de perspectives sauvegardées.</p>
-                              <p className="text-xs">Enregistrez une explication pour la retrouver ici.</p>
+                              <p>{t.noInsightsSaved}</p>
+                              <p className="text-xs">{t.noInsightsHint}</p>
                           </div>
                       )}
                   </CardContent>
@@ -210,3 +215,5 @@ export default function AcademyPage() {
     </div>
   );
 }
+
+    

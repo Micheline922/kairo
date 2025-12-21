@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -10,6 +11,8 @@ import { Input } from '@/components/ui/input';
 import { LoaderCircle, Sparkles, Wand2, HeartPulse, Music4, Pause, Play } from 'lucide-react';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { generateMeditationAudio, GenerateMeditationAudioOutput } from '@/ai/flows/ai-generate-meditation-audio';
+import { useLanguage } from '@/context/language-provider';
+import { translations } from '@/lib/translations';
 
 const meditationSchema = z.object({
   topic: z.string().min(3, { message: 'Le thème doit contenir au moins 3 caractères.' }),
@@ -20,6 +23,8 @@ export default function MeditationsPage() {
   const [meditation, setMeditation] = useState<GenerateMeditationAudioOutput | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = React.useRef<HTMLAudioElement>(null);
+  const { language } = useLanguage();
+  const t = translations[language];
 
   const form = useForm<z.infer<typeof meditationSchema>>({
     resolver: zodResolver(meditationSchema),
@@ -65,17 +70,17 @@ export default function MeditationsPage() {
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">Méditations Audio</h1>
+        <h1 className="text-4xl font-bold font-headline">{t.meditationsTitle}</h1>
         <p className="text-lg text-muted-foreground mt-2">
-          Trouvez le calme et la concentration avec des méditations guidées par la Parole.
+          {t.meditationsDescription}
         </p>
       </div>
       
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>Générer une Méditation</CardTitle>
+          <CardTitle>{t.generateMeditation}</CardTitle>
           <CardDescription>
-            Entrez un thème (ex: "Paix", "Pardon", "Force") et laissez l'IA créer une méditation audio pour vous.
+            {t.generateMeditationDescription}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -87,7 +92,7 @@ export default function MeditationsPage() {
                 render={({ field }) => (
                   <FormItem className="flex-1">
                     <FormControl>
-                      <Input placeholder="ex: Gratitude" {...field} />
+                      <Input placeholder={t.themePlaceholder} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -99,7 +104,7 @@ export default function MeditationsPage() {
                 ) : (
                   <Wand2 className="mr-2 h-4 w-4" />
                 )}
-                Générer
+                {t.generate}
               </Button>
             </form>
           </Form>
@@ -107,7 +112,7 @@ export default function MeditationsPage() {
           {isGenerating && (
             <div className="text-center py-16">
               <LoaderCircle className="mx-auto h-12 w-12 animate-spin text-primary" />
-              <p className="mt-4 text-muted-foreground">Création de votre moment de paix...</p>
+              <p className="mt-4 text-muted-foreground">{t.creatingPeace}</p>
             </div>
           )}
 
@@ -115,16 +120,16 @@ export default function MeditationsPage() {
             <div className="mt-8">
               <h3 className="text-xl font-semibold font-headline flex items-center gap-2 capitalize">
                   <Sparkles className="h-5 w-5 text-accent" />
-                  Votre Méditation sur "{form.getValues('topic')}"
+                  {t.yourMeditationOn.replace('{topic}', form.getValues('topic'))}
               </h3>
               <div className="p-6 border rounded-lg bg-secondary mt-4 space-y-6">
                 <div className="flex items-center gap-4">
-                    <Button onClick={togglePlayPause} size="icon" className="h-14 w-14 rounded-full">
+                    <Button onClick={togglePlayPause} size="icon" className="h-14 w-14 rounded-full" title={t.playPause}>
                         {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6" />}
                     </Button>
                     <div className="flex-1">
-                        <p className="font-semibold">Écoutez la méditation</p>
-                        <p className="text-sm text-muted-foreground">Cliquez pour jouer ou mettre en pause.</p>
+                        <p className="font-semibold">{t.listenToMeditation}</p>
+                        <p className="text-sm text-muted-foreground">{t.clickToPlay}</p>
                     </div>
                 </div>
                 
@@ -133,7 +138,7 @@ export default function MeditationsPage() {
                 )}
 
                 <div className="space-y-2 pt-4 border-t">
-                    <h4 className="font-semibold text-lg flex items-center gap-2"><Music4 className="h-5 w-5"/> Script de Méditation</h4>
+                    <h4 className="font-semibold text-lg flex items-center gap-2"><Music4 className="h-5 w-5"/> {t.meditationScript}</h4>
                     <p className="whitespace-pre-wrap text-base leading-relaxed text-muted-foreground">{meditation.meditationText}</p>
                 </div>
               </div>
@@ -143,9 +148,9 @@ export default function MeditationsPage() {
           {!isGenerating && !meditation && (
             <div className="text-center py-16 border-2 border-dashed rounded-lg mt-8">
               <HeartPulse className="mx-auto h-12 w-12 text-muted-foreground" />
-              <h3 className="mt-4 text-lg font-semibold">Prêt pour un moment de calme ?</h3>
+              <h3 className="mt-4 text-lg font-semibold">{t.readyForCalm}</h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                  Entrez un thème ci-dessus pour commencer.
+                  {t.readyForCalmHint}
               </p>
             </div>
           )}
@@ -154,3 +159,5 @@ export default function MeditationsPage() {
     </div>
   );
 }
+
+    

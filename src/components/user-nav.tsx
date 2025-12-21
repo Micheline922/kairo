@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -22,20 +23,22 @@ import { useSidebar } from '@/components/ui/sidebar';
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { useLanguage } from '@/context/language-provider';
+import { translations } from '@/lib/translations';
 
 export function UserNav() {
   const { state } = useSidebar();
   const auth = useAuth();
   const { user } = useUser();
   const { theme, setTheme } = useTheme();
-  const { setLanguage } = useLanguage();
+  const { language, setLanguage } = useLanguage();
+  const t = translations[language];
 
   const handleLogout = () => {
     signOut(auth);
   };
   
-  const displayName = user?.isAnonymous ? 'Utilisateur Anonyme' : user?.displayName || user?.email || 'Utilisateur';
-  const email = user?.isAnonymous ? 'Connecté anonymement' : user?.email || '';
+  const displayName = user?.isAnonymous ? t.anonymousUser : user?.displayName || user?.email || 'User';
+  const email = user?.isAnonymous ? t.anonymouslyLoggedIn : user?.email || '';
   const fallback = displayName?.charAt(0).toUpperCase() || 'U';
 
 
@@ -63,12 +66,12 @@ export function UserNav() {
           <DropdownMenuGroup>
             <DropdownMenuItem>
               <UserIcon className="mr-2 h-4 w-4" />
-              <span>Profil</span>
+              <span>{t.profile}</span>
             </DropdownMenuItem>
             <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
                     <Globe className="mr-2 h-4 w-4" />
-                    <span>Langue</span>
+                    <span>{t.language}</span>
                 </DropdownMenuSubTrigger>
                 <DropdownMenuPortal>
                     <DropdownMenuSubContent>
@@ -84,21 +87,21 @@ export function UserNav() {
                 <DropdownMenuSubTrigger>
                     <Sun className="mr-2 h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                     <Moon className="absolute mr-2 h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                    <span>Thème</span>
+                    <span>{t.theme}</span>
                 </DropdownMenuSubTrigger>
                 <DropdownMenuPortal>
                     <DropdownMenuSubContent>
                         <DropdownMenuItem onClick={() => setTheme('light')}>
                             <Sun className="mr-2 h-4 w-4" />
-                            <span>Clair</span>
+                            <span>{t.lightTheme}</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => setTheme('dark')}>
                             <Moon className="mr-2 h-4 w-4" />
-                            <span>Sombre</span>
+                            <span>{t.darkTheme}</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => setTheme('system')}>
                             <Monitor className="mr-2 h-4 w-4" />
-                            <span>Système</span>
+                            <span>{t.systemTheme}</span>
                         </DropdownMenuItem>
                     </DropdownMenuSubContent>
                 </DropdownMenuPortal>
@@ -107,7 +110,7 @@ export function UserNav() {
           <DropdownMenuSeparator />
            <DropdownMenuItem onClick={handleLogout}>
               <LogOut className="mr-2 h-4 w-4" />
-              <span>Se déconnecter</span>
+              <span>{t.logout}</span>
             </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -125,10 +128,10 @@ export function UserNav() {
         <span className="text-xs text-muted-foreground truncate">{email}</span>
       </div>
        <div className="ml-auto flex items-center">
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} title={t.changeTheme}>
               <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
               <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">Changer le thème</span>
+              <span className="sr-only">{t.changeTheme}</span>
             </Button>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -137,12 +140,12 @@ export function UserNav() {
                 </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end" forceMount>
-                    <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
+                    <DropdownMenuLabel>{t.myAccount}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuSub>
                         <DropdownMenuSubTrigger>
                             <Globe className="mr-2 h-4 w-4" />
-                            <span>Langue</span>
+                            <span>{t.language}</span>
                         </DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
@@ -158,21 +161,21 @@ export function UserNav() {
                         <DropdownMenuSubTrigger>
                             <Sun className="mr-2 h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                             <Moon className="absolute mr-2 h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                            <span>Thème</span>
+                            <span>{t.theme}</span>
                         </DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
                                 <DropdownMenuItem onClick={() => setTheme('light')}>
                                     <Sun className="mr-2 h-4 w-4" />
-                                    <span>Clair</span>
+                                    <span>{t.lightTheme}</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => setTheme('dark')}>
                                     <Moon className="mr-2 h-4 w-4" />
-                                    <span>Sombre</span>
+                                    <span>{t.darkTheme}</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => setTheme('system')}>
                                     <Monitor className="mr-2 h-4 w-4" />
-                                    <span>Système</span>
+                                    <span>{t.systemTheme}</span>
                                 </DropdownMenuItem>
                             </DropdownMenuSubContent>
                         </DropdownMenuPortal>
@@ -180,7 +183,7 @@ export function UserNav() {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
-                    <span>Se déconnecter</span>
+                    <span>{t.logout}</span>
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
@@ -188,3 +191,5 @@ export function UserNav() {
     </div>
   );
 }
+
+    

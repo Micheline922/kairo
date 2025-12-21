@@ -15,13 +15,15 @@ import { Separator } from '@/components/ui/separator';
 import { useAuth, useUser, initiateEmailSignIn, initiateAnonymousSignIn } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
 import { Logo } from '@/components/logo';
+import { useLanguage } from '@/context/language-provider';
+import { translations } from '@/lib/translations';
 
 const features = [
-    { title: 'Journal Spirituel', description: 'Réfléchissez à votre marche.', icon: BookOpen },
-    { title: 'La Parole Vivante', description: 'Lisez et recherchez la Bible.', icon: BookMarked },
-    { title: 'Autel du Jeûne', description: 'Planifiez et suivez vos jeûnes.', icon: Cross },
-    { title: 'Discerner la Volonté de Dieu', description: 'Cherchez des conseils pour vos décisions.', icon: HelpCircle },
-    { title: 'L\'Académie', description: 'Vision biblique sur des sujets modernes.', icon: School },
+    { title: 'journalTitle', description: 'journalDescription', icon: BookOpen },
+    { title: 'bibleTitle', description: 'selectToSave', icon: BookMarked },
+    { title: 'fastingAltar', description: 'fastingDescription', icon: Cross },
+    { title: 'discernTitle', description: 'discernDescription', icon: HelpCircle },
+    { title: 'academyTitle', description: 'academyDescription', icon: School },
 ];
 
 export default function LoginPage() {
@@ -32,12 +34,14 @@ export default function LoginPage() {
   const [email, setEmail] = useState('croyant@sanctuaire.app');
   const [password, setPassword] = useState('motdepasse123');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const { language } = useLanguage();
+  const t = translations[language];
 
   useEffect(() => {
     if (!isUserLoading && user) {
       setTimeout(() => {
         router.push('/dashboard');
-      }, 5000); // Wait for the welcome screen to be visible for a moment
+      }, 1000); 
     }
   }, [user, isUserLoading, router]);
 
@@ -71,7 +75,7 @@ export default function LoginPage() {
         <div className="z-10 flex flex-col items-center text-center animate-fade-in">
           <Logo />
           <p className="mt-4 max-w-md text-lg text-foreground/80 italic">
-            "C'est le moment que Dieu a choisi pour nous parler ou pour agir. Ne laissons pas passer cette chance."
+            "{t.loginSubTitle}"
           </p>
         </div>
       </div>
@@ -92,16 +96,13 @@ export default function LoginPage() {
       )}
       
       <div className="absolute top-8 left-8">
-        <div className="flex items-center gap-2">
-            <Feather className="h-6 w-6 text-primary" />
-            <h1 className="text-2xl font-bold text-primary">KAIRO</h1>
-        </div>
+         <Logo />
       </div>
 
       <div className="z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 w-full max-w-6xl">
         <div className="text-foreground flex flex-col justify-center">
-            <h2 className="text-5xl font-bold font-headline leading-tight text-center lg:text-left">Le meilleur endroit pour une foi éclairée.</h2>
-            <p className="mt-4 text-lg text-foreground/80">KAIRO est une retraite spirituelle privée conçue pour vous aider à approfondir votre relation avec Dieu. Voici ce qui vous attend :</p>
+            <h2 className="text-5xl font-bold font-headline leading-tight text-center lg:text-left">{t.loginWelcome}</h2>
+            <p className="mt-4 text-lg text-foreground/80">{t.loginDescription}</p>
             <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {features.map((feature) => (
                     <div key={feature.title} className="flex items-start gap-4">
@@ -109,8 +110,8 @@ export default function LoginPage() {
                            <feature.icon className="h-6 w-6 text-primary" />
                         </div>
                         <div>
-                            <h3 className="font-semibold">{feature.title}</h3>
-                            <p className="text-sm text-muted-foreground">{feature.description}</p>
+                            <h3 className="font-semibold">{t[feature.title as keyof typeof t]}</h3>
+                            <p className="text-sm text-muted-foreground">{t[feature.description as keyof typeof t]}</p>
                         </div>
                     </div>
                 ))}
@@ -121,34 +122,34 @@ export default function LoginPage() {
             <Card className="z-10 w-full bg-background/80 backdrop-blur-sm shadow-2xl">
                 <form onSubmit={handleLogin}>
                 <CardHeader className="text-center">
-                    <CardTitle className="text-3xl font-headline">Entrez dans KAIRO</CardTitle>
-                    <CardDescription>C'est le moment que Dieu a choisi pour vous parler ou pour agir.</CardDescription>
+                    <CardTitle className="text-3xl font-headline">{t.loginEnter}</CardTitle>
+                    <CardDescription>{t.loginSubTitle}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="space-y-2">
-                    <Label htmlFor="email">E-mail</Label>
+                    <Label htmlFor="email">{t.email}</Label>
                     <Input id="email" type="email" placeholder="nom@email.com" value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="space-y-2">
-                    <Label htmlFor="password">Mot de passe</Label>
+                    <Label htmlFor="password">{t.password}</Label>
                     <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     <p className="text-xs text-muted-foreground pt-2">
-                        Votre journal est crypté et strictement privé.
+                        {t.loginPrivacy}
                     </p>
                 </CardContent>
                 <CardFooter className="flex-col gap-4">
                     <Button type="submit" className="w-full" disabled={isLoggingIn}>
-                    {isLoggingIn ? <LoaderCircle className="animate-spin" /> : 'Se connecter avec un mot de passe'}
+                    {isLoggingIn ? <LoaderCircle className="animate-spin" /> : t.loginWithPassword}
                     </Button>
                     <div className="flex items-center w-full">
                         <Separator className="flex-1" />
-                        <span className="px-4 text-xs text-muted-foreground">OU</span>
+                        <span className="px-4 text-xs text-muted-foreground">{t.or}</span>
                         <Separator className="flex-1" />
                     </div>
                     <Button variant="outline" className="w-full" onClick={handleAnonymousLogin} disabled={isLoggingIn}>
                     <Fingerprint className="mr-2 h-4 w-4" />
-                    Se connecter avec la biométrie
+                    {t.loginWithBiometrics}
                     </Button>
                 </CardFooter>
                 </form>
@@ -157,8 +158,10 @@ export default function LoginPage() {
       </div>
 
       <footer className="absolute bottom-4 text-center text-sm text-muted-foreground z-10 w-full pb-4">
-        <p>Avec tout mon cœur, Micheline Ntale</p>
+        <p>{t.loginFooter}</p>
       </footer>
     </div>
   );
 }
+
+    

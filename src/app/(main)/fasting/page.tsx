@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -28,7 +29,9 @@ import {
   DialogClose,
 } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/componentsui/select';
+import { useLanguage } from '@/context/language-provider';
+import { translations } from '@/lib/translations';
 
 const fastingSchema = z.object({
   duration: z.string().min(1, 'Veuillez saisir une durée.'),
@@ -49,6 +52,8 @@ export default function FastingPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [generatedPlan, setGeneratedPlan] = useState<string | null>(null);
+  const { language } = useLanguage();
+  const t = translations[language];
 
   const form = useForm<z.infer<typeof fastingSchema>>({
     resolver: zodResolver(fastingSchema),
@@ -89,9 +94,9 @@ export default function FastingPage() {
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">L'Autel du Jeûne</h1>
+        <h1 className="text-4xl font-bold font-headline">{t.fastingAltar}</h1>
         <p className="text-lg text-muted-foreground mt-2">
-          Engagez-vous dans un jeûne et recevez une subsistance spirituelle pour votre parcours.
+          {t.fastingDescription}
         </p>
       </div>
 
@@ -105,16 +110,16 @@ export default function FastingPage() {
         <DialogTrigger asChild>
           <Button size="lg" className="mb-8">
             <PlusCircle className="mr-2 h-5 w-5" />
-            Programmer un nouveau jeûne
+            {t.scheduleNewFast}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-2xl">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleGeneratePlan)} className="space-y-6">
               <DialogHeader>
-                <DialogTitle className="text-2xl">Nouveau Jeûne</DialogTitle>
+                <DialogTitle className="text-2xl">{t.newFastTitle}</DialogTitle>
                 <DialogDescription>
-                  Définissez votre jeûne et laissez l'IA générer un plan de lecture et de prière personnalisé.
+                  {t.newFastDescription}
                 </DialogDescription>
               </DialogHeader>
               
@@ -126,8 +131,8 @@ export default function FastingPage() {
                       name="duration"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Durée</FormLabel>
-                          <FormControl><Input placeholder="ex: 3 Jours" {...field} /></FormControl>
+                          <FormLabel>{t.duration}</FormLabel>
+                          <FormControl><Input placeholder={t.durationPlaceholder} {...field} /></FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -137,16 +142,16 @@ export default function FastingPage() {
                       name="type"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Type de Jeûne</FormLabel>
+                          <FormLabel>{t.fastingType}</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger><SelectValue placeholder="Sélectionnez un type" /></SelectTrigger>
+                              <SelectTrigger><SelectValue placeholder={t.selectType} /></SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="À l'eau seulement">À l'eau seulement</SelectItem>
-                              <SelectItem value="Jeûne aux jus">Jeûne aux jus</SelectItem>
-                              <SelectItem value="Jeûne de Daniel">Jeûne de Daniel</SelectItem>
-                              <SelectItem value="Jeûne partiel">Jeûne partiel</SelectItem>
+                              <SelectItem value={t.waterFast}>{t.waterFast}</SelectItem>
+                              <SelectItem value={t.juiceFast}>{t.juiceFast}</SelectItem>
+                              <SelectItem value={t.danielFast}>{t.danielFast}</SelectItem>
+                              <SelectItem value={t.partialFast}>{t.partialFast}</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -159,10 +164,10 @@ export default function FastingPage() {
                     name="purpose"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Objectif (Votre "Pourquoi")</FormLabel>
+                        <FormLabel>{t.purpose}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Je jeûne pour obtenir de la clarté sur une décision de vie majeure..."
+                            placeholder={t.purposePlaceholder}
                             className="min-h-[100px]"
                             {...field}
                           />
@@ -172,27 +177,27 @@ export default function FastingPage() {
                     )}
                   />
                   <DialogFooter>
-                    <DialogClose asChild><Button type="button" variant="secondary">Annuler</Button></DialogClose>
+                    <DialogClose asChild><Button type="button" variant="secondary">{t.cancel}</Button></DialogClose>
                     <Button type="submit" disabled={isGenerating}>
                         {isGenerating && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
                         <Wand2 className="mr-2 h-4 w-4" />
-                        Générer le plan
+                        {t.generatePlan}
                     </Button>
                   </DialogFooter>
                 </>
               ) : (
                 <>
                   <div className="space-y-4">
-                    <h3 className="font-semibold text-lg flex items-center gap-2"><Sparkles className="text-accent"/> Votre Plan Personnalisé</h3>
+                    <h3 className="font-semibold text-lg flex items-center gap-2"><Sparkles className="text-accent"/> {t.yourCustomPlan}</h3>
                     <div className="p-4 bg-secondary rounded-md max-h-64 overflow-y-auto border">
                       <p className="whitespace-pre-wrap font-sans text-sm">{generatedPlan}</p>
                     </div>
                   </div>
                    <DialogFooter>
-                      <Button type="button" variant="ghost" onClick={() => setGeneratedPlan(null)}>Retour</Button>
+                      <Button type="button" variant="ghost" onClick={() => setGeneratedPlan(null)}>{t.back}</Button>
                       <Button type="button" onClick={handleSaveFast}>
                           <Save className="mr-2 h-4 w-4" />
-                          Enregistrer et Commencer
+                          {t.saveAndStart}
                       </Button>
                   </DialogFooter>
                 </>
@@ -202,7 +207,7 @@ export default function FastingPage() {
         </DialogContent>
       </Dialog>
       
-      <h2 className="text-3xl font-bold font-headline mb-4">Vos Jeûnes</h2>
+      <h2 className="text-3xl font-bold font-headline mb-4">{t.yourFasts}</h2>
       {fasts.length > 0 ? (
         <div className="space-y-4">
           {fasts.map(fast => (
@@ -210,18 +215,18 @@ export default function FastingPage() {
               <CardHeader>
                 <CardTitle className="flex justify-between items-center">
                   <span>{fast.duration} - {fast.type}</span>
-                  <span className="text-sm font-medium text-muted-foreground">{fast.progress}% terminé</span>
+                  <span className="text-sm font-medium text-muted-foreground">{t.progressCompleted.replace('{progress}', fast.progress.toString())}</span>
                 </CardTitle>
                 <Progress value={fast.progress} className="mt-2" />
               </CardHeader>
               <CardContent>
                 <div>
-                  <h4 className="font-semibold">Objectif :</h4>
+                  <h4 className="font-semibold">{t.purpose}:</h4>
                   <p className="text-muted-foreground italic">"{fast.purpose}"</p>
                 </div>
                 {fast.readingPlan && (
                   <div className="mt-4">
-                    <h4 className="font-semibold">Plan de lecture & prière :</h4>
+                    <h4 className="font-semibold">{t.readingPrayerPlan}</h4>
                     <p className="text-muted-foreground whitespace-pre-wrap text-sm border p-3 rounded-md bg-secondary/50 mt-2">{fast.readingPlan}</p>
                   </div>
                 )}
@@ -232,12 +237,14 @@ export default function FastingPage() {
       ) : (
         <div className="text-center py-16 border-2 border-dashed rounded-lg">
           <Calendar className="mx-auto h-12 w-12 text-muted-foreground" />
-          <h3 className="mt-4 text-lg font-semibold">Aucun Jeûne Programmé</h3>
+          <h3 className="mt-4 text-lg font-semibold">{t.noFastsScheduled}</h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            Cliquez sur 'Programmer un nouveau jeûne' pour commencer une nouvelle saison de concentration spirituelle.
+            {t.noFastsHint}
           </p>
         </div>
       )}
     </div>
   );
 }
+
+    

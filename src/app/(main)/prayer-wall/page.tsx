@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -31,6 +32,8 @@ import { collection, query, orderBy, serverTimestamp, doc } from 'firebase/fires
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
+import { useLanguage } from '@/context/language-provider';
+import { translations } from '@/lib/translations';
 
 const prayerRequestSchema = z.object({
   request: z.string().min(10, { message: 'Votre sujet de prière doit contenir au moins 10 caractères.' }),
@@ -65,6 +68,8 @@ export default function PrayerWallPage() {
   const [isSubmittingRequest, setIsSubmittingRequest] = useState(false);
   const [isSubmittingPlan, setIsSubmittingPlan] = useState(false);
   const [isPlanDialogOpen, setIsPlanDialogOpen] = useState(false);
+  const { language } = useLanguage();
+  const t = translations[language];
 
   // Queries for prayer requests
   const prayerRequestsQuery = useMemoFirebase(() => {
@@ -107,8 +112,8 @@ export default function PrayerWallPage() {
     addDocumentNonBlocking(collection(firestore, `users/${user.uid}/prayerRequests`), newRequest);
 
     toast({
-      title: 'Prière déposée',
-      description: 'Votre prière a été ajoutée au mur. Nous croyons avec vous.',
+      title: t.prayerPosted,
+      description: t.prayerPostedDescription,
     });
     
     setIsSubmittingRequest(false);
@@ -128,8 +133,8 @@ export default function PrayerWallPage() {
     addDocumentNonBlocking(collection(firestore, `users/${user.uid}/prayerPlans`), newPlan);
 
     toast({
-      title: 'Plan de prière ajouté',
-      description: 'Votre nouveau moment de prière a été planifié.',
+      title: t.prayerPlanAdded,
+      description: t.prayerPlanAddedDescription,
     });
 
     setIsSubmittingPlan(false);
@@ -145,8 +150,8 @@ export default function PrayerWallPage() {
       answeredDate: serverTimestamp(),
     });
     toast({
-        title: 'Prière Exaucée !',
-        description: 'Gloire à Dieu ! Cette prière a été marquée comme exaucée.',
+        title: t.prayerAnswered,
+        description: t.prayerAnsweredDescription,
     });
   };
 
@@ -155,8 +160,8 @@ export default function PrayerWallPage() {
     const prayerRef = doc(firestore, `users/${user.uid}/prayerRequests`, prayerId);
     deleteDocumentNonBlocking(prayerRef);
     toast({
-        title: 'Prière retirée',
-        description: 'La prière a été retirée du mur.',
+        title: t.prayerRemoved,
+        description: t.prayerRemovedDescription,
         variant: 'destructive',
     });
   }
@@ -166,7 +171,7 @@ export default function PrayerWallPage() {
     const planRef = doc(firestore, `users/${user.uid}/prayerPlans`, planId);
     deleteDocumentNonBlocking(planRef);
     toast({
-        title: 'Plan de prière supprimé',
+        title: t.planDeleted,
         variant: 'destructive',
     });
   }
@@ -174,9 +179,9 @@ export default function PrayerWallPage() {
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">Mur de Prière</h1>
+        <h1 className="text-4xl font-bold font-headline">{t.prayerWallTitle}</h1>
         <p className="text-lg text-muted-foreground mt-2">
-          "Ne vous inquiétez de rien; mais en toute chose faites connaître vos besoins à Dieu par des prières et des supplications, avec des actions de grâces." - Philippiens 4:6
+          "{t.prayerWallDescription}"
         </p>
       </div>
 
@@ -184,8 +189,8 @@ export default function PrayerWallPage() {
         <div className="lg:col-span-1">
             <Card>
                 <CardHeader>
-                    <CardTitle>Déposer une prière</CardTitle>
-                    <CardDescription>Confiez vos fardeaux et vos espoirs. Votre communauté prie avec vous en esprit.</CardDescription>
+                    <CardTitle>{t.postPrayer}</CardTitle>
+                    <CardDescription>{t.postPrayerDescription}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Form {...requestForm}>
@@ -197,7 +202,7 @@ export default function PrayerWallPage() {
                                     <FormItem>
                                     <FormControl>
                                         <Textarea
-                                        placeholder="Seigneur, je te prie pour..."
+                                        placeholder={t.prayerPlaceholder}
                                         className="min-h-[120px]"
                                         {...field}
                                         />
@@ -212,7 +217,7 @@ export default function PrayerWallPage() {
                                 ) : (
                                     <Send className="mr-2 h-4 w-4" />
                                 )}
-                                Soumettre
+                                {t.submit}
                             </Button>
                         </form>
                     </Form>
@@ -220,31 +225,31 @@ export default function PrayerWallPage() {
             </Card>
         </div>
         <div className="lg:col-span-2">
-            <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-3"><HandHelping /> Vos Prières</h2>
+            <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-3"><HandHelping /> {t.yourPrayers}</h2>
             <Tabs defaultValue="pending">
                 <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="pending">En attente ({pendingPrayers.length})</TabsTrigger>
-                    <TabsTrigger value="answered">Exaucées ({answeredPrayers.length})</TabsTrigger>
-                    <TabsTrigger value="planner">Planificateur</TabsTrigger>
+                    <TabsTrigger value="pending">{t.pending} ({pendingPrayers.length})</TabsTrigger>
+                    <TabsTrigger value="answered">{t.answered} ({answeredPrayers.length})</TabsTrigger>
+                    <TabsTrigger value="planner">{t.planner}</TabsTrigger>
                 </TabsList>
                 <TabsContent value="pending">
                     <Card>
                         <CardContent className="pt-6">
                             {isLoadingRequests ? (
-                               <p className="text-center text-sm text-muted-foreground">Chargement...</p>
+                               <p className="text-center text-sm text-muted-foreground">{t.loadingPrayers}</p>
                             ) : pendingPrayers.length > 0 ? (
                                 <div className="space-y-4">
                                     {pendingPrayers.map(p => (
                                         <div key={p.id} className="p-4 border rounded-md bg-secondary/50 flex justify-between items-start">
                                             <div>
                                                 <p className="text-primary/90">{p.requestText}</p>
-                                                <p className="text-xs text-muted-foreground mt-1">Déposée le {p.creationDate?.toDate().toLocaleDateString('fr-FR')}</p>
+                                                <p className="text-xs text-muted-foreground mt-1">{t.postedOn.replace('{date}', p.creationDate?.toDate().toLocaleDateString(language))}</p>
                                             </div>
                                             <div className="flex gap-2 ml-4">
-                                                <Button size="icon" variant="outline" onClick={() => markAsAnswered(p.id)} title="Marquer comme exaucée">
+                                                <Button size="icon" variant="outline" onClick={() => markAsAnswered(p.id)} title={t.markAsAnswered}>
                                                     <Check className="h-4 w-4 text-green-500" />
                                                 </Button>
-                                                <Button size="icon" variant="destructive" onClick={() => deletePrayer(p.id)} title="Supprimer">
+                                                <Button size="icon" variant="destructive" onClick={() => deletePrayer(p.id)} title={t.delete}>
                                                     <Trash2 className="h-4 w-4" />
                                                 </Button>
                                             </div>
@@ -253,8 +258,8 @@ export default function PrayerWallPage() {
                                 </div>
                             ) : (
                                 <div className="text-center text-muted-foreground py-12">
-                                    <p>Aucune prière en attente.</p>
-                                    <p className="text-sm">Déposez un sujet de prière pour commencer.</p>
+                                    <p>{t.noPendingPrayers}</p>
+                                    <p className="text-sm">{t.noPendingPrayersHint}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -264,7 +269,7 @@ export default function PrayerWallPage() {
                     <Card>
                         <CardContent className="pt-6">
                              {isLoadingRequests ? (
-                               <p className="text-center text-sm text-muted-foreground">Chargement...</p>
+                               <p className="text-center text-sm text-muted-foreground">{t.loadingPrayers}</p>
                             ) : answeredPrayers.length > 0 ? (
                                 <div className="space-y-4">
                                     {answeredPrayers.map(p => (
@@ -273,10 +278,10 @@ export default function PrayerWallPage() {
                                                 <p className="italic text-muted-foreground line-through">{p.requestText}</p>
                                                 <p className="text-xs text-green-600 font-medium mt-1 flex items-center gap-1">
                                                     <Sparkle className="h-3 w-3"/>
-                                                    Exaucée le {p.answeredDate?.toDate().toLocaleDateString('fr-FR')}
+                                                    {t.answeredOn.replace('{date}', p.answeredDate?.toDate().toLocaleDateString(language))}
                                                 </p>
                                            </div>
-                                            <Button size="icon" variant="ghost" onClick={() => deletePrayer(p.id)} title="Supprimer">
+                                            <Button size="icon" variant="ghost" onClick={() => deletePrayer(p.id)} title={t.delete}>
                                                 <Trash2 className="h-4 w-4 text-muted-foreground hover:text-destructive" />
                                             </Button>
                                         </div>
@@ -284,8 +289,8 @@ export default function PrayerWallPage() {
                                 </div>
                             ) : (
                                 <div className="text-center text-muted-foreground py-12">
-                                    <p>Aucune prière exaucée pour le moment.</p>
-                                    <p className="text-sm">Continuez à persévérer dans la prière.</p>
+                                    <p>{t.noAnsweredPrayers}</p>
+                                    <p className="text-sm">{t.noAnsweredPrayersHint}</p>
                                 </div>
                             )}
                         </CardContent>
@@ -296,30 +301,30 @@ export default function PrayerWallPage() {
                        <CardHeader>
                           <div className="flex justify-between items-center">
                             <div>
-                                <CardTitle>Plan de Prière</CardTitle>
-                                <CardDescription>Organisez vos moments de prière quotidiens.</CardDescription>
+                                <CardTitle>{t.prayerPlan}</CardTitle>
+                                <CardDescription>{t.prayerPlanDescription}</CardDescription>
                             </div>
                              <Dialog open={isPlanDialogOpen} onOpenChange={setIsPlanDialogOpen}>
                                 <DialogTrigger asChild>
-                                  <Button><PlusCircle className="mr-2 h-4 w-4" /> Ajouter un plan</Button>
+                                  <Button><PlusCircle className="mr-2 h-4 w-4" /> {t.addPlan}</Button>
                                 </DialogTrigger>
                                 <DialogContent>
                                     <Form {...planForm}>
                                     <form onSubmit={planForm.handleSubmit(onPlanSubmit)} className="space-y-6">
                                         <DialogHeader>
-                                            <DialogTitle>Nouveau Plan de Prière</DialogTitle>
-                                            <DialogDescription>Définissez un moment de prière récurrent.</DialogDescription>
+                                            <DialogTitle>{t.newPrayerPlan}</DialogTitle>
+                                            <DialogDescription>{t.newPrayerPlanDescription}</DialogDescription>
                                         </DialogHeader>
                                         <div className="space-y-4">
-                                            <FormField control={planForm.control} name="title" render={({ field }) => ( <FormItem><FormLabel>Titre</FormLabel><FormControl><Input placeholder="Prière du Matin" {...field} /></FormControl><FormMessage /></FormItem> )}/>
-                                            <FormField control={planForm.control} name="time" render={({ field }) => ( <FormItem><FormLabel>Heure</FormLabel><FormControl><Input placeholder="ex: 06:00" {...field} /></FormControl><FormMessage /></FormItem> )}/>
-                                            <FormField control={planForm.control} name="intention" render={({ field }) => ( <FormItem><FormLabel>Intention</FormLabel><FormControl><Textarea placeholder="Action de grâce, lecture de Proverbes..." {...field} /></FormControl><FormMessage /></FormItem> )}/>
+                                            <FormField control={planForm.control} name="title" render={({ field }) => ( <FormItem><FormLabel>{t.entryTitle}</FormLabel><FormControl><Input placeholder={t.entryTitlePlaceholder} {...field} /></FormControl><FormMessage /></FormItem> )}/>
+                                            <FormField control={planForm.control} name="time" render={({ field }) => ( <FormItem><FormLabel>{t.time}</FormLabel><FormControl><Input placeholder={t.timePlaceholder} {...field} /></FormControl><FormMessage /></FormItem> )}/>
+                                            <FormField control={planForm.control} name="intention" render={({ field }) => ( <FormItem><FormLabel>{t.intention}</FormLabel><FormControl><Textarea placeholder={t.intentionPlaceholder} {...field} /></FormControl><FormMessage /></FormItem> )}/>
                                         </div>
                                         <DialogFooter>
-                                            <DialogClose asChild><Button type="button" variant="secondary">Annuler</Button></DialogClose>
+                                            <DialogClose asChild><Button type="button" variant="secondary">{t.cancel}</Button></DialogClose>
                                             <Button type="submit" disabled={isSubmittingPlan}>
                                             {isSubmittingPlan ? <LoaderCircle className="animate-spin mr-2"/> : <Send className="mr-2"/>}
-                                            Enregistrer
+                                            {t.save}
                                             </Button>
                                         </DialogFooter>
                                     </form>
@@ -330,7 +335,7 @@ export default function PrayerWallPage() {
                        </CardHeader>
                        <CardContent>
                            {isLoadingPlans ? (
-                              <p className="text-center text-sm text-muted-foreground">Chargement des plans...</p>
+                              <p className="text-center text-sm text-muted-foreground">{t.loadingPlans}</p>
                            ) : prayerPlans && prayerPlans.length > 0 ? (
                                <div className="grid sm:grid-cols-2 gap-4">
                                    {prayerPlans.map(plan => (
@@ -352,8 +357,8 @@ export default function PrayerWallPage() {
                                </div>
                            ) : (
                                <div className="text-center text-muted-foreground py-12">
-                                   <p>Aucun plan de prière défini.</p>
-                                   <p className="text-sm">Structurez votre journée en ajoutant un plan.</p>
+                                   <p>{t.noPlans}</p>
+                                   <p className="text-sm">{t.noPlansHint}</p>
                                </div>
                            )}
                        </CardContent>
