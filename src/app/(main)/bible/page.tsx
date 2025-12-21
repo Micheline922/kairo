@@ -75,6 +75,7 @@ export default function BiblePage() {
   const [selection, setSelection] = useState<Range | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
+  const [showVerseSearch, setShowVerseSearch] = useState(true);
 
   const [bibleDisplay, setBibleDisplay] = useState({
     book: 'Genèse',
@@ -128,12 +129,13 @@ export default function BiblePage() {
           chapter: values.chapter,
           content: chapterContent,
         });
+        setShowVerseSearch(false);
         // Scroll to verse if specified
         if (values.verse) {
           setTimeout(() => {
             const verseElement = document.getElementById(`verse-${values.verse}`);
             verseElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }, 0);
+          }, 100);
         }
       } else {
         alert(`Le chapitre ${values.chapter} du livre ${values.book} n'a pas été trouvé.`);
@@ -190,23 +192,30 @@ export default function BiblePage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
-            <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-3"><BookOpen /> Parcourir les Écritures</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-3xl font-bold font-headline flex items-center gap-3"><BookOpen /> Parcourir les Écritures</h2>
+              {!showVerseSearch && (
+                <Button variant="outline" onClick={() => setShowVerseSearch(true)}>Nouvelle Recherche</Button>
+              )}
+            </div>
             
-            <Card className="mb-6">
-                <CardHeader>
-                    <CardTitle>Rechercher un Verset</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <Form {...verseForm}>
-                        <form onSubmit={verseForm.handleSubmit(onVerseSubmit)} className="grid sm:grid-cols-4 gap-4 items-end">
-                            <FormField control={verseForm.control} name="book" render={({ field }) => ( <FormItem><FormLabel>Livre</FormLabel><FormControl><Input placeholder="ex: Genèse" {...field} /></FormControl><FormMessage /></FormItem> )} />
-                            <FormField control={verseForm.control} name="chapter" render={({ field }) => ( <FormItem><FormLabel>Chapitre</FormLabel><FormControl><Input placeholder="ex: 1" {...field} /></FormControl><FormMessage /></FormItem> )} />
-                            <FormField control={verseForm.control} name="verse" render={({ field }) => ( <FormItem><FormLabel>Verset (optionnel)</FormLabel><FormControl><Input placeholder="ex: 1" {...field} /></FormControl><FormMessage /></FormItem> )} />
-                            <Button type="submit" className="w-full">Trouver</Button>
-                        </form>
-                    </Form>
-                </CardContent>
-            </Card>
+            {showVerseSearch && (
+                <Card className="mb-6">
+                    <CardHeader>
+                        <CardTitle>Rechercher un Verset</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <Form {...verseForm}>
+                            <form onSubmit={verseForm.handleSubmit(onVerseSubmit)} className="grid sm:grid-cols-4 gap-4 items-end">
+                                <FormField control={verseForm.control} name="book" render={({ field }) => ( <FormItem><FormLabel>Livre</FormLabel><FormControl><Input placeholder="ex: Genèse" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                                <FormField control={verseForm.control} name="chapter" render={({ field }) => ( <FormItem><FormLabel>Chapitre</FormLabel><FormControl><Input placeholder="ex: 1" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                                <FormField control={verseForm.control} name="verse" render={({ field }) => ( <FormItem><FormLabel>Verset (optionnel)</FormLabel><FormControl><Input placeholder="ex: 1" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                                <Button type="submit" className="w-full">Trouver</Button>
+                            </form>
+                        </Form>
+                    </CardContent>
+                </Card>
+            )}
 
             <Card>
               <CardHeader>
