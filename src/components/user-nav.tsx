@@ -26,7 +26,7 @@ export function UserNav() {
   const { state } = useSidebar();
   const auth = useAuth();
   const { user } = useUser();
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   const handleLogout = () => {
     signOut(auth);
@@ -70,12 +70,11 @@ export function UserNav() {
                 </DropdownMenuSubTrigger>
                 <DropdownMenuPortal>
                     <DropdownMenuSubContent>
-                        <DropdownMenuItem>
-                            <span>Français</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <span>English</span>
-                        </DropdownMenuItem>
+                        <DropdownMenuItem><span>English</span></DropdownMenuItem>
+                        <DropdownMenuItem><span>Français</span></DropdownMenuItem>
+                        <DropdownMenuItem><span>Español</span></DropdownMenuItem>
+                        <DropdownMenuItem><span>Português</span></DropdownMenuItem>
+                        <DropdownMenuItem><span>Swahili</span></DropdownMenuItem>
                     </DropdownMenuSubContent>
                 </DropdownMenuPortal>
             </DropdownMenuSub>
@@ -124,7 +123,7 @@ export function UserNav() {
         <span className="text-xs text-muted-foreground truncate">{email}</span>
       </div>
        <div className="ml-auto flex items-center">
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setTheme(useTheme().theme === 'dark' ? 'light' : 'dark')}>
+            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
               <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
               <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
               <span className="sr-only">Changer le thème</span>
@@ -145,12 +144,11 @@ export function UserNav() {
                         </DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
-                                <DropdownMenuItem>
-                                    <span>Français</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    <span>English</span>
-                                </DropdownMenuItem>
+                                <DropdownMenuItem><span>English</span></DropdownMenuItem>
+                                <DropdownMenuItem><span>Français</span></DropdownMenuItem>
+                                <DropdownMenuItem><span>Español</span></DropdownMenuItem>
+                                <DropdownMenuItem><span>Português</span></DropdownMenuItem>
+                                <DropdownMenuItem><span>Swahili</span></DropdownMenuItem>
                             </DropdownMenuSubContent>
                         </DropdownMenuPortal>
                     </DropdownMenuSub>
