@@ -1,0 +1,252 @@
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user of the Sanctuary application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user entity."
+        },
+        "email": {
+          "type": "string",
+          "description": "User's email address.",
+          "format": "email"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The user's display name or preferred name."
+        },
+        "creationDate": {
+          "type": "string",
+          "description": "Date and time the user account was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "displayName",
+        "creationDate"
+      ]
+    },
+    "JournalEntry": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "JournalEntry",
+      "type": "object",
+      "description": "Represents a single journal entry within the Sanctuary application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the journal entry."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N JournalEntry)"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the journal entry."
+        },
+        "content": {
+          "type": "string",
+          "description": "Content of the journal entry."
+        },
+        "creationDate": {
+          "type": "string",
+          "description": "Date and time the journal entry was created.",
+          "format": "date-time"
+        },
+        "lastModified": {
+          "type": "string",
+          "description": "Date and time the journal entry was last modified.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "title",
+        "content",
+        "creationDate",
+        "lastModified"
+      ]
+    },
+    "PearlOfWisdom": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "PearlOfWisdom",
+      "type": "object",
+      "description": "Represents a saved verse or 'Pearl of Wisdom' from the Bible.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the pearl of wisdom."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N PearlOfWisdom)"
+        },
+        "verseReference": {
+          "type": "string",
+          "description": "Reference to the Bible verse (e.g., John 3:16)."
+        },
+        "verseText": {
+          "type": "string",
+          "description": "Text of the Bible verse."
+        },
+        "notes": {
+          "type": "string",
+          "description": "User's notes or reflections on the verse."
+        },
+        "savedDate": {
+          "type": "string",
+          "description": "Date and time the verse was saved.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "verseReference",
+        "verseText",
+        "notes",
+        "savedDate"
+      ]
+    },
+    "FastingPlan": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "FastingPlan",
+      "type": "object",
+      "description": "Represents a user's fasting plan.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the fasting plan."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N FastingPlan)"
+        },
+        "startDate": {
+          "type": "string",
+          "description": "Start date of the fast.",
+          "format": "date-time"
+        },
+        "endDate": {
+          "type": "string",
+          "description": "End date of the fast.",
+          "format": "date-time"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of fast (e.g., water fast, juice fast)."
+        },
+        "purpose": {
+          "type": "string",
+          "description": "Purpose of the fast (e.g., spiritual growth, healing)."
+        },
+        "readingPlan": {
+          "type": "string",
+          "description": "AI generated reading plan for the fast."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "startDate",
+        "endDate",
+        "type",
+        "purpose"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profiles. The 'userId' parameter ensures that only the authenticated user can access their own profile data.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/journalEntries/{journalEntryId}",
+        "definition": {
+          "entityName": "JournalEntry",
+          "schema": {
+            "$ref": "#/backend/entities/JournalEntry"
+          },
+          "description": "Stores journal entries for each user. The 'userId' parameter ensures that only the authenticated user can access their own journal entries.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "journalEntryId",
+              "description": "The unique identifier for the journal entry."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/pearlsOfWisdom/{pearlOfWisdomId}",
+        "definition": {
+          "entityName": "PearlOfWisdom",
+          "schema": {
+            "$ref": "#/backend/entities/PearlOfWisdom"
+          },
+          "description": "Stores saved Bible verses (Pearls of Wisdom) for each user. The 'userId' parameter ensures that only the authenticated user can access their own saved verses.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "pearlOfWisdomId",
+              "description": "The unique identifier for the pearl of wisdom."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/fastingPlans/{fastingPlanId}",
+        "definition": {
+          "entityName": "FastingPlan",
+          "schema": {
+            "$ref": "#/backend/entities/FastingPlan"
+          },
+          "description": "Stores fasting plans for each user. The 'userId' parameter ensures that only the authenticated user can access their own fasting plans.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "fastingPlanId",
+              "description": "The unique identifier for the fasting plan."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore data structure is designed to ensure data privacy and security for the Sanctuary application, with a focus on authorization independence and ease of debugging. User data and their associated journal entries, pearls of wisdom, and fasting plans are stored under user-specific paths to enforce strict privacy. This design eliminates the need for complex security rules and enables secure list operations (QAPs). Authorization Independence is achieved by storing each user's data under their respective `userId`, removing the need to check parent document properties for authorization. This approach simplifies security rules to `request.auth.uid == resource.data.userId` and enables atomic batch operations. The structure is segregated by entity type, and the use of hierarchical paths makes security rules more manageable."
+  }
+}

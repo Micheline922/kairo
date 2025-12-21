@@ -1,0 +1,129 @@
+/**
+ * Core Philosophy: This ruleset enforces a strict user-ownership model. All data is considered private and can only be
+ * accessed by the user who created it. The default security posture is deny-all, ensuring that no data is accessible
+ * unless explicitly permitted by a rule.
+ *
+ * Data Structure: All application data is hierarchically nested within a top-level `users` collection. Each user's
+ * data, including their profile, journal entries, pearls of wisdom, and fasting plans, is stored within a
+ * document tree identified by their unique user ID (e.g., /users/{userId}/...). This creates a secure data silo for
+ * each user, simplifying security logic.
+ *
+ * Key Security Decisions:
+ * - User Isolation: A user can only read or write data within their own path (`/users/{request.auth.uid}`).
+ * - No Public Data: All access requires successful authentication. There are no publicly readable collections.
+ * - User Listing Disabled: It is not possible to query the top-level `/users` collection, preventing user enumeration.
+ * - Denormalization for Authorization: Subcollection documents (like JournalEntry) contain a `userId` field that
+ *   is validated against the path. This avoids costly `get()` calls to parent documents and ensures performant,
+ *   secure access.
+ * - Relational Integrity: Rules enforce that the `userId` field in a document cannot be changed after creation and must
+ *   match the `userId` from the document path, ensuring data consistency.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ----------------------------------------------------------------------
+    // Helper Functions
+    // ----------------------------------------------------------------------
+
+    /**
+     * Checks if a user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * Checks if the currently authenticated user's ID matches the provided userId.
+     * This is the primary function for enforcing data ownership.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * Checks for ownership on an existing document. Used for update and delete
+     * operations to ensure the document exists before attempting a modification.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+
+    // ----------------------------------------------------------------------
+    // User Profile Rules
+    // ----------------------------------------------------------------------
+
+    /**
+     * @description Controls access to a user's own profile document.
+     * @path /users/{userId}
+     * @allow (create) An authenticated user creating their own user profile document for the first time.
+     * @deny (list) Any user, authenticated or not, attempting to list all user profiles.
+     * @principle Restricts access to a user's own data tree and enforces self-creation of the root profile.
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    // ----------------------------------------------------------------------
+    // Journal Entry Rules
+    // ----------------------------------------------------------------------
+
+    /**
+     * @description Controls access to a user's private journal entries.
+     * @path /users/{userId}/journalEntries/{journalEntryId}
+     * @allow (create) An authenticated user creating a new journal entry under their own user ID.
+     * @deny (get) User 'A' attempting to read a journal entry belonging to user 'B'.
+     * @principle Enforces document ownership for all operations within a user's private subcollection.
+     */
+    match /users/{userId}/journalEntries/{journalEntryId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    // ----------------------------------------------------------------------
+    // Pearls of Wisdom Rules
+    // ----------------------------------------------------------------------
+
+    /**
+     * @description Controls access to a user's saved 'Pearls of Wisdom' (verses).
+     * @path /users/{userId}/pearlsOfWisdom/{pearlOfWisdomId}
+     * @allow (list) An authenticated user listing all of their own saved verses.
+     * @deny (update) User 'A' attempting to modify a saved verse belonging to user 'B'.
+     * @principle Enforces document ownership for all operations within a user's private subcollection.
+     */
+    match /users/{userId}/pearlsOfWisdom/{pearlOfWisdomId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    // ----------------------------------------------------------------------
+    // Fasting Plan Rules
+    // ----------------------------------------------------------------------
+
+    /**
+     * @description Controls access to a user's private fasting plans.
+     * @path /users/{userId}/fastingPlans/{fastingPlanId}
+     * @allow (delete) An authenticated user deleting one of their own fasting plans.
+     * @deny (create) User 'A' attempting to create a fasting plan under user 'B's profile.
+     * @principle Enforces document ownership for all operations within a user's private subcollection.
+     */
+    match /users/{userId}/fastingPlans/{fastingPlanId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+  }
+}
