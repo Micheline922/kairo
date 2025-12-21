@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -97,8 +98,8 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <div className="z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 w-full max-w-6xl items-center">
-        <div className="text-foreground">
+      <div className="z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 w-full max-w-6xl">
+        <div className="text-foreground flex flex-col justify-center">
             <h2 className="text-5xl font-bold font-headline leading-tight text-center lg:text-left">Le meilleur endroit pour une foi éclairée.</h2>
             <p className="mt-4 text-lg text-foreground/80">KAIRO est une retraite spirituelle privée conçue pour vous aider à approfondir votre relation avec Dieu. Voici ce qui vous attend :</p>
             <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -116,41 +117,43 @@ export default function LoginPage() {
             </div>
         </div>
 
-        <Card className="z-10 w-full max-w-md bg-background/80 backdrop-blur-sm shadow-2xl">
-            <form onSubmit={handleLogin}>
-            <CardHeader className="text-center">
-                <CardTitle className="text-3xl font-headline">Entrez dans KAIRO</CardTitle>
-                <CardDescription>C'est le moment que Dieu a choisi pour vous parler ou pour agir.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                <div className="space-y-2">
-                <Label htmlFor="email">E-mail</Label>
-                <Input id="email" type="email" placeholder="nom@email.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-                </div>
-                <div className="space-y-2">
-                <Label htmlFor="password">Mot de passe</Label>
-                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                </div>
-                <p className="text-xs text-muted-foreground pt-2">
-                    Votre journal est crypté et strictement privé.
-                </p>
-            </CardContent>
-            <CardFooter className="flex-col gap-4">
-                <Button type="submit" className="w-full" disabled={isLoggingIn}>
-                {isLoggingIn ? <LoaderCircle className="animate-spin" /> : 'Se connecter avec un mot de passe'}
-                </Button>
-                <div className="flex items-center w-full">
-                    <Separator className="flex-1" />
-                    <span className="px-4 text-xs text-muted-foreground">OU</span>
-                    <Separator className="flex-1" />
-                </div>
-                <Button variant="outline" className="w-full" onClick={handleAnonymousLogin} disabled={isLoggingIn}>
-                <Fingerprint className="mr-2 h-4 w-4" />
-                Se connecter avec la biométrie
-                </Button>
-            </CardFooter>
-            </form>
-        </Card>
+        <div className="flex items-center justify-center">
+            <Card className="z-10 w-full bg-background/80 backdrop-blur-sm shadow-2xl">
+                <form onSubmit={handleLogin}>
+                <CardHeader className="text-center">
+                    <CardTitle className="text-3xl font-headline">Entrez dans KAIRO</CardTitle>
+                    <CardDescription>C'est le moment que Dieu a choisi pour vous parler ou pour agir.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                    <Label htmlFor="email">E-mail</Label>
+                    <Input id="email" type="email" placeholder="nom@email.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
+                    <Label htmlFor="password">Mot de passe</Label>
+                    <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    </div>
+                    <p className="text-xs text-muted-foreground pt-2">
+                        Votre journal est crypté et strictement privé.
+                    </p>
+                </CardContent>
+                <CardFooter className="flex-col gap-4">
+                    <Button type="submit" className="w-full" disabled={isLoggingIn}>
+                    {isLoggingIn ? <LoaderCircle className="animate-spin" /> : 'Se connecter avec un mot de passe'}
+                    </Button>
+                    <div className="flex items-center w-full">
+                        <Separator className="flex-1" />
+                        <span className="px-4 text-xs text-muted-foreground">OU</span>
+                        <Separator className="flex-1" />
+                    </div>
+                    <Button variant="outline" className="w-full" onClick={handleAnonymousLogin} disabled={isLoggingIn}>
+                    <Fingerprint className="mr-2 h-4 w-4" />
+                    Se connecter avec la biométrie
+                    </Button>
+                </CardFooter>
+                </form>
+            </Card>
+        </div>
       </div>
 
       <footer className="absolute bottom-4 text-center text-sm text-muted-foreground z-10">
