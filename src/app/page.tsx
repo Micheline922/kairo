@@ -37,7 +37,7 @@ export default function LoginPage() {
     if (!isUserLoading && user) {
       setTimeout(() => {
         router.push('/dashboard');
-      }, 10000); // Wait for the welcome screen to be visible for a moment
+      }, 5000); // Wait for the welcome screen to be visible for a moment
     }
   }, [user, isUserLoading, router]);
 
@@ -156,7 +156,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <footer className="absolute bottom-4 text-center text-sm text-muted-foreground z-10 w-full">
+      <footer className="absolute bottom-4 text-center text-sm text-muted-foreground z-10 w-full pb-4">
         <p>Avec tout mon cœur, Micheline Ntale</p>
       </footer>
     </div>
