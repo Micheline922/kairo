@@ -41,6 +41,12 @@
       "description": "Hands held together in prayer with soft light",
       "imageUrl": "https://images.unsplash.com/photo-1583947458957-552693175b24?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwcmF5aW5nJTIwaGFuZHN8ZW58MHx8fHwxNzY2Mjc2MTMxfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "praying hands"
+    },
+    {
+      "id": "meditation-card",
+      "description": "A calm, still lake reflecting a colorful sky.",
+      "imageUrl": "https://images.unsplash.com/photo-1476610887044-a6c4028b818f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjYWxtJTIwbGFrZXxlbnwwfHx8fDE3NjYyNzYyMzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "calm lake"
     }
   ]
 }

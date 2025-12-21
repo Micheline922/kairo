@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, BookOpen, BookMarked, Cross, School, HelpCircle, HandHelping } from 'lucide-react';
+import { ArrowRight, BookOpen, BookMarked, Cross, School, HelpCircle, HandHelping, HeartPulse } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const quickLinks = [
@@ -18,6 +18,7 @@ const quickLinks = [
     { title: 'Discerner la Volonté de Dieu', description: 'Cherchez des conseils pour vos décisions.', href: '/discern', icon: HelpCircle, imageId: 'discern-card' },
     { title: 'L\'Académie', description: 'Vision biblique sur des sujets modernes.', href: '/academy', icon: School, imageId: 'academy-card' },
     { title: 'Mur de Prière', description: 'Déposez et suivez vos prières.', href: '/prayer-wall', icon: HandHelping, imageId: 'prayer-wall-card' },
+    { title: 'Méditations Audio', description: 'Écoutez des méditations guidées.', href: '/meditations', icon: HeartPulse, imageId: 'meditation-card' },
 ];
 
 export default function DashboardPage() {

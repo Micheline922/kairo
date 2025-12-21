@@ -10,6 +10,7 @@ import {
   HelpCircle,
   School,
   HandHelping,
+  HeartPulse,
 } from 'lucide-react';
 import { useLanguage } from '@/context/language-provider';
 
@@ -29,6 +30,7 @@ const navLabels = {
     discern: 'Discern God\'s Will',
     academy: 'The Academy',
     prayerWall: 'Prayer Wall',
+    meditations: 'Meditations',
   },
   fr: {
     dashboard: 'Tableau de bord',
@@ -38,6 +40,7 @@ const navLabels = {
     discern: 'Discerner la Volonté de Dieu',
     academy: 'L\'Académie',
     prayerWall: 'Mur de Prière',
+    meditations: 'Méditations',
   },
   es: {
     dashboard: 'Tablero',
@@ -47,6 +50,7 @@ const navLabels = {
     discern: 'Discernir la Voluntad de Dios',
     academy: 'La Academia',
     prayerWall: 'Muro de Oración',
+    meditations: 'Meditaciones',
   },
   pt: {
     dashboard: 'Painel',
@@ -56,6 +60,7 @@ const navLabels = {
     discern: 'Discernir a Vontade de Deus',
     academy: 'A Academia',
     prayerWall: 'Mural de Oração',
+    meditations: 'Meditações',
   },
   sw: {
     dashboard: 'Dashibodi',
@@ -65,6 +70,7 @@ const navLabels = {
     discern: 'Kutambua Mapenzi ya Mungu',
     academy: 'Chuo',
     prayerWall: 'Ukuta wa Maombi',
+    meditations: 'Tafakari',
   },
 };
 
@@ -76,6 +82,7 @@ const navItems = [
   { href: '/discern', icon: HelpCircle, labelKey: 'discern' },
   { href: '/academy', icon: School, labelKey: 'academy' },
   { href: '/prayer-wall', icon: HandHelping, labelKey: 'prayerWall' },
+  { href: '/meditations', icon: HeartPulse, labelKey: 'meditations' },
 ];
 
 export function MainNav() {
