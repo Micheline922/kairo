@@ -23,7 +23,7 @@ const navLabels = {
   en: {
     dashboard: 'Dashboard',
     journal: 'Spiritual Journal',
-    bible: 'The Living Word',
+    bible: 'Bible',
     fasting: 'Fasting Altar',
     discern: 'Discern God\'s Will',
     academy: 'The Academy',
@@ -31,7 +31,7 @@ const navLabels = {
   fr: {
     dashboard: 'Tableau de bord',
     journal: 'Journal Spirituel',
-    bible: 'La Parole Vivante',
+    bible: 'Bible',
     fasting: 'Autel du Jeûne',
     discern: 'Discerner la Volonté de Dieu',
     academy: 'L\'Académie',
@@ -39,7 +39,7 @@ const navLabels = {
   es: {
     dashboard: 'Tablero',
     journal: 'Diario Espiritual',
-    bible: 'La Palabra Viva',
+    bible: 'Biblia',
     fasting: 'Altar de Ayuno',
     discern: 'Discernir la Voluntad de Dios',
     academy: 'La Academia',
@@ -47,7 +47,7 @@ const navLabels = {
   pt: {
     dashboard: 'Painel',
     journal: 'Diário Espiritual',
-    bible: 'A Palavra Viva',
+    bible: 'Bíblia',
     fasting: 'Altar de Jejum',
     discern: 'Discernir a Vontade de Deus',
     academy: 'A Academia',
@@ -55,7 +55,7 @@ const navLabels = {
   sw: {
     dashboard: 'Dashibodi',
     journal: 'Shajara ya Kiroho',
-    bible: 'Neno Lililo Hai',
+    bible: 'Biblia',
     fasting: 'Madhabahu ya Kufunga',
     discern: 'Kutambua Mapenzi ya Mungu',
     academy: 'Chuo',

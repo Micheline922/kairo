@@ -13,7 +13,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const quickLinks = [
     { title: 'Journal Spirituel', description: 'Réfléchissez à votre marche.', href: '/journal', icon: BookOpen, imageId: 'journal-card' },
-    { title: 'La Parole Vivante', description: 'Lisez et recherchez la Bible.', href: '/bible', icon: BookMarked, imageId: 'bible-card' },
+    { title: 'Bible', description: 'Lisez et recherchez les Écritures.', href: '/bible', icon: BookMarked, imageId: 'bible-card' },
     { title: 'Autel du Jeûne', description: 'Planifiez et suivez vos jeûnes.', href: '/fasting', icon: Cross, imageId: 'fasting-card' },
     { title: 'Discerner la Volonté de Dieu', description: 'Cherchez des conseils pour vos décisions.', href: '/discern', icon: HelpCircle, imageId: 'discern-card' },
     { title: 'L\'Académie', description: 'Vision biblique sur des sujets modernes.', href: '/academy', icon: School, imageId: 'academy-card' },
