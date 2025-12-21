@@ -157,7 +157,7 @@ export default function LoginPage() {
       </div>
 
       <footer className="absolute bottom-4 text-center text-sm text-muted-foreground z-10">
-        <p>&copy; {new Date().getFullYear()} KAIRO. Chaque interaction devrait ressembler à une prière.</p>
+        <p>Avec tout mon cœur, Micheline Ntale</p>
       </footer>
     </div>
   );
