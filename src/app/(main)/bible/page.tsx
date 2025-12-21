@@ -2,6 +2,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,7 +15,7 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, LoaderCircle, BookOpen, BookMarked, Save } from 'lucide-react';
+import { Search, LoaderCircle, BookOpen, BookMarked, Save, ArrowLeft } from 'lucide-react';
 import {
   aiSemanticBibleSearch,
   AISemanticBibleSearchOutput,
@@ -71,6 +72,7 @@ const bibleData: { [key: string]: { [key: string]: string[] } } = {
 
 
 export default function BiblePage() {
+  const router = useRouter();
   const { user } = useUser();
   const firestore = useFirestore();
   const [isSearching, setIsSearching] = useState(false);
@@ -141,6 +143,8 @@ export default function BiblePage() {
         setTimeout(() => {
         const verseElement = document.getElementById(`verse-${values.verse}`);
         verseElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        verseElement?.classList.add('bg-accent/20', 'rounded-md');
+        setTimeout(() => verseElement?.classList.remove('bg-accent/20', 'rounded-md'), 2000);
         }, 100);
     }
   }
@@ -183,17 +187,23 @@ export default function BiblePage() {
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-      <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold font-headline">{t.bibleTitle}</h1>
-        <p className="text-lg text-muted-foreground mt-2 italic">
-          "{t.bibleQuote}"
-        </p>
+      <div className="flex items-center justify-between mb-8">
+        <div className="text-center sm:text-left flex-1">
+          <h1 className="text-4xl font-bold font-headline">{t.bibleTitle}</h1>
+          <p className="text-lg text-muted-foreground mt-2 italic">
+            "{t.bibleQuote}"
+          </p>
+        </div>
+        <Button variant="outline" onClick={() => router.push('/dashboard')} className="ml-4 hidden sm:flex">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {t.backToDashboard}
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-3xl font-bold font-headline flex items-center gap-3"><BookOpen /> {t.browseScriptures}</h2>
+              <h2 className="text-2xl lg:text-3xl font-bold font-headline flex items-center gap-3"><BookOpen /> {t.browseScriptures}</h2>
               {!showVerseSearch && (
                 <Button variant="outline" onClick={() => setShowVerseSearch(true)}>{t.newSearch}</Button>
               )}
@@ -206,11 +216,11 @@ export default function BiblePage() {
                     </CardHeader>
                     <CardContent>
                         <Form {...verseForm}>
-                            <form onSubmit={verseForm.handleSubmit(onVerseSubmit)} className="grid sm:grid-cols-4 gap-4 items-end">
-                                <FormField control={verseForm.control} name="book" render={({ field }) => ( <FormItem><FormLabel>{t.book}</FormLabel><FormControl><Input placeholder="ex: Genèse" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                            <form onSubmit={verseForm.handleSubmit(onVerseSubmit)} className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 items-end">
+                                <FormField control={verseForm.control} name="book" render={({ field }) => ( <FormItem className="md:col-span-2"><FormLabel>{t.book}</FormLabel><FormControl><Input placeholder="ex: Genèse" {...field} /></FormControl><FormMessage /></FormItem> )} />
                                 <FormField control={verseForm.control} name="chapter" render={({ field }) => ( <FormItem><FormLabel>{t.chapter}</FormLabel><FormControl><Input placeholder="ex: 1" {...field} /></FormControl><FormMessage /></FormItem> )} />
                                 <FormField control={verseForm.control} name="verse" render={({ field }) => ( <FormItem><FormLabel>{t.verseOptional}</FormLabel><FormControl><Input placeholder="ex: 1" {...field} /></FormControl><FormMessage /></FormItem> )} />
-                                <Button type="submit" className="w-full">{t.find}</Button>
+                                <Button type="submit" className="w-full md:col-start-4">{t.find}</Button>
                             </form>
                         </Form>
                     </CardContent>
@@ -222,7 +232,7 @@ export default function BiblePage() {
                 <CardTitle>{t.bibleChapterTitle.replace('{book}', bibleDisplay.book).replace('{chapter}', bibleDisplay.chapter)}</CardTitle>
                 <CardDescription>{t.selectToSave}</CardDescription>
               </CardHeader>
-              <CardContent onMouseUp={handleMouseUp} className="space-y-4 text-base leading-relaxed max-h-[60vh] overflow-y-auto">
+              <CardContent onMouseUp={handleMouseUp} className="space-y-4 text-base leading-relaxed max-h-[60vh] overflow-y-auto p-4 sm:p-6">
                 <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
                   <PopoverTrigger asChild>
                     <div style={{ display: 'none' }} />
@@ -257,7 +267,7 @@ export default function BiblePage() {
                 </Popover>
 
                 {bibleDisplay.content.map((verseText, index) => (
-                  <p key={index} id={`verse-${index + 1}`}>
+                  <p key={index} id={`verse-${index + 1}`} className="transition-all duration-1000 p-1">
                     <span className="font-bold text-primary pr-2 verse-number">{index + 1}</span>
                     {verseText}
                   </p>
@@ -267,7 +277,7 @@ export default function BiblePage() {
         </div>
         <div className="space-y-8">
             <div>
-                 <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-3"><Search /> {t.semanticSearch}</h2>
+                 <h2 className="text-2xl lg:text-3xl font-bold font-headline mb-4 flex items-center gap-3"><Search /> {t.semanticSearch}</h2>
                 <Card>
                     <CardHeader>
                     <CardDescription>
@@ -305,13 +315,13 @@ export default function BiblePage() {
             </div>
 
             {isSearching && (
-                <div className="text-center text-muted-foreground">
+                <div className="text-center text-muted-foreground py-8">
                     <LoaderCircle className="mx-auto h-8 w-8 animate-spin" />
                     <p className="mt-2">{t.searchingScriptures}</p>
                 </div>
             )}
             {searchResults && (
-                <div className="space-y-4">
+                <div className="space-y-4 max-h-96 overflow-y-auto">
                   {searchResults.length > 0 ? (
                     searchResults.map((verse, index) => (
                       <div key={index} className="p-4 border rounded-md bg-secondary/50">
@@ -322,15 +332,15 @@ export default function BiblePage() {
                       </div>
                     ))
                   ) : (
-                    <p className="text-muted-foreground">{t.noVersesFound}</p>
+                    <p className="text-muted-foreground text-center py-4">{t.noVersesFound}</p>
                   )}
                 </div>
             )}
             
             <div>
-                <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-3"><BookMarked /> {t.myPearls}</h2>
+                <h2 className="text-2xl lg:text-3xl font-bold font-headline mb-4 flex items-center gap-3"><BookMarked /> {t.myPearls}</h2>
                 <Card>
-                    <CardContent className="pt-6">
+                    <CardContent className="pt-6 max-h-[60vh] overflow-y-auto">
                         {isLoadingPearls ? (
                              <p className="text-sm text-muted-foreground text-center">{t.loadingPearls}</p>
                         ) : pearls && pearls.length > 0 ? (

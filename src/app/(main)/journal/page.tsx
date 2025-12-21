@@ -2,6 +2,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,7 +16,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Wand2, BookHeart, Lightbulb, PlusCircle, LoaderCircle, Shield, Lock } from 'lucide-react';
+import { Wand2, BookHeart, Lightbulb, PlusCircle, LoaderCircle, Shield, Lock, ArrowLeft } from 'lucide-react';
 import { analyzeSpiritualJournal, AnalyzeSpiritualJournalOutput } from '@/ai/flows/ai-analyze-spiritual-journal';
 import {
   Dialog,
@@ -29,7 +30,7 @@ import {
 } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useFirestore, useUser, useCollection, useMemoFirebase, addDocumentNonBlocking, useAuth } from '@/firebase';
-import { collection, query, orderBy, serverTimestamp, where } from 'firebase/firestore';
+import { collection, query, orderBy, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
 import { useLanguage } from '@/context/language-provider';
@@ -51,6 +52,7 @@ type JournalEntry = {
 };
 
 export default function JournalPage() {
+  const router = useRouter();
   const { user } = useUser();
   const auth = useAuth();
   const firestore = useFirestore();
@@ -138,16 +140,22 @@ export default function JournalPage() {
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-wrap gap-4 justify-between items-center mb-8">
         <div>
             <h1 className="text-4xl font-bold font-headline">{t.journalTitle}</h1>
             <p className="text-lg text-muted-foreground mt-2">
             {t.journalDescription}
             </p>
         </div>
-        <Button variant="ghost" size="icon" onClick={() => setIsIncognitoLocked(true)} title={t.lockJournal}>
-            <Shield className="h-6 w-6 text-primary" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon" onClick={() => setIsIncognitoLocked(true)} title={t.lockJournal}>
+              <Shield className="h-6 w-6 text-primary" />
+          </Button>
+          <Button variant="outline" onClick={() => router.push('/dashboard')}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {t.backToDashboard}
+          </Button>
+        </div>
       </div>
       
       {isIncognitoLocked ? (
@@ -232,7 +240,7 @@ export default function JournalPage() {
                 </DialogContent>
                 </Dialog>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 max-h-[70vh] overflow-y-auto">
                 {isLoadingEntries ? (
                 <p>{t.loading}...</p>
                 ) : displayedEntries.length > 0 ? (
@@ -257,12 +265,12 @@ export default function JournalPage() {
 
             <div className="md:col-span-2">
             {selectedEntry ? (
-                <Card className="min-h-[60vh]">
+                <Card className="min-h-[70vh]">
                 <CardHeader>
                     <CardTitle className="text-2xl">{selectedEntry.title}</CardTitle>
                     <CardDescription>{t.reflectionDate.replace('{date}', selectedEntry.date)}</CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="max-h-[60vh] overflow-y-auto">
                     <p className="whitespace-pre-wrap text-base leading-relaxed">{selectedEntry.content}</p>
 
                     <div className="mt-8">
@@ -306,8 +314,8 @@ export default function JournalPage() {
                 </CardContent>
                 </Card>
             ) : (
-                <div className="flex items-center justify-center min-h-[60vh] border-2 border-dashed rounded-lg">
-                    <div className="text-center">
+                <div className="flex items-center justify-center min-h-[70vh] border-2 border-dashed rounded-lg">
+                    <div className="text-center p-4">
                         <p className="text-muted-foreground">{t.selectEntry}</p>
                     </div>
                 </div>

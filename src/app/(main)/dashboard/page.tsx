@@ -49,8 +49,8 @@ export default function DashboardPage() {
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">{t.welcomeMessage}</h1>
-        <p className="text-lg text-muted-foreground mt-2">
+        <h1 className="text-3xl sm:text-4xl font-bold font-headline">{t.welcomeMessage}</h1>
+        <p className="text-md sm:text-lg text-muted-foreground mt-2">
           {t.welcomeSubMessage}
         </p>
       </div>
@@ -63,7 +63,7 @@ export default function DashboardPage() {
           <CardContent>
             {verse ? (
               <>
-                <blockquote className="text-xl italic border-l-4 border-accent pl-4">
+                <blockquote className="text-lg sm:text-xl italic border-l-4 border-accent pl-4">
                   <p>"{verse[language]}"</p>
                 </blockquote>
                 <p className="text-right mt-2 font-semibold text-primary/80">{verse.reference}</p>
@@ -77,7 +77,7 @@ export default function DashboardPage() {
         <Card className="md:col-span-12 lg:col-span-5">
            <CardHeader>
             <CardTitle>{t.currentFast}</CardTitle>
-            <CardDescription>{t.welcomeSubMessage}</CardDescription>
+            <CardDescription>{t.fastingDescription}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-center text-muted-foreground">
@@ -91,12 +91,12 @@ export default function DashboardPage() {
       </div>
 
       <div className="mt-12">
-        <h2 className="text-3xl font-bold font-headline mb-6">{t.exploreKairo}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <h2 className="text-2xl sm:text-3xl font-bold font-headline mb-6">{t.exploreKairo}</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {quickLinks.map(link => {
             const image = PlaceHolderImages.find(p => p.id === link.imageId);
             return (
-              <Card key={link.href} className="overflow-hidden group">
+              <Card key={link.href} className="overflow-hidden group flex flex-col">
                  {image && (
                   <div className="overflow-hidden h-40 relative">
                     <Image
@@ -108,7 +108,7 @@ export default function DashboardPage() {
                     />
                   </div>
                 )}
-                <CardHeader>
+                <CardHeader className="flex-1">
                   <CardTitle className="flex items-center gap-2">
                     <link.icon className="h-5 w-5 text-primary" />
                     {t[link.title as keyof typeof t]}
@@ -130,3 +130,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+    

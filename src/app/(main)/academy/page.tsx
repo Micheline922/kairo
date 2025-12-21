@@ -2,13 +2,14 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Wand2, LoaderCircle, School, Sparkles, Save, BookCopy, BookMarked } from 'lucide-react';
+import { Wand2, LoaderCircle, School, Sparkles, Save, BookCopy, BookMarked, ArrowLeft } from 'lucide-react';
 import { explainConcept } from '@/ai/flows/ai-explain-modern-concepts';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
@@ -30,6 +31,7 @@ type AcademyInsight = {
 };
 
 export default function AcademyPage() {
+  const router = useRouter();
   const { user } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
@@ -90,11 +92,17 @@ export default function AcademyPage() {
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">{t.academyTitle}</h1>
-        <p className="text-lg text-muted-foreground mt-2">
-          {t.academyDescription}
-        </p>
+       <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-4xl font-bold font-headline">{t.academyTitle}</h1>
+          <p className="text-lg text-muted-foreground mt-2">
+            {t.academyDescription}
+          </p>
+        </div>
+        <Button variant="outline" onClick={() => router.push('/dashboard')}>
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          {t.backToDashboard}
+        </Button>
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -108,12 +116,12 @@ export default function AcademyPage() {
               </CardHeader>
               <CardContent>
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-start gap-4">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col sm:flex-row items-start gap-4">
                     <FormField
                       control={form.control}
                       name="concept"
                       render={({ field }) => (
-                        <FormItem className="flex-1">
+                        <FormItem className="flex-1 w-full">
                           <FormControl>
                             <Input
                               placeholder={t.conceptPlaceholder}
@@ -124,7 +132,7 @@ export default function AcademyPage() {
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" disabled={isExplaining} className="w-32">
+                    <Button type="submit" disabled={isExplaining} className="w-full sm:w-32">
                       {isExplaining ? (
                         <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                       ) : (
@@ -155,7 +163,7 @@ export default function AcademyPage() {
                                     {t.save}
                                 </Button>
                               </div>
-                              <div className="p-6 border rounded-lg bg-secondary space-y-6">
+                              <div className="p-4 sm:p-6 border rounded-lg bg-secondary space-y-6">
                                   <div className="space-y-2">
                                       <h4 className="font-semibold text-lg">{t.explanation}</h4>
                                       <p className="whitespace-pre-wrap text-base leading-relaxed">{explanation}</p>
@@ -186,9 +194,9 @@ export default function AcademyPage() {
         </div>
         <div className="space-y-8">
           <div>
-              <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-3"><BookCopy /> {t.myInsights}</h2>
+              <h2 className="text-2xl lg:text-3xl font-bold font-headline mb-4 flex items-center gap-3"><BookCopy /> {t.myInsights}</h2>
               <Card>
-                  <CardContent className="pt-6">
+                  <CardContent className="pt-6 max-h-[60vh] overflow-y-auto">
                       {isLoadingInsights ? (
                            <p className="text-sm text-muted-foreground text-center">{t.loadingInsights}</p>
                       ) : insights && insights.length > 0 ? (

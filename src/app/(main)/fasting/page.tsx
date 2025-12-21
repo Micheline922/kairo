@@ -2,6 +2,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,7 +17,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
-import { Wand2, PlusCircle, LoaderCircle, Calendar, Sparkles, Save } from 'lucide-react';
+import { Wand2, PlusCircle, LoaderCircle, Calendar, Sparkles, Save, ArrowLeft } from 'lucide-react';
 import { generateReadingPlan } from '@/ai/flows/ai-customized-reading-plan';
 import {
   Dialog,
@@ -29,7 +30,7 @@ import {
   DialogClose,
 } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/componentsui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useLanguage } from '@/context/language-provider';
 import { translations } from '@/lib/translations';
 
@@ -48,6 +49,7 @@ type Fast = z.infer<typeof fastingSchema> & {
 const mockFasts: Fast[] = [];
 
 export default function FastingPage() {
+  const router = useRouter();
   const [fasts, setFasts] = useState<Fast[]>(mockFasts);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -93,11 +95,17 @@ export default function FastingPage() {
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">{t.fastingAltar}</h1>
-        <p className="text-lg text-muted-foreground mt-2">
-          {t.fastingDescription}
-        </p>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-4xl font-bold font-headline">{t.fastingAltar}</h1>
+          <p className="text-lg text-muted-foreground mt-2">
+            {t.fastingDescription}
+          </p>
+        </div>
+        <Button variant="outline" onClick={() => router.push('/dashboard')}>
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          {t.backToDashboard}
+        </Button>
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={(open) => {
@@ -108,7 +116,7 @@ export default function FastingPage() {
         setIsDialogOpen(open);
       }}>
         <DialogTrigger asChild>
-          <Button size="lg" className="mb-8">
+          <Button size="lg" className="mb-8 w-full sm:w-auto">
             <PlusCircle className="mr-2 h-5 w-5" />
             {t.scheduleNewFast}
           </Button>
@@ -207,13 +215,13 @@ export default function FastingPage() {
         </DialogContent>
       </Dialog>
       
-      <h2 className="text-3xl font-bold font-headline mb-4">{t.yourFasts}</h2>
+      <h2 className="text-2xl lg:text-3xl font-bold font-headline mb-4">{t.yourFasts}</h2>
       {fasts.length > 0 ? (
         <div className="space-y-4">
           {fasts.map(fast => (
             <Card key={fast.id}>
               <CardHeader>
-                <CardTitle className="flex justify-between items-center">
+                <CardTitle className="flex justify-between items-center flex-wrap gap-2">
                   <span>{fast.duration} - {fast.type}</span>
                   <span className="text-sm font-medium text-muted-foreground">{t.progressCompleted.replace('{progress}', fast.progress.toString())}</span>
                 </CardTitle>

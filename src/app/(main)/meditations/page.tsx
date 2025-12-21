@@ -2,13 +2,14 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { LoaderCircle, Sparkles, Wand2, HeartPulse, Music4, Pause, Play } from 'lucide-react';
+import { LoaderCircle, Sparkles, Wand2, HeartPulse, Music4, Pause, Play, ArrowLeft } from 'lucide-react';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { generateMeditationAudio, GenerateMeditationAudioOutput } from '@/ai/flows/ai-generate-meditation-audio';
 import { useLanguage } from '@/context/language-provider';
@@ -19,6 +20,7 @@ const meditationSchema = z.object({
 });
 
 export default function MeditationsPage() {
+  const router = useRouter();
   const [isGenerating, setIsGenerating] = useState(false);
   const [meditation, setMeditation] = useState<GenerateMeditationAudioOutput | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -69,11 +71,17 @@ export default function MeditationsPage() {
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">{t.meditationsTitle}</h1>
-        <p className="text-lg text-muted-foreground mt-2">
-          {t.meditationsDescription}
-        </p>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-4xl font-bold font-headline">{t.meditationsTitle}</h1>
+          <p className="text-lg text-muted-foreground mt-2">
+            {t.meditationsDescription}
+          </p>
+        </div>
+        <Button variant="outline" onClick={() => router.push('/dashboard')}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {t.backToDashboard}
+        </Button>
       </div>
       
       <Card className="max-w-2xl mx-auto">
@@ -85,12 +93,12 @@ export default function MeditationsPage() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-start gap-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col sm:flex-row items-start gap-4">
               <FormField
                 control={form.control}
                 name="topic"
                 render={({ field }) => (
-                  <FormItem className="flex-1">
+                  <FormItem className="flex-1 w-full">
                     <FormControl>
                       <Input placeholder={t.themePlaceholder} {...field} />
                     </FormControl>
@@ -98,7 +106,7 @@ export default function MeditationsPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={isGenerating} className="w-40">
+              <Button type="submit" disabled={isGenerating} className="w-full sm:w-40">
                 {isGenerating ? (
                   <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
@@ -122,7 +130,7 @@ export default function MeditationsPage() {
                   <Sparkles className="h-5 w-5 text-accent" />
                   {t.yourMeditationOn.replace('{topic}', form.getValues('topic'))}
               </h3>
-              <div className="p-6 border rounded-lg bg-secondary mt-4 space-y-6">
+              <div className="p-4 sm:p-6 border rounded-lg bg-secondary mt-4 space-y-6">
                 <div className="flex items-center gap-4">
                     <Button onClick={togglePlayPause} size="icon" className="h-14 w-14 rounded-full" title={t.playPause}>
                         {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6" />}

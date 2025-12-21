@@ -2,13 +2,14 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Wand2, LoaderCircle, Sparkles, Save, BookCopy } from 'lucide-react';
+import { Wand2, LoaderCircle, Sparkles, Save, BookCopy, ArrowLeft } from 'lucide-react';
 import { discernGodsWill } from '@/ai/flows/ai-discern-gods-will';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
@@ -29,6 +30,7 @@ type DivineGuidance = {
 };
 
 export default function DiscernPage() {
+  const router = useRouter();
   const { user } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
@@ -85,11 +87,17 @@ export default function DiscernPage() {
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">{t.discernTitle}</h1>
-        <p className="text-lg text-muted-foreground mt-2">
-          {t.discernDescription}
-        </p>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+            <h1 className="text-4xl font-bold font-headline">{t.discernTitle}</h1>
+            <p className="text-lg text-muted-foreground mt-2">
+              {t.discernDescription}
+            </p>
+        </div>
+        <Button variant="outline" onClick={() => router.push('/dashboard')}>
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          {t.backToDashboard}
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -122,7 +130,7 @@ export default function DiscernPage() {
                         )}
                     />
                     <div className="flex justify-end">
-                        <Button type="submit" disabled={isDiscerning} size="lg">
+                        <Button type="submit" disabled={isDiscerning} size="lg" className="w-full sm:w-auto">
                         {isDiscerning ? (
                             <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                         ) : (
@@ -153,7 +161,7 @@ export default function DiscernPage() {
                                 {t.save}
                             </Button>
                         </div>
-                        <div className="p-6 border rounded-lg bg-secondary space-y-4">
+                        <div className="p-4 sm:p-6 border rounded-lg bg-secondary space-y-4">
                             <p className="whitespace-pre-wrap text-base leading-relaxed">{guidance}</p>
                         </div>
                     </div>
@@ -163,9 +171,9 @@ export default function DiscernPage() {
         </div>
         <div className="space-y-8">
            <div>
-              <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-3"><BookCopy /> {t.mySavedGuidance}</h2>
+              <h2 className="text-2xl lg:text-3xl font-bold font-headline mb-4 flex items-center gap-3"><BookCopy /> {t.mySavedGuidance}</h2>
               <Card>
-                  <CardContent className="pt-6">
+                  <CardContent className="pt-6 max-h-[60vh] overflow-y-auto">
                       {isLoadingGuidances ? (
                            <p className="text-sm text-muted-foreground text-center">{t.loadingGuidance}</p>
                       ) : savedGuidances && savedGuidances.length > 0 ? (

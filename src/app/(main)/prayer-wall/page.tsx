@@ -2,6 +2,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,11 +12,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  CardFooter
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Check, HandHelping, LoaderCircle, Send, Sparkle, Trash2, PlusCircle, Clock } from 'lucide-react';
+import { Check, HandHelping, LoaderCircle, Send, Sparkle, Trash2, PlusCircle, Clock, ArrowLeft } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -62,6 +62,7 @@ type PrayerPlan = {
 };
 
 export default function PrayerWallPage() {
+  const router = useRouter();
   const { user } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
@@ -178,11 +179,17 @@ export default function PrayerWallPage() {
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">{t.prayerWallTitle}</h1>
-        <p className="text-lg text-muted-foreground mt-2">
-          "{t.prayerWallDescription}"
-        </p>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-4xl font-bold font-headline">{t.prayerWallTitle}</h1>
+          <p className="text-lg text-muted-foreground mt-2">
+            "{t.prayerWallDescription}"
+          </p>
+        </div>
+         <Button variant="outline" onClick={() => router.push('/dashboard')}>
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          {t.backToDashboard}
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -225,7 +232,7 @@ export default function PrayerWallPage() {
             </Card>
         </div>
         <div className="lg:col-span-2">
-            <h2 className="text-3xl font-bold font-headline mb-4 flex items-center gap-3"><HandHelping /> {t.yourPrayers}</h2>
+            <h2 className="text-2xl lg:text-3xl font-bold font-headline mb-4 flex items-center gap-3"><HandHelping /> {t.yourPrayers}</h2>
             <Tabs defaultValue="pending">
                 <TabsList className="grid w-full grid-cols-3">
                     <TabsTrigger value="pending">{t.pending} ({pendingPrayers.length})</TabsTrigger>
@@ -234,18 +241,18 @@ export default function PrayerWallPage() {
                 </TabsList>
                 <TabsContent value="pending">
                     <Card>
-                        <CardContent className="pt-6">
+                        <CardContent className="pt-6 max-h-[60vh] overflow-y-auto">
                             {isLoadingRequests ? (
                                <p className="text-center text-sm text-muted-foreground">{t.loadingPrayers}</p>
                             ) : pendingPrayers.length > 0 ? (
                                 <div className="space-y-4">
                                     {pendingPrayers.map(p => (
-                                        <div key={p.id} className="p-4 border rounded-md bg-secondary/50 flex justify-between items-start">
+                                        <div key={p.id} className="p-4 border rounded-md bg-secondary/50 flex justify-between items-start gap-2">
                                             <div>
                                                 <p className="text-primary/90">{p.requestText}</p>
                                                 <p className="text-xs text-muted-foreground mt-1">{t.postedOn.replace('{date}', p.creationDate?.toDate().toLocaleDateString(language))}</p>
                                             </div>
-                                            <div className="flex gap-2 ml-4">
+                                            <div className="flex flex-col sm:flex-row gap-2 ml-4">
                                                 <Button size="icon" variant="outline" onClick={() => markAsAnswered(p.id)} title={t.markAsAnswered}>
                                                     <Check className="h-4 w-4 text-green-500" />
                                                 </Button>
@@ -267,13 +274,13 @@ export default function PrayerWallPage() {
                 </TabsContent>
                 <TabsContent value="answered">
                     <Card>
-                        <CardContent className="pt-6">
+                        <CardContent className="pt-6 max-h-[60vh] overflow-y-auto">
                              {isLoadingRequests ? (
                                <p className="text-center text-sm text-muted-foreground">{t.loadingPrayers}</p>
                             ) : answeredPrayers.length > 0 ? (
                                 <div className="space-y-4">
                                     {answeredPrayers.map(p => (
-                                        <div key={p.id} className="p-4 border rounded-md bg-green-500/10 flex justify-between items-start">
+                                        <div key={p.id} className="p-4 border rounded-md bg-green-500/10 flex justify-between items-start gap-2">
                                            <div>
                                                 <p className="italic text-muted-foreground line-through">{p.requestText}</p>
                                                 <p className="text-xs text-green-600 font-medium mt-1 flex items-center gap-1">
@@ -299,7 +306,7 @@ export default function PrayerWallPage() {
                  <TabsContent value="planner">
                    <Card>
                        <CardHeader>
-                          <div className="flex justify-between items-center">
+                          <div className="flex flex-wrap gap-4 justify-between items-center">
                             <div>
                                 <CardTitle>{t.prayerPlan}</CardTitle>
                                 <CardDescription>{t.prayerPlanDescription}</CardDescription>
@@ -333,7 +340,7 @@ export default function PrayerWallPage() {
                             </Dialog>
                           </div>
                        </CardHeader>
-                       <CardContent>
+                       <CardContent className="max-h-[55vh] overflow-y-auto">
                            {isLoadingPlans ? (
                               <p className="text-center text-sm text-muted-foreground">{t.loadingPlans}</p>
                            ) : prayerPlans && prayerPlans.length > 0 ? (
