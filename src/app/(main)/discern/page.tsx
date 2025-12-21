@@ -12,7 +12,7 @@ import { discernGodsWill } from '@/ai/flows/ai-discern-gods-will';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 const discernSchema = z.object({
-  context: z.string().min(20, { message: 'Please describe your situation in at least 20 characters.' }),
+  context: z.string().min(20, { message: 'Veuillez décrire votre situation en au moins 20 caractères.' }),
 });
 
 export default function DiscernPage() {
@@ -31,8 +31,8 @@ export default function DiscernPage() {
       const result = await discernGodsWill({ decisionContext: values.context });
       setGuidance(result.guidance);
     } catch (error) {
-      console.error('Failed to get guidance:', error);
-      setGuidance('Sorry, an error occurred while seeking guidance. Please try again.');
+      console.error('Échec de l\'obtention des conseils:', error);
+      setGuidance('Désolé, une erreur est survenue lors de la recherche de conseils. Veuillez réessayer.');
     } finally {
       setIsDiscerning(false);
     }
@@ -41,17 +41,17 @@ export default function DiscernPage() {
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">Discern God's Will</h1>
+        <h1 className="text-4xl font-bold font-headline">Discerner la Volonté de Dieu</h1>
         <p className="text-lg text-muted-foreground mt-2">
-          A space to lay down your projects and doubts, seeking biblical wisdom for your decisions.
+          Un espace pour déposer vos projets et vos doutes, en cherchant la sagesse biblique pour vos décisions.
         </p>
       </div>
 
       <Card className="max-w-4xl mx-auto">
         <CardHeader>
-          <CardTitle>Project / Doubt Space</CardTitle>
+          <CardTitle>Espace Projets / Doutes</CardTitle>
           <CardDescription>
-            Describe the decision you're facing. The more detail you provide, the more tailored the guidance will be.
+            Décrivez la décision à laquelle vous êtes confronté. Plus vous fournirez de détails, plus les conseils seront personnalisés.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -62,10 +62,10 @@ export default function DiscernPage() {
                 name="context"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Your Decision Context</FormLabel>
+                    <FormLabel>Le contexte de votre décision</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="I'm considering a new job offer in another city, but it would mean uprooting my family..."
+                        placeholder="J'envisage une nouvelle offre d'emploi dans une autre ville, mais cela signifierait déraciner ma famille..."
                         className="min-h-[150px]"
                         {...field}
                       />
@@ -81,7 +81,7 @@ export default function DiscernPage() {
                   ) : (
                     <Wand2 className="mr-2 h-4 w-4" />
                   )}
-                  Seek Guidance
+                  Chercher conseil
                 </Button>
               </div>
             </form>
@@ -90,7 +90,7 @@ export default function DiscernPage() {
           {isDiscerning && (
             <div className="mt-8 text-center text-muted-foreground">
               <LoaderCircle className="mx-auto h-8 w-8 animate-spin" />
-              <p className="mt-2">Consulting scripture and praying for wisdom...</p>
+              <p className="mt-2">Consultation des écritures et prière pour la sagesse...</p>
             </div>
           )}
 
@@ -98,7 +98,7 @@ export default function DiscernPage() {
             <div className="mt-8">
               <h3 className="text-xl font-semibold font-headline flex items-center gap-2 mb-4">
                 <Sparkles className="h-5 w-5 text-accent" />
-                Biblical Guidance
+                Conseils bibliques
               </h3>
               <div className="p-6 border rounded-lg bg-secondary space-y-4">
                  <p className="whitespace-pre-wrap text-base leading-relaxed">{guidance}</p>

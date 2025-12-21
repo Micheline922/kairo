@@ -1,17 +1,17 @@
 'use server';
 /**
- * @fileOverview Implements AI semantic search for the Bible.
+ * @fileOverview Implémente la recherche sémantique par IA pour la Bible.
  *
- * - aiSemanticBibleSearch - A function that performs the semantic search.
- * - AISemanticBibleSearchInput - The input type for the aiSemanticBibleSearch function.
- * - AISemanticBibleSearchOutput - The return type for the aiSemanticBibleSearch function.
+ * - aiSemanticBibleSearch - Une fonction qui effectue la recherche sémantique.
+ * - AISemanticBibleSearchInput - Le type d'entrée pour la fonction aiSemanticBibleSearch.
+ * - AISemanticBibleSearchOutput - Le type de retour pour la fonction aiSemanticBibleSearch.
  */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const AISemanticBibleSearchInputSchema = z.object({
-  query: z.string().describe('The natural language query expressing feelings or situation.'),
+  query: z.string().describe('La requête en langage naturel exprimant des sentiments ou une situation.'),
 });
 export type AISemanticBibleSearchInput = z.infer<typeof AISemanticBibleSearchInputSchema>;
 
@@ -19,13 +19,13 @@ const AISemanticBibleSearchOutputSchema = z.object({
   verses: z
     .array(
       z.object({
-        book: z.string().describe('The book of the Bible.'),
-        chapter: z.number().describe('The chapter number.'),
-        verse: z.number().describe('The verse number.'),
-        text: z.string().describe('The text of the verse.'),
+        book: z.string().describe('Le livre de la Bible.'),
+        chapter: z.number().describe('Le numéro du chapitre.'),
+        verse: z.number().describe('Le numéro du verset.'),
+        text: z.string().describe('Le texte du verset.'),
       })
     )
-    .describe('The relevant verses found based on the semantic search.'),
+    .describe('Les versets pertinents trouvés sur la base de la recherche sémantique.'),
 });
 export type AISemanticBibleSearchOutput = z.infer<typeof AISemanticBibleSearchOutputSchema>;
 
@@ -37,12 +37,12 @@ const prompt = ai.definePrompt({
   name: 'aiSemanticBibleSearchPrompt',
   input: {schema: AISemanticBibleSearchInputSchema},
   output: {schema: AISemanticBibleSearchOutputSchema},
-  prompt: `You are a knowledgeable assistant who helps users find relevant Bible verses based on their feelings or situation.
+  prompt: `Vous êtes un assistant compétent qui aide les utilisateurs à trouver des versets bibliques pertinents en fonction de leurs sentiments ou de leur situation.
 
-  Based on the user's query, search for Bible verses that address the underlying emotions, needs, or circumstances expressed in the query.
-  Return a list of verses with the book, chapter, verse number, and text.
+  Sur la base de la requête de l'utilisateur, recherchez des versets bibliques qui traitent des émotions, des besoins ou des circonstances sous-jacents exprimés dans la requête.
+  Retournez une liste de versets avec le livre, le chapitre, le numéro de verset et le texte.
 
-  User query: {{{query}}}
+  Requête de l'utilisateur: {{{query}}}
   `,
 });
 

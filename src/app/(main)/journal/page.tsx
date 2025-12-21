@@ -10,7 +10,6 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -29,7 +28,7 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 const journalSchema = z.object({
-  entry: z.string().min(10, { message: 'Journal entry must be at least 10 characters.' }),
+  entry: z.string().min(10, { message: 'L\'entrée de journal doit contenir au moins 10 caractères.' }),
 });
 
 type JournalEntry = {
@@ -43,9 +42,9 @@ type JournalEntry = {
 const mockEntries: JournalEntry[] = [
   {
     id: 1,
-    date: '2 days ago',
-    excerpt: 'Felt a deep sense of peace during my morning prayer...',
-    content: 'Felt a deep sense of peace during my morning prayer. The world seemed to slow down, and I could hear God\'s whisper in the gentle breeze. I read from Psalm 23, and it resonated with my soul.',
+    date: 'Il y a 2 jours',
+    excerpt: 'J\'ai ressenti un profond sentiment de paix pendant ma prière matinale...',
+    content: 'J\'ai ressenti un profond sentiment de paix pendant ma prière matinale. Le monde semblait ralentir, et je pouvais entendre le murmure de Dieu dans la brise légère. J\'ai lu le Psaume 23, et il a résonné dans mon âme.',
   },
 ];
 
@@ -70,7 +69,7 @@ export default function JournalPage() {
       setEntries(updatedEntries);
       setSelectedEntry(updatedEntries.find(e => e.id === entry.id) || null);
     } catch (error) {
-      console.error("Analysis failed:", error);
+      console.error("L'analyse a échoué:", error);
     } finally {
       setIsAnalyzing(false);
     }
@@ -80,11 +79,11 @@ export default function JournalPage() {
     setIsCreating(true);
     const newEntry: JournalEntry = {
       id: entries.length + 1,
-      date: 'Just now',
+      date: 'À l\'instant',
       excerpt: values.entry.substring(0, 50) + '...',
       content: values.entry,
     };
-    // Simulate API call
+    // Simuler un appel API
     await new Promise(resolve => setTimeout(resolve, 500));
     setEntries([newEntry, ...entries]);
     setSelectedEntry(newEntry);
@@ -93,34 +92,33 @@ export default function JournalPage() {
     form.reset();
   }
 
-
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">Spiritual Journal</h1>
+        <h1 className="text-4xl font-bold font-headline">Journal Spirituel</h1>
         <p className="text-lg text-muted-foreground mt-2">
-          Record your spiritual evolution and daily reflections.
+          Enregistrez votre évolution spirituelle et vos réflexions quotidiennes.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-1">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-semibold font-headline">Entries</h2>
+            <h2 className="text-2xl font-semibold font-headline">Entrées</h2>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                  <Button variant="outline" size="sm">
                   <PlusCircle className="h-4 w-4 mr-2"/>
-                  New Entry
+                  Nouvelle entrée
                 </Button>
               </DialogTrigger>
               <DialogContent>
                  <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <DialogHeader>
-                      <DialogTitle>New Journal Entry</DialogTitle>
+                      <DialogTitle>Nouvelle entrée de journal</DialogTitle>
                       <DialogDescription>
-                        Pour out your heart. What is on your mind today?
+                        Épanchez votre cœur. Qu'avez-vous sur le cœur aujourd'hui ?
                       </DialogDescription>
                     </DialogHeader>
                     <FormField
@@ -128,10 +126,10 @@ export default function JournalPage() {
                       name="entry"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Your Reflection</FormLabel>
+                          <FormLabel>Votre réflexion</FormLabel>
                           <FormControl>
                             <Textarea
-                              placeholder="Today, I felt God's presence when..."
+                              placeholder="Aujourd'hui, j'ai senti la présence de Dieu quand..."
                               className="min-h-[200px]"
                               {...field}
                             />
@@ -142,11 +140,11 @@ export default function JournalPage() {
                     />
                     <DialogFooter>
                       <DialogClose asChild>
-                        <Button type="button" variant="secondary">Cancel</Button>
+                        <Button type="button" variant="secondary">Annuler</Button>
                       </DialogClose>
                       <Button type="submit" disabled={isCreating}>
                         {isCreating && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
-                        Save Entry
+                        Enregistrer
                       </Button>
                     </DialogFooter>
                   </form>
@@ -174,7 +172,7 @@ export default function JournalPage() {
           {selectedEntry ? (
             <Card className="min-h-[60vh]">
               <CardHeader>
-                <CardTitle className="text-2xl">Reflection from {selectedEntry.date}</CardTitle>
+                <CardTitle className="text-2xl">Réflexion d'{selectedEntry.date}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="whitespace-pre-wrap text-base leading-relaxed">{selectedEntry.content}</p>
@@ -184,27 +182,27 @@ export default function JournalPage() {
                     <div className="space-y-6">
                       <h3 className="text-xl font-semibold font-headline flex items-center gap-2">
                         <Wand2 className="h-5 w-5 text-primary" />
-                        Word of Light
+                        Parole de Lumière
                       </h3>
                       <div className="p-4 rounded-md bg-secondary">
-                        <h4 className="font-bold flex items-center gap-2"><Lightbulb className="h-4 w-4 text-accent-foreground"/>Spiritual Climate</h4>
+                        <h4 className="font-bold flex items-center gap-2"><Lightbulb className="h-4 w-4 text-accent-foreground"/>Climat Spirituel</h4>
                         <p className="text-muted-foreground">{selectedEntry.analysis.spiritualClimate}</p>
                       </div>
                       <div className="p-4 rounded-md bg-secondary">
-                        <h4 className="font-bold flex items-center gap-2"><BookHeart className="h-4 w-4 text-accent-foreground"/>Word of Light Verses</h4>
+                        <h4 className="font-bold flex items-center gap-2"><BookHeart className="h-4 w-4 text-accent-foreground"/>Versets de la Parole de Lumière</h4>
                         <p className="text-muted-foreground italic">{selectedEntry.analysis.wordOfLightVerses}</p>
                       </div>
                        <div className="p-4 rounded-md bg-secondary">
-                        <h4 className="font-bold flex items-center gap-2"><Wand2 className="h-4 w-4 text-accent-foreground"/>Empathetic Orientation</h4>
+                        <h4 className="font-bold flex items-center gap-2"><Wand2 className="h-4 w-4 text-accent-foreground"/>Orientation Empathique</h4>
                         <p className="text-muted-foreground">{selectedEntry.analysis.empatheticOrientation}</p>
                       </div>
                     </div>
                   ) : (
                     <div className="text-center p-8 border-2 border-dashed rounded-lg">
                       <Wand2 className="mx-auto h-12 w-12 text-muted-foreground" />
-                      <h3 className="mt-4 text-lg font-semibold">Get AI Counsel</h3>
+                      <h3 className="mt-4 text-lg font-semibold">Recevoir un conseil de l'IA</h3>
                       <p className="mt-1 text-sm text-muted-foreground">
-                        Let AI analyze the spiritual climate of your entry.
+                        Laissez l'IA analyser le climat spirituel de votre entrée.
                       </p>
                       <Button className="mt-4" onClick={() => handleAnalyze(selectedEntry)} disabled={isAnalyzing}>
                          {isAnalyzing ? (
@@ -212,7 +210,7 @@ export default function JournalPage() {
                           ) : (
                             <Wand2 className="mr-2 h-4 w-4" />
                           )}
-                        Analyze Journal
+                        Analyser le journal
                       </Button>
                     </div>
                   )}
@@ -222,7 +220,7 @@ export default function JournalPage() {
           ) : (
              <div className="flex items-center justify-center min-h-[60vh] border-2 border-dashed rounded-lg">
                 <div className="text-center">
-                    <p className="text-muted-foreground">Select an entry or create a new one.</p>
+                    <p className="text-muted-foreground">Sélectionnez une entrée ou créez-en une nouvelle.</p>
                 </div>
              </div>
           )}

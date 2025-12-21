@@ -1,10 +1,10 @@
 'use server';
 /**
- * @fileOverview An AI flow that acts as a biblical mentor to help users discern God's will.
+ * @fileOverview Un flux d'IA qui agit comme un mentor biblique pour aider les utilisateurs à discerner la volonté de Dieu.
  *
- * - discernGodsWill - A function that handles the process of discerning God's will.
- * - DiscernGodsWillInput - The input type for the discernGodsWill function.
- * - DiscernGodsWillOutput - The return type for the discernGodsWill function.
+ * - discernGodsWill - Une fonction qui gère le processus de discernement de la volonté de Dieu.
+ * - DiscernGodsWillInput - Le type d'entrée pour la fonction discernGodsWill.
+ * - DiscernGodsWillOutput - Le type de retour pour la fonction discernGodsWill.
  */
 
 import {ai} from '@/ai/genkit';
@@ -13,12 +13,12 @@ import {z} from 'genkit';
 const DiscernGodsWillInputSchema = z.object({
   decisionContext: z
     .string()
-    .describe("The user's description of the decision they are trying to make."),
+    .describe("La description par l'utilisateur de la décision qu'il essaie de prendre."),
 });
 export type DiscernGodsWillInput = z.infer<typeof DiscernGodsWillInputSchema>;
 
 const DiscernGodsWillOutputSchema = z.object({
-  guidance: z.string().describe('Biblically-sound guidance for the user.'),
+  guidance: z.string().describe('Des conseils bibliquement fondés pour l\'utilisateur.'),
 });
 export type DiscernGodsWillOutput = z.infer<typeof DiscernGodsWillOutputSchema>;
 
@@ -30,10 +30,10 @@ const prompt = ai.definePrompt({
   name: 'discernGodsWillPrompt',
   input: {schema: DiscernGodsWillInputSchema},
   output: {schema: DiscernGodsWillOutputSchema},
-  prompt: `You are a biblical mentor, offering biblically-sound guidance to users seeking to discern God's will for a specific decision.
-  Based on the user's description of their decision, provide guidance rooted in biblical principles and wisdom.
+  prompt: `Vous êtes un mentor biblique, offrant des conseils bibliquement fondés aux utilisateurs cherchant à discerner la volonté de Dieu pour une décision spécifique.
+  Sur la base de la description de leur décision par l'utilisateur, fournissez des conseils enracinés dans les principes et la sagesse bibliques.
 
-  Decision Context: {{{decisionContext}}}
+  Contexte de la décision: {{{decisionContext}}}
   `,
 });
 

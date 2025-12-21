@@ -1,10 +1,10 @@
 'use server';
 /**
- * @fileOverview Generates a customized reading plan for a user's fasting period based on their specific reason for fasting.
+ * @fileOverview Génère un plan de lecture personnalisé pour la période de jeûne d'un utilisateur en fonction de sa raison spécifique de jeûner.
  *
- * - generateReadingPlan - A function that takes the user's reason for fasting and returns a customized reading plan.
- * - ReadingPlanInput - The input type for the generateReadingPlan function.
- * - ReadingPlanOutput - The return type for the generateReadingPlan function.
+ * - generateReadingPlan - Une fonction qui prend la raison de jeûne de l'utilisateur et retourne un plan de lecture personnalisé.
+ * - ReadingPlanInput - Le type d'entrée pour la fonction generateReadingPlan.
+ * - ReadingPlanOutput - Le type de retour pour la fonction generateReadingPlan.
  */
 
 import {ai} from '@/ai/genkit';
@@ -13,14 +13,14 @@ import {z} from 'genkit';
 const ReadingPlanInputSchema = z.object({
   reasonForFasting: z
     .string()
-    .describe("The user's specific reason or 'Why' for undertaking the fast."),
+    .describe("La raison spécifique ou le 'Pourquoi' de l'utilisateur pour entreprendre le jeûne."),
 });
 export type ReadingPlanInput = z.infer<typeof ReadingPlanInputSchema>;
 
 const ReadingPlanOutputSchema = z.object({
   readingPlan: z
     .string()
-    .describe('A customized reading plan tailored to the user provided reason for fasting.'),
+    .describe('Un plan de lecture personnalisé adapté à la raison de jeûne fournie par l\'utilisateur.'),
 });
 export type ReadingPlanOutput = z.infer<typeof ReadingPlanOutputSchema>;
 
@@ -34,7 +34,7 @@ const prompt = ai.definePrompt({
   name: 'readingPlanPrompt',
   input: {schema: ReadingPlanInputSchema},
   output: {schema: ReadingPlanOutputSchema},
-  prompt: `You are a spiritual guide who creates customized Bible reading plans for users who are fasting. Based on their reason for fasting, create a reading plan with specific verses that will encourage and focus them during their fast.\n\nReason for fasting: {{{reasonForFasting}}}`,
+  prompt: `Vous êtes un guide spirituel qui crée des plans de lecture de la Bible personnalisés pour les utilisateurs qui jeûnent. En fonction de leur raison de jeûner, créez un plan de lecture avec des versets spécifiques qui les encourageront et les concentreront pendant leur jeûne.\n\nRaison du jeûne: {{{reasonForFasting}}}`,
 });
 
 const generateReadingPlanFlow = ai.defineFlow(

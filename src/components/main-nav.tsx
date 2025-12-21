@@ -19,12 +19,12 @@ import {
 } from '@/components/ui/sidebar';
 
 const navItems = [
-  { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/journal', icon: BookOpen, label: 'Spiritual Journal' },
-  { href: '/bible', icon: BookMarked, label: 'The Living Word' },
-  { href: '/fasting', icon: Cross, label: 'Fasting Altar' },
-  { href: '/discern', icon: HelpCircle, label: 'Discern God\'s Will' },
-  { href: '/academy', icon: School, label: 'The Academy' },
+  { href: '/dashboard', icon: LayoutDashboard, label: 'Tableau de bord' },
+  { href: '/journal', icon: BookOpen, label: 'Journal Spirituel' },
+  { href: '/bible', icon: BookMarked, label: 'La Parole Vivante' },
+  { href: '/fasting', icon: Cross, label: 'Autel du Jeûne' },
+  { href: '/discern', icon: HelpCircle, label: 'Discerner la Volonté de Dieu' },
+  { href: '/academy', icon: School, label: 'L\'Académie' },
 ];
 
 export function MainNav() {

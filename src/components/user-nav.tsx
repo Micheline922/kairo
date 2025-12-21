@@ -24,7 +24,7 @@ export function UserNav() {
         <DropdownMenuTrigger asChild>
            <Button variant="ghost" size="icon" className="!size-10 rounded-full">
             <Avatar className="h-8 w-8">
-                <AvatarImage src="https://picsum.photos/seed/avatar/40/40" alt="User" />
+                <AvatarImage src="https://picsum.photos/seed/avatar/40/40" alt="Utilisateur" />
                 <AvatarFallback>U</AvatarFallback>
             </Avatar>
            </Button>
@@ -32,9 +32,9 @@ export function UserNav() {
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">Believer</p>
+              <p className="text-sm font-medium leading-none">Croyant</p>
               <p className="text-xs leading-none text-muted-foreground">
-                believer@sanctuary.app
+                croyant@sanctuaire.app
               </p>
             </div>
           </DropdownMenuLabel>
@@ -42,14 +42,14 @@ export function UserNav() {
           <DropdownMenuGroup>
             <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
+              <span>Profil</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
            <Link href="/" legacyBehavior passHref>
             <DropdownMenuItem>
               <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
+              <span>Se déconnecter</span>
             </DropdownMenuItem>
           </Link>
         </DropdownMenuContent>
@@ -60,12 +60,12 @@ export function UserNav() {
   return (
     <div className="flex items-center gap-3 rounded-md p-2">
       <Avatar className="h-9 w-9">
-        <AvatarImage src="https://picsum.photos/seed/avatar/40/40" alt="User" />
+        <AvatarImage src="https://picsum.photos/seed/avatar/40/40" alt="Utilisateur" />
         <AvatarFallback>U</AvatarFallback>
       </Avatar>
       <div className="flex flex-col">
-        <span className="text-sm font-medium text-sidebar-foreground">Believer</span>
-        <span className="text-xs text-muted-foreground">believer@sanctuary.app</span>
+        <span className="text-sm font-medium text-sidebar-foreground">Croyant</span>
+        <span className="text-xs text-muted-foreground">croyant@sanctuaire.app</span>
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -77,7 +77,7 @@ export function UserNav() {
            <Link href="/" legacyBehavior passHref>
             <DropdownMenuItem>
               <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
+              <span>Se déconnecter</span>
             </DropdownMenuItem>
           </Link>
         </DropdownMenuContent>

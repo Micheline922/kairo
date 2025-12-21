@@ -12,7 +12,7 @@ import { explainConcept } from '@/ai/flows/ai-explain-modern-concepts';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 
 const conceptSchema = z.object({
-  concept: z.string().min(2, { message: 'Concept must be at least 2 characters.' }),
+  concept: z.string().min(2, { message: 'Le concept doit contenir au moins 2 caractères.' }),
 });
 
 export default function AcademyPage() {
@@ -33,8 +33,8 @@ export default function AcademyPage() {
       const result = await explainConcept({ concept: values.concept });
       setExplanation(result.explanation);
     } catch (error) {
-      console.error('Failed to explain concept:', error);
-      setExplanation('Sorry, an error occurred while generating the explanation. Please try again.');
+      console.error('Échec de l\'explication du concept:', error);
+      setExplanation('Désolé, une erreur est survenue lors de la génération de l\'explication. Veuillez réessayer.');
     } finally {
       setIsExplaining(false);
     }
@@ -43,17 +43,17 @@ export default function AcademyPage() {
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">The Academy</h1>
+        <h1 className="text-4xl font-bold font-headline">L'Académie</h1>
         <p className="text-lg text-muted-foreground mt-2">
-          Bridging the modern world and biblical truth.
+          Faire le pont entre le monde moderne et la vérité biblique.
         </p>
       </div>
 
       <Card className="max-w-4xl mx-auto">
         <CardHeader>
-          <CardTitle>Concept vs. Word</CardTitle>
+          <CardTitle>Concept vs. Parole</CardTitle>
           <CardDescription>
-            Enter a modern term (e.g., "Metaverse", "Work-life balance", "Anxiety") to receive a biblical perspective.
+            Entrez un terme moderne (ex: "Métavers", "Équilibre vie pro/perso", "Anxiété") pour recevoir une perspective biblique.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -66,7 +66,7 @@ export default function AcademyPage() {
                   <FormItem className="flex-1">
                     <FormControl>
                       <Input
-                        placeholder="e.g., Artificial Intelligence"
+                        placeholder="ex: Intelligence Artificielle"
                         {...field}
                       />
                     </FormControl>
@@ -80,7 +80,7 @@ export default function AcademyPage() {
                 ) : (
                   <Wand2 className="mr-2 h-4 w-4" />
                 )}
-                Explain
+                Expliquer
               </Button>
             </form>
           </Form>
@@ -90,14 +90,14 @@ export default function AcademyPage() {
                 {isExplaining && (
                     <div className="text-center text-muted-foreground">
                     <LoaderCircle className="mx-auto h-8 w-8 animate-spin" />
-                    <p className="mt-2">Searching for wisdom...</p>
+                    <p className="mt-2">Recherche de sagesse...</p>
                     </div>
                 )}
                 {explanation && (
                     <div>
                         <h3 className="text-xl font-semibold font-headline flex items-center gap-2 mb-4 capitalize">
                             <Sparkles className="h-5 w-5 text-accent" />
-                            A Biblical Perspective on "{explainedConcept}"
+                            Une perspective biblique sur "{explainedConcept}"
                         </h3>
                         <div className="p-6 border rounded-lg bg-secondary space-y-4">
                             <p className="whitespace-pre-wrap text-base leading-relaxed">{explanation}</p>
@@ -110,9 +110,9 @@ export default function AcademyPage() {
            {!isExplaining && !explanation && (
              <div className="text-center py-16 border-2 border-dashed rounded-lg mt-8">
                 <School className="mx-auto h-12 w-12 text-muted-foreground" />
-                <h3 className="mt-4 text-lg font-semibold">Ready for Wisdom</h3>
+                <h3 className="mt-4 text-lg font-semibold">Prêt pour la Sagesse</h3>
                 <p className="mt-1 text-sm text-muted-foreground">
-                    Enter a concept above to begin.
+                    Entrez un concept ci-dessus pour commencer.
                 </p>
             </div>
            )}

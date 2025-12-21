@@ -12,46 +12,46 @@ import { ArrowRight, BookOpen, BookMarked, Cross, School, HelpCircle } from 'luc
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const quickLinks = [
-    { title: 'Spiritual Journal', description: 'Reflect on your walk.', href: '/journal', icon: BookOpen, imageId: 'journal-card' },
-    { title: 'The Living Word', description: 'Read and search the Bible.', href: '/bible', icon: BookMarked, imageId: 'bible-card' },
-    { title: 'Fasting Altar', description: 'Plan and track your fasts.', href: '/fasting', icon: Cross, imageId: 'fasting-card' },
-    { title: 'Discern God\'s Will', description: 'Seek guidance for decisions.', href: '/discern', icon: HelpCircle, imageId: 'discern-card' },
-    { title: 'The Academy', description: 'Biblical view on modern topics.', href: '/academy', icon: School, imageId: 'academy-card' },
+    { title: 'Journal Spirituel', description: 'Réfléchissez à votre marche.', href: '/journal', icon: BookOpen, imageId: 'journal-card' },
+    { title: 'La Parole Vivante', description: 'Lisez et recherchez la Bible.', href: '/bible', icon: BookMarked, imageId: 'bible-card' },
+    { title: 'Autel du Jeûne', description: 'Planifiez et suivez vos jeûnes.', href: '/fasting', icon: Cross, imageId: 'fasting-card' },
+    { title: 'Discerner la Volonté de Dieu', description: 'Cherchez des conseils pour vos décisions.', href: '/discern', icon: HelpCircle, imageId: 'discern-card' },
+    { title: 'L\'Académie', description: 'Vision biblique sur des sujets modernes.', href: '/academy', icon: School, imageId: 'academy-card' },
 ];
 
 export default function DashboardPage() {
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">Welcome to your Sanctuary</h1>
+        <h1 className="text-4xl font-bold font-headline">Bienvenue dans votre Sanctuaire</h1>
         <p className="text-lg text-muted-foreground mt-2">
-          Your private spiritual retreat. Find peace and guidance.
+          Votre retraite spirituelle privée. Trouvez la paix et la guidance.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         <Card className="md:col-span-12 lg:col-span-7 bg-primary/5 border-primary/20">
           <CardHeader>
-            <CardTitle className="text-primary">Verse of the Day</CardTitle>
+            <CardTitle className="text-primary">Verset du Jour</CardTitle>
           </CardHeader>
           <CardContent>
             <blockquote className="text-xl italic border-l-4 border-accent pl-4">
-              <p>"For I know the plans I have for you,” declares the LORD, “plans to prosper you and not to harm you, plans to give you hope and a future."</p>
+              <p>"Car je connais les projets que j'ai formés sur vous, dit l'Éternel, projets de paix et non de malheur, afin de vous donner un avenir et de l'espérance."</p>
             </blockquote>
-            <p className="text-right mt-2 font-semibold text-primary/80">Jeremiah 29:11</p>
+            <p className="text-right mt-2 font-semibold text-primary/80">Jérémie 29:11</p>
           </CardContent>
         </Card>
         
         <Card className="md:col-span-12 lg:col-span-5">
            <CardHeader>
-            <CardTitle>Ongoing Fast</CardTitle>
-            <CardDescription>Your current commitment.</CardDescription>
+            <CardTitle>Jeûne en cours</CardTitle>
+            <CardDescription>Votre engagement actuel.</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-center text-muted-foreground">
-                <p>No active fast. Ready to begin?</p>
+                <p>Aucun jeûne actif. Prêt à commencer ?</p>
                 <Button variant="link" asChild className="text-primary">
-                    <Link href="/fasting">Plan a new fast</Link>
+                    <Link href="/fasting">Planifier un nouveau jeûne</Link>
                 </Button>
             </div>
           </CardContent>
@@ -59,7 +59,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="mt-12">
-        <h2 className="text-3xl font-bold font-headline mb-6">Explore Your Sanctuary</h2>
+        <h2 className="text-3xl font-bold font-headline mb-6">Explorez votre Sanctuaire</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {quickLinks.map(link => {
             const image = PlaceHolderImages.find(p => p.id === link.imageId);
@@ -86,7 +86,7 @@ export default function DashboardPage() {
                 <CardContent>
                    <Button asChild variant="outline" className="w-full">
                      <Link href={link.href}>
-                       Open <ArrowRight className="ml-2 h-4 w-4" />
+                       Ouvrir <ArrowRight className="ml-2 h-4 w-4" />
                      </Link>
                    </Button>
                 </CardContent>

@@ -10,14 +10,13 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
 import { Wand2, PlusCircle, LoaderCircle, Calendar, Sparkles } from 'lucide-react';
-import { generateReadingPlan, ReadingPlanOutput } from '@/ai/flows/ai-customized-reading-plan';
+import { generateReadingPlan } from '@/ai/flows/ai-customized-reading-plan';
 import {
   Dialog,
   DialogContent,
@@ -32,9 +31,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const fastingSchema = z.object({
-  duration: z.string().min(1, 'Please enter a duration.'),
-  type: z.string().min(1, 'Please select a type.'),
-  purpose: z.string().min(10, { message: 'Purpose must be at least 10 characters.' }),
+  duration: z.string().min(1, 'Veuillez saisir une durée.'),
+  type: z.string().min(1, 'Veuillez sélectionner un type.'),
+  purpose: z.string().min(10, { message: 'Le but doit contenir au moins 10 caractères.' }),
 });
 
 type Fast = z.infer<typeof fastingSchema> & {
@@ -53,7 +52,7 @@ export default function FastingPage() {
 
   const form = useForm<z.infer<typeof fastingSchema>>({
     resolver: zodResolver(fastingSchema),
-    defaultValues: { duration: '3 Days', type: 'Water Only', purpose: '' },
+    defaultValues: { duration: '3 Jours', type: 'À l\'eau seulement', purpose: '' },
   });
 
   async function onSubmit(values: z.infer<typeof fastingSchema>) {
@@ -74,7 +73,7 @@ export default function FastingPage() {
       // setIsDialogOpen(false); 
       // form.reset();
     } catch (error) {
-      console.error('Failed to generate reading plan:', error);
+      console.error('La génération du plan de lecture a échoué:', error);
     } finally {
       setIsGenerating(false);
     }
@@ -83,9 +82,9 @@ export default function FastingPage() {
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">The Fasting Altar</h1>
+        <h1 className="text-4xl font-bold font-headline">L'Autel du Jeûne</h1>
         <p className="text-lg text-muted-foreground mt-2">
-          Commit to a fast and receive spiritual sustenance for your journey.
+          Engagez-vous dans un jeûne et recevez une subsistance spirituelle pour votre parcours.
         </p>
       </div>
 
@@ -93,16 +92,16 @@ export default function FastingPage() {
         <DialogTrigger asChild>
           <Button size="lg" className="mb-8">
             <PlusCircle className="mr-2 h-5 w-5" />
-            Program a New Fast
+            Programmer un nouveau jeûne
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-2xl">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <DialogHeader>
-                <DialogTitle className="text-2xl">New Fast</DialogTitle>
+                <DialogTitle className="text-2xl">Nouveau Jeûne</DialogTitle>
                 <DialogDescription>
-                  Define your fast and let AI generate a custom reading plan for you.
+                  Définissez votre jeûne et laissez l'IA générer un plan de lecture personnalisé pour vous.
                 </DialogDescription>
               </DialogHeader>
               
@@ -114,8 +113,8 @@ export default function FastingPage() {
                       name="duration"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Duration</FormLabel>
-                          <FormControl><Input placeholder="e.g., 3 Days" {...field} /></FormControl>
+                          <FormLabel>Durée</FormLabel>
+                          <FormControl><Input placeholder="ex: 3 Jours" {...field} /></FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -125,16 +124,16 @@ export default function FastingPage() {
                       name="type"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Type of Fast</FormLabel>
+                          <FormLabel>Type de Jeûne</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger><SelectValue placeholder="Select a type" /></SelectTrigger>
+                              <SelectTrigger><SelectValue placeholder="Sélectionnez un type" /></SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="Water Only">Water Only</SelectItem>
-                              <SelectItem value="Juice Fast">Juice Fast</SelectItem>
-                              <SelectItem value="Daniel Fast">Daniel Fast</SelectItem>
-                              <SelectItem value="Partial Fast">Partial Fast</SelectItem>
+                              <SelectItem value="À l'eau seulement">À l'eau seulement</SelectItem>
+                              <SelectItem value="Jeûne aux jus">Jeûne aux jus</SelectItem>
+                              <SelectItem value="Jeûne de Daniel">Jeûne de Daniel</SelectItem>
+                              <SelectItem value="Jeûne partiel">Jeûne partiel</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -147,10 +146,10 @@ export default function FastingPage() {
                     name="purpose"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Purpose (Your "Why")</FormLabel>
+                        <FormLabel>Objectif (Votre "Pourquoi")</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="I am fasting for clarity on a major life decision..."
+                            placeholder="Je jeûne pour obtenir de la clarté sur une décision de vie majeure..."
                             className="min-h-[100px]"
                             {...field}
                           />
@@ -162,7 +161,7 @@ export default function FastingPage() {
                 </>
               ) : (
                 <div className="space-y-4">
-                  <h3 className="font-semibold text-lg flex items-center gap-2"><Sparkles className="text-accent"/> Your Customized Reading Plan</h3>
+                  <h3 className="font-semibold text-lg flex items-center gap-2"><Sparkles className="text-accent"/> Votre Plan de Lecture Personnalisé</h3>
                   <div className="p-4 bg-secondary rounded-md max-h-64 overflow-y-auto">
                     <p className="whitespace-pre-wrap">{generatedPlan}</p>
                   </div>
@@ -172,15 +171,15 @@ export default function FastingPage() {
               <DialogFooter>
                  {!generatedPlan ? (
                     <>
-                    <DialogClose asChild><Button type="button" variant="secondary">Cancel</Button></DialogClose>
+                    <DialogClose asChild><Button type="button" variant="secondary">Annuler</Button></DialogClose>
                     <Button type="submit" disabled={isGenerating}>
                         {isGenerating && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
                         <Wand2 className="mr-2 h-4 w-4" />
-                        Generate Plan
+                        Générer le plan
                     </Button>
                     </>
                  ) : (
-                    <DialogClose asChild><Button type="button" onClick={() => { setGeneratedPlan(null); form.reset(); }}>Close</Button></DialogClose>
+                    <DialogClose asChild><Button type="button" onClick={() => { setGeneratedPlan(null); form.reset(); }}>Fermer</Button></DialogClose>
                  )}
               </DialogFooter>
             </form>
@@ -188,7 +187,7 @@ export default function FastingPage() {
         </DialogContent>
       </Dialog>
       
-      <h2 className="text-3xl font-bold font-headline mb-4">Your Fasts</h2>
+      <h2 className="text-3xl font-bold font-headline mb-4">Vos Jeûnes</h2>
       {fasts.length > 0 ? (
         <div className="space-y-4">
           {fasts.map(fast => (
@@ -196,18 +195,18 @@ export default function FastingPage() {
               <CardHeader>
                 <CardTitle className="flex justify-between items-center">
                   <span>{fast.duration} - {fast.type}</span>
-                  <span className="text-sm font-medium text-muted-foreground">{fast.progress}% complete</span>
+                  <span className="text-sm font-medium text-muted-foreground">{fast.progress}% terminé</span>
                 </CardTitle>
                 <Progress value={fast.progress} className="mt-2" />
               </CardHeader>
               <CardContent>
                 <div>
-                  <h4 className="font-semibold">Purpose:</h4>
+                  <h4 className="font-semibold">Objectif :</h4>
                   <p className="text-muted-foreground italic">"{fast.purpose}"</p>
                 </div>
                 {fast.readingPlan && (
                   <div className="mt-4">
-                    <h4 className="font-semibold">AI Sustenance Reading Plan:</h4>
+                    <h4 className="font-semibold">Plan de lecture de subsistance par l'IA :</h4>
                     <p className="text-muted-foreground whitespace-pre-wrap text-sm">{fast.readingPlan}</p>
                   </div>
                 )}
@@ -218,9 +217,9 @@ export default function FastingPage() {
       ) : (
         <div className="text-center py-16 border-2 border-dashed rounded-lg">
           <Calendar className="mx-auto h-12 w-12 text-muted-foreground" />
-          <h3 className="mt-4 text-lg font-semibold">No Fasts Programmed</h3>
+          <h3 className="mt-4 text-lg font-semibold">Aucun Jeûne Programmé</h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            Click 'Program a New Fast' to begin a new season of spiritual focus.
+            Cliquez sur 'Programmer un nouveau jeûne' pour commencer une nouvelle saison de concentration spirituelle.
           </p>
         </div>
       )}

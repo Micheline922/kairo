@@ -1,10 +1,10 @@
 'use server';
 /**
- * @fileOverview This file defines a Genkit flow for analyzing the spiritual climate of a journal entry and providing a "Word of Light."
+ * @fileOverview Ce fichier définit un flux Genkit pour analyser le climat spirituel d'une entrée de journal et fournir une "Parole de Lumière".
  *
- * - analyzeSpiritualJournal - Analyzes the spiritual climate of a journal entry and provides a "Word of Light."
- * - AnalyzeSpiritualJournalInput - The input type for the analyzeSpiritualJournal function.
- * - AnalyzeSpiritualJournalOutput - The return type for the analyzeSpiritualJournal function.
+ * - analyzeSpiritualJournal - Analyse le climat spirituel d'une entrée de journal et fournit une "Parole de Lumière".
+ * - AnalyzeSpiritualJournalInput - Le type d'entrée pour la fonction analyzeSpiritualJournal.
+ * - AnalyzeSpiritualJournalOutput - Le type de retour pour la fonction analyzeSpiritualJournal.
  */
 
 import {ai} from '@/ai/genkit';
@@ -13,16 +13,16 @@ import {z} from 'genkit';
 const AnalyzeSpiritualJournalInputSchema = z.object({
   journalEntry: z
     .string()
-    .describe('The text content of the spiritual journal entry.'),
+    .describe("Le contenu textuel de l'entrée du journal spirituel."),
 });
 export type AnalyzeSpiritualJournalInput = z.infer<typeof AnalyzeSpiritualJournalInputSchema>;
 
 const AnalyzeSpiritualJournalOutputSchema = z.object({
-  spiritualClimate: z.string().describe('A summary of the spiritual climate of the journal entry.'),
-  wordOfLightVerses: z.string().describe('Specifically chosen Bible verses relevant to the journal entry.'),
+  spiritualClimate: z.string().describe("Un résumé du climat spirituel de l'entrée du journal."),
+  wordOfLightVerses: z.string().describe("Des versets bibliques spécifiquement choisis et pertinents pour l'entrée du journal."),
   empatheticOrientation: z
     .string()
-    .describe('A short, empathetic orientation based on the Bible, providing guidance and encouragement.'),
+    .describe("Une courte orientation empathique basée sur la Bible, offrant des conseils et des encouragements."),
 });
 export type AnalyzeSpiritualJournalOutput = z.infer<typeof AnalyzeSpiritualJournalOutputSchema>;
 
@@ -36,16 +36,16 @@ const analyzeSpiritualJournalPrompt = ai.definePrompt({
   name: 'analyzeSpiritualJournalPrompt',
   input: {schema: AnalyzeSpiritualJournalInputSchema},
   output: {schema: AnalyzeSpiritualJournalOutputSchema},
-  prompt: `You are a spiritual guide, skilled in understanding the nuances of faith and struggle.
+  prompt: `Vous êtes un guide spirituel, doué pour comprendre les nuances de la foi et de la lutte.
 
-  Analyze the following journal entry and determine its spiritual climate. Provide a concise summary of the user's spiritual state as reflected in the text.  Based on your analysis, select relevant Bible verses that offer comfort, guidance, and encouragement.  Finally, offer a short, empathetic orientation based on biblical principles, providing personalized advice.
+  Analysez l'entrée de journal suivante et déterminez son climat spirituel. Fournissez un résumé concis de l'état spirituel de l'utilisateur tel que reflété dans le texte. Sur la base de votre analyse, sélectionnez des versets bibliques pertinents qui offrent réconfort, conseils et encouragements. Enfin, offrez une courte orientation empathique basée sur les principes bibliques, en fournissant des conseils personnalisés.
 
-  Journal Entry: {{{journalEntry}}}
+  Entrée de journal: {{{journalEntry}}}
 
-  Format your response as follows:
-  Spiritual Climate: [Summary of the spiritual climate]
-  Word of Light Verses: [Relevant Bible verses]
-  Empathetic Orientation: [A short, empathetic orientation based on the Bible]`,
+  Formatez votre réponse comme suit:
+  Climat Spirituel: [Résumé du climat spirituel]
+  Versets de la Parole de Lumière: [Versets bibliques pertinents]
+  Orientation Empathique: [Une courte orientation empathique basée sur la Bible]`,
 });
 
 const analyzeSpiritualJournalFlow = ai.defineFlow(

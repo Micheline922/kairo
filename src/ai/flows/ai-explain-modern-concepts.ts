@@ -1,11 +1,11 @@
 'use server';
 
 /**
- * @fileOverview Explains modern concepts from a biblical perspective.
+ * @fileOverview Explique les concepts modernes d'un point de vue biblique.
  *
- * - explainConcept - A function that explains a modern concept using biblical truth.
- * - ExplainConceptInput - The input type for the explainConcept function.
- * - ExplainConceptOutput - The return type for the explainConcept function.
+ * - explainConcept - Une fonction qui explique un concept moderne en utilisant la vérité biblique.
+ * - ExplainConceptInput - Le type d'entrée pour la fonction explainConcept.
+ * - ExplainConceptOutput - Le type de retour pour la fonction explainConcept.
  */
 
 import {ai} from '@/ai/genkit';
@@ -14,7 +14,7 @@ import {z} from 'genkit';
 const ExplainConceptInputSchema = z.object({
   concept: z
     .string()
-    .describe('The modern concept to be explained (e.g., Metaverse, Work-life balance, Anxiety).'),
+    .describe('Le concept moderne à expliquer (par ex., Métavers, équilibre travail-vie personnelle, anxiété).'),
 });
 export type ExplainConceptInput = z.infer<typeof ExplainConceptInputSchema>;
 
@@ -22,7 +22,7 @@ const ExplainConceptOutputSchema = z.object({
   explanation: z
     .string()
     .describe(
-      'An explanation of the concept, bridging the modern world and biblical truth, explaining what God expects from us in this specific context.'
+      "Une explication du concept, faisant le pont entre le monde moderne et la vérité biblique, expliquant ce que Dieu attend de nous dans ce contexte spécifique."
     ),
 });
 export type ExplainConceptOutput = z.infer<typeof ExplainConceptOutputSchema>;
@@ -35,9 +35,9 @@ const prompt = ai.definePrompt({
   name: 'explainConceptPrompt',
   input: {schema: ExplainConceptInputSchema},
   output: {schema: ExplainConceptOutputSchema},
-  prompt: `You are a theologian skilled at explaining modern concepts from a biblical perspective.
+  prompt: `Vous êtes un théologien doué pour expliquer les concepts modernes d'un point de vue biblique.
 
-  Explain the following concept by bridging the modern world and biblical truth, explaining what God expects from us in this specific context.
+  Expliquez le concept suivant en faisant le pont entre le monde moderne et la vérité biblique, en expliquant ce que Dieu attend de nous dans ce contexte spécifique.
 
   Concept: {{{concept}}}`,
 });

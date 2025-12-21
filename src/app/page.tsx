@@ -35,46 +35,46 @@ export default function LoginPage() {
       <div className="absolute top-8 left-8">
         <div className="flex items-center gap-2">
             <Feather className="h-6 w-6 text-primary" />
-            <h1 className="text-2xl font-bold text-primary">Sanctuary</h1>
+            <h1 className="text-2xl font-bold text-primary">Sanctuaire</h1>
         </div>
       </div>
       <Card className="z-10 w-full max-w-md bg-background/80 backdrop-blur-sm">
         <form onSubmit={handleLogin}>
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-headline">Enter the Sanctuary</CardTitle>
-            <CardDescription>A private spiritual retreat in your pocket.</CardDescription>
+            <CardTitle className="text-3xl font-headline">Entrez dans le Sanctuaire</CardTitle>
+            <CardDescription>Une retraite spirituelle privée dans votre poche.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="name@email.com" defaultValue="believer@sanctuary.app" />
+              <Label htmlFor="email">E-mail</Label>
+              <Input id="email" type="email" placeholder="nom@email.com" defaultValue="croyant@sanctuaire.app" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" defaultValue="password123" />
+              <Label htmlFor="password">Mot de passe</Label>
+              <Input id="password" type="password" defaultValue="motdepasse123" />
             </div>
              <p className="text-xs text-muted-foreground pt-2">
-                Your journal is encrypted and strictly private. 
+                Votre journal est crypté et strictement privé.
             </p>
           </CardContent>
           <CardFooter className="flex-col gap-4">
             <Button type="submit" className="w-full">
-              Login with Password
+              Se connecter avec un mot de passe
             </Button>
             <div className="flex items-center w-full">
                 <Separator className="flex-1" />
-                <span className="px-4 text-xs text-muted-foreground">OR</span>
+                <span className="px-4 text-xs text-muted-foreground">OU</span>
                 <Separator className="flex-1" />
             </div>
              <Button variant="outline" className="w-full" onClick={handleLogin}>
               <Fingerprint className="mr-2 h-4 w-4" />
-              Sign in with Biometrics
+              Se connecter avec la biométrie
             </Button>
           </CardFooter>
         </form>
       </Card>
       <footer className="absolute bottom-4 text-center text-sm text-muted-foreground z-10">
-        <p>&copy; {new Date().getFullYear()} Sanctuary. Every interaction should feel like a prayer.</p>
+        <p>&copy; {new Date().getFullYear()} Sanctuaire. Chaque interaction devrait ressembler à une prière.</p>
       </footer>
     </div>
   );
