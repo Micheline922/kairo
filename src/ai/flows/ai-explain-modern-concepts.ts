@@ -24,6 +24,7 @@ const ExplainConceptOutputSchema = z.object({
     .describe(
       "Une explication du concept, faisant le pont entre le monde moderne et la vérité biblique, expliquant ce que Dieu attend de nous dans ce contexte spécifique."
     ),
+  relevantVerses: z.string().describe("Une liste de versets bibliques pertinents qui appuient l'explication."),
 });
 export type ExplainConceptOutput = z.infer<typeof ExplainConceptOutputSchema>;
 
@@ -38,6 +39,8 @@ const prompt = ai.definePrompt({
   prompt: `Vous êtes un théologien doué pour expliquer les concepts modernes d'un point de vue biblique.
 
   Expliquez le concept suivant en faisant le pont entre le monde moderne et la vérité biblique, en expliquant ce que Dieu attend de nous dans ce contexte spécifique.
+  
+  En plus de l'explication, fournissez une liste de versets bibliques pertinents qui soutiennent votre analyse.
 
   Concept: {{{concept}}}`,
 });

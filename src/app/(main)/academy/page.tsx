@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Wand2, LoaderCircle, School, Sparkles, Save, BookCopy } from 'lucide-react';
+import { Wand2, LoaderCircle, School, Sparkles, Save, BookCopy, BookMarked } from 'lucide-react';
 import { explainConcept } from '@/ai/flows/ai-explain-modern-concepts';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
@@ -22,6 +22,7 @@ type AcademyInsight = {
   id: string;
   concept: string;
   explanation: string;
+  relevantVerses?: string;
   savedDate: any;
 };
 
@@ -31,6 +32,7 @@ export default function AcademyPage() {
   const { toast } = useToast();
   const [isExplaining, setIsExplaining] = useState(false);
   const [explanation, setExplanation] = useState<string | null>(null);
+  const [relevantVerses, setRelevantVerses] = useState<string | null>(null);
   const [explainedConcept, setExplainedConcept] = useState<string | null>(null);
 
   const insightsQuery = useMemoFirebase(() => {
@@ -48,10 +50,12 @@ export default function AcademyPage() {
   async function onSubmit(values: z.infer<typeof conceptSchema>) {
     setIsExplaining(true);
     setExplanation(null);
+    setRelevantVerses(null);
     setExplainedConcept(values.concept);
     try {
       const result = await explainConcept({ concept: values.concept });
       setExplanation(result.explanation);
+      setRelevantVerses(result.relevantVerses);
     } catch (error) {
       console.error('Échec de l\'explication du concept:', error);
       setExplanation('Désolé, une erreur est survenue lors de la génération de l\'explication. Veuillez réessayer.');
@@ -67,6 +71,7 @@ export default function AcademyPage() {
         userId: user.uid,
         concept: explainedConcept,
         explanation: explanation,
+        relevantVerses: relevantVerses || '',
         savedDate: serverTimestamp(),
     };
     
@@ -145,8 +150,17 @@ export default function AcademyPage() {
                                     Enregistrer
                                 </Button>
                               </div>
-                              <div className="p-6 border rounded-lg bg-secondary space-y-4">
-                                  <p className="whitespace-pre-wrap text-base leading-relaxed">{explanation}</p>
+                              <div className="p-6 border rounded-lg bg-secondary space-y-6">
+                                  <div className="space-y-2">
+                                      <h4 className="font-semibold text-lg">Explication</h4>
+                                      <p className="whitespace-pre-wrap text-base leading-relaxed">{explanation}</p>
+                                  </div>
+                                  {relevantVerses && (
+                                    <div className="space-y-2">
+                                        <h4 className="font-semibold text-lg flex items-center gap-2"><BookMarked className="h-5 w-5"/> Versets Clés</h4>
+                                        <p className="whitespace-pre-wrap text-base leading-relaxed italic text-muted-foreground">{relevantVerses}</p>
+                                    </div>
+                                  )}
                               </div>
                           </div>
                       )}
@@ -177,7 +191,8 @@ export default function AcademyPage() {
                               {insights.map(insight => (
                                   <div key={insight.id} className="p-4 border rounded-md bg-secondary/50">
                                       <p className="font-semibold text-primary/80 capitalize">{insight.concept}</p>
-                                      <blockquote className="italic border-l-2 border-accent pl-2 my-1 text-sm text-muted-foreground line-clamp-3">"{insight.explanation}"</blockquote>
+                                      <blockquote className="italic border-l-2 border-accent pl-2 my-1 text-sm text-muted-foreground line-clamp-2">"{insight.explanation}"</blockquote>
+                                      {insight.relevantVerses && <p className="text-xs text-muted-foreground mt-1 line-clamp-1">Verset(s): {insight.relevantVerses}</p>}
                                   </div>
                               ))}
                           </div>
@@ -195,5 +210,3 @@ export default function AcademyPage() {
     </div>
   );
 }
-
-    

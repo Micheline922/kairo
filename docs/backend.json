@@ -183,6 +183,10 @@
           "type": "string",
           "description": "The AI-generated biblical explanation."
         },
+        "relevantVerses": {
+            "type": "string",
+            "description": "Relevant bible verses for the explanation."
+        },
         "savedDate": {
           "type": "string",
           "description": "Date and time the insight was saved.",
@@ -362,5 +366,3 @@
     "reasoning": "The Firestore data structure is designed to ensure data privacy and security for the KAIRO application, with a focus on authorization independence and ease of debugging. User data and their associated journal entries, pearls of wisdom, and fasting plans are stored under user-specific paths to enforce strict privacy. This design eliminates the need for complex security rules and enables secure list operations (QAPs). Authorization Independence is achieved by storing each user's data under their respective `userId`, removing the need to check parent document properties for authorization. This approach simplifies security rules to `request.auth.uid == resource.data.userId` and enables atomic batch operations. The structure is segregated by entity type, and the use of hierarchical paths makes security rules more manageable."
   }
 }
-
-    
