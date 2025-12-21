@@ -37,7 +37,7 @@ export default function LoginPage() {
     if (!isUserLoading && user) {
       setTimeout(() => {
         router.push('/dashboard');
-      }, 2500); // Wait for the welcome screen to be visible for a moment
+      }, 5000); // Wait for the welcome screen to be visible for a moment
     }
   }, [user, isUserLoading, router]);
 
