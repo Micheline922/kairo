@@ -8,12 +8,12 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, BookOpen, Bible, Cross, School, HelpCircle } from 'lucide-react';
+import { ArrowRight, BookOpen, BookMarked, Cross, School, HelpCircle } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const quickLinks = [
     { title: 'Spiritual Journal', description: 'Reflect on your walk.', href: '/journal', icon: BookOpen, imageId: 'journal-card' },
-    { title: 'The Living Word', description: 'Read and search the Bible.', href: '/bible', icon: Bible, imageId: 'bible-card' },
+    { title: 'The Living Word', description: 'Read and search the Bible.', href: '/bible', icon: BookMarked, imageId: 'bible-card' },
     { title: 'Fasting Altar', description: 'Plan and track your fasts.', href: '/fasting', icon: Cross, imageId: 'fasting-card' },
     { title: 'Discern God\'s Will', description: 'Seek guidance for decisions.', href: '/discern', icon: HelpCircle, imageId: 'discern-card' },
     { title: 'The Academy', description: 'Biblical view on modern topics.', href: '/academy', icon: School, imageId: 'academy-card' },
