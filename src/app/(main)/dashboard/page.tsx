@@ -15,6 +15,8 @@ import { ArrowRight, BookOpen, BookMarked, Cross, School, HelpCircle, HandHelpin
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useLanguage } from '@/context/language-provider';
 import { translations } from '@/lib/translations';
+import { dailyVerses } from '@/lib/daily-verses';
+import { useState, useEffect } from 'react';
 
 const quickLinks = [
     { title: 'journalTitle', description: 'journalDescription', href: '/journal', icon: BookOpen, imageId: 'journal-card' },
@@ -26,9 +28,23 @@ const quickLinks = [
     { title: 'meditationsTitle', description: 'meditationsDescription', href: '/meditations', icon: HeartPulse, imageId: 'meditation-card' },
 ];
 
+type Verse = {
+  fr: string;
+  en: string;
+  es: string;
+  pt: string;
+  sw: string;
+  reference: string;
+};
+
 export default function DashboardPage() {
   const { language } = useLanguage();
   const t = translations[language];
+  const [verse, setVerse] = useState<Verse | null>(null);
+
+  useEffect(() => {
+    setVerse(dailyVerses[Math.floor(Math.random() * dailyVerses.length)]);
+  }, []);
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
@@ -45,10 +61,16 @@ export default function DashboardPage() {
             <CardTitle className="text-primary">{t.verseOfTheDay}</CardTitle>
           </CardHeader>
           <CardContent>
-            <blockquote className="text-xl italic border-l-4 border-accent pl-4">
-              <p>"{t.jeremiahQuote}"</p>
-            </blockquote>
-            <p className="text-right mt-2 font-semibold text-primary/80">Jérémie 29:11</p>
+            {verse ? (
+              <>
+                <blockquote className="text-xl italic border-l-4 border-accent pl-4">
+                  <p>"{verse[language]}"</p>
+                </blockquote>
+                <p className="text-right mt-2 font-semibold text-primary/80">{verse.reference}</p>
+              </>
+            ) : (
+              <p>{t.loading}...</p>
+            )}
           </CardContent>
         </Card>
         
@@ -108,5 +130,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-    

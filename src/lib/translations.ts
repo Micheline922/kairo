@@ -39,7 +39,6 @@ export const translations = {
 
     // Dashboard
     verseOfTheDay: 'Verse of the Day',
-    jeremiahQuote: '"For I know the plans I have for you," declares the LORD, "plans to prosper you and not to harm you, plans to give you hope and a future."',
     currentFast: 'Current Fast',
     noActiveFast: 'No active fast. Ready to start?',
     planNewFast: 'Plan a new fast',
@@ -190,7 +189,7 @@ aiHelp: 'Get help from AI',
     delete: 'Delete',
     noPendingPrayers: 'No pending prayers.',
     noPendingPrayersHint: 'Post a prayer request to begin.',
-pyerAnswered: 'Prayer Answered!',
+    prayerAnswered: 'Prayer Answered!',
     prayerAnsweredDescription: 'Glory to God! This prayer has been marked as answered.',
     prayerRemoved: 'Prayer removed',
     prayerRemovedDescription: 'The prayer has been removed from the wall.',
@@ -270,7 +269,6 @@ pyerAnswered: 'Prayer Answered!',
 
     // Dashboard
     verseOfTheDay: 'Verset du Jour',
-    jeremiahQuote: '"Car je connais les projets que j\'ai formés sur vous, dit l\'Éternel, projets de paix et non de malheur, afin de vous donner un avenir et de l\'espérance."',
     currentFast: 'Jeûne en cours',
     noActiveFast: 'Aucun jeûne actif. Prêt à commencer ?',
     planNewFast: 'Planifier un nouveau jeûne',
@@ -501,7 +499,6 @@ loginFooter: 'Con todo mi corazón, Micheline Ntale',
 
     // Dashboard
     verseOfTheDay: 'Versículo del Día',
-    jeremiahQuote: '"Porque yo sé los pensamientos que tengo acerca de vosotros, dice Jehová, pensamientos de paz, y no de mal, para daros el fin que esperáis."',
     currentFast: 'Ayuno Actual',
     noActiveFast: 'No hay ayuno activo. ¿Listo para empezar?',
     planNewFast: 'Planificar un nuevo ayuno',
@@ -732,7 +729,6 @@ aiHelp: 'Obtener ayuda de la IA',
 
     // Dashboard
     verseOfTheDay: 'Versículo do Dia',
-    jeremiahQuote: '"Porque sou eu que conheço os planos que tenho para vocês", diz o Senhor, "planos de fazê-los prosperar e não de lhes causar dano, planos de dar-lhes esperança e um futuro."',
     currentFast: 'Jejum Atual',
     noActiveFast: 'Nenhum jejum ativo. Pronto para começar?',
     planNewFast: 'Planejar um novo jejum',
@@ -963,7 +959,6 @@ aiHelp: 'Obter ajuda da IA',
 
     // Dashboard
     verseOfTheDay: 'Mstari wa Siku',
-    jeremiahQuote: '"Maana nayajua mawazo ninayowawazia ninyi, asema BWANA, ni mawazo ya amani wala si ya mabaya, kuwapa ninyi tumaini siku zenu za mwisho."',
     currentFast: 'Mfungo wa Sasa',
     noActiveFast: 'Hakuna mfungo unaoendelea. Uko tayari kuanza?',
     planNewFast: 'Panga mfungo mpya',
@@ -1059,7 +1054,7 @@ aiInsight: 'Pata Ushauri kutoka kwa AI',
     doubtProjectSpace: 'Nafasi ya Mashaka / Miradi',
 doubtProjectDescription: 'Eleza uamuzi unaokukabili. Kadiri unavyotoa maelezo zaidi, ndivyo ushauri utakavyokuwa wa kibinafsi zaidi.',
     decisionContext: 'Muktadha wa uamuzi wako',
-    decisionContextPlaceholder: 'Ninafikiria ofa mpya ya kazi katika mji mwingine, lakini itamaanisha kuhamisha familia yangu...',
+    decisionContextPlaceholder: 'Ninafikiria ofa mpya ya kazi katika mji mwingine, lakini itamaanisha kuhamisha familia...',
     seekAdvice: 'Tafuta ushauri',
     seeking: 'Inatafuta...',
     consultingScriptures: 'Inashauriana na maandiko na kuombea hekima...',
@@ -1156,5 +1151,3 @@ aiHelp: 'Pata usaidizi kutoka kwa AI',
     readyForCalmHint: 'Weka mada hapo juu ili kuanza.',
   },
 };
-
-    
