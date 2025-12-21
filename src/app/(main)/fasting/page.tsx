@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
-import { Wand2, PlusCircle, LoaderCircle, Calendar, Sparkles } from 'lucide-react';
+import { Wand2, PlusCircle, LoaderCircle, Calendar, Sparkles, Save } from 'lucide-react';
 import { generateReadingPlan } from '@/ai/flows/ai-customized-reading-plan';
 import {
   Dialog,
@@ -55,28 +55,35 @@ export default function FastingPage() {
     defaultValues: { duration: '3 Jours', type: 'À l\'eau seulement', purpose: '' },
   });
 
-  async function onSubmit(values: z.infer<typeof fastingSchema>) {
+  async function handleGeneratePlan(values: z.infer<typeof fastingSchema>) {
     setIsGenerating(true);
     setGeneratedPlan(null);
     try {
       const result = await generateReadingPlan({ reasonForFasting: values.purpose });
       setGeneratedPlan(result.readingPlan);
-      
-      const newFast: Fast = {
-        id: fasts.length + 1,
-        ...values,
-        readingPlan: result.readingPlan,
-        progress: 33, // Example progress
-      };
-      setFasts([newFast, ...fasts]);
-      // The dialog would be closed upon successful submission in a real app
-      // setIsDialogOpen(false); 
-      // form.reset();
     } catch (error) {
       console.error('La génération du plan de lecture a échoué:', error);
     } finally {
       setIsGenerating(false);
     }
+  }
+
+  function handleSaveFast() {
+    if (!generatedPlan) return;
+    
+    const values = form.getValues();
+    const newFast: Fast = {
+      id: fasts.length + 1,
+      ...values,
+      readingPlan: generatedPlan,
+      progress: 0, // Commence à 0%
+    };
+    setFasts([newFast, ...fasts]);
+    
+    // Reset state and close dialog
+    setGeneratedPlan(null);
+    form.reset();
+    setIsDialogOpen(false);
   }
 
   return (
@@ -88,7 +95,13 @@ export default function FastingPage() {
         </p>
       </div>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <Dialog open={isDialogOpen} onOpenChange={(open) => {
+        if (!open) {
+          setGeneratedPlan(null);
+          form.reset();
+        }
+        setIsDialogOpen(open);
+      }}>
         <DialogTrigger asChild>
           <Button size="lg" className="mb-8">
             <PlusCircle className="mr-2 h-5 w-5" />
@@ -97,11 +110,11 @@ export default function FastingPage() {
         </DialogTrigger>
         <DialogContent className="sm:max-w-2xl">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(handleGeneratePlan)} className="space-y-6">
               <DialogHeader>
                 <DialogTitle className="text-2xl">Nouveau Jeûne</DialogTitle>
                 <DialogDescription>
-                  Définissez votre jeûne et laissez l'IA générer un plan de lecture personnalisé pour vous.
+                  Définissez votre jeûne et laissez l'IA générer un plan de lecture et de prière personnalisé.
                 </DialogDescription>
               </DialogHeader>
               
@@ -158,30 +171,32 @@ export default function FastingPage() {
                       </FormItem>
                     )}
                   />
-                </>
-              ) : (
-                <div className="space-y-4">
-                  <h3 className="font-semibold text-lg flex items-center gap-2"><Sparkles className="text-accent"/> Votre Plan de Lecture Personnalisé</h3>
-                  <div className="p-4 bg-secondary rounded-md max-h-64 overflow-y-auto">
-                    <p className="whitespace-pre-wrap">{generatedPlan}</p>
-                  </div>
-                </div>
-              )}
-
-              <DialogFooter>
-                 {!generatedPlan ? (
-                    <>
+                  <DialogFooter>
                     <DialogClose asChild><Button type="button" variant="secondary">Annuler</Button></DialogClose>
                     <Button type="submit" disabled={isGenerating}>
                         {isGenerating && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
                         <Wand2 className="mr-2 h-4 w-4" />
                         Générer le plan
                     </Button>
-                    </>
-                 ) : (
-                    <DialogClose asChild><Button type="button" onClick={() => { setGeneratedPlan(null); form.reset(); }}>Fermer</Button></DialogClose>
-                 )}
-              </DialogFooter>
+                  </DialogFooter>
+                </>
+              ) : (
+                <>
+                  <div className="space-y-4">
+                    <h3 className="font-semibold text-lg flex items-center gap-2"><Sparkles className="text-accent"/> Votre Plan Personnalisé</h3>
+                    <div className="p-4 bg-secondary rounded-md max-h-64 overflow-y-auto border">
+                      <p className="whitespace-pre-wrap font-sans text-sm">{generatedPlan}</p>
+                    </div>
+                  </div>
+                   <DialogFooter>
+                      <Button type="button" variant="ghost" onClick={() => setGeneratedPlan(null)}>Retour</Button>
+                      <Button type="button" onClick={handleSaveFast}>
+                          <Save className="mr-2 h-4 w-4" />
+                          Enregistrer et Commencer
+                      </Button>
+                  </DialogFooter>
+                </>
+              )}
             </form>
           </Form>
         </DialogContent>
@@ -206,8 +221,8 @@ export default function FastingPage() {
                 </div>
                 {fast.readingPlan && (
                   <div className="mt-4">
-                    <h4 className="font-semibold">Plan de lecture de subsistance par l'IA :</h4>
-                    <p className="text-muted-foreground whitespace-pre-wrap text-sm">{fast.readingPlan}</p>
+                    <h4 className="font-semibold">Plan de lecture & prière :</h4>
+                    <p className="text-muted-foreground whitespace-pre-wrap text-sm border p-3 rounded-md bg-secondary/50 mt-2">{fast.readingPlan}</p>
                   </div>
                 )}
               </CardContent>
