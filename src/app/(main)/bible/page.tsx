@@ -367,5 +367,3 @@ export default function BiblePage() {
     </div>
   );
 }
-
-    
