@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import { Wand2, BookHeart, Lightbulb, PlusCircle, LoaderCircle } from 'lucide-react';
 import { analyzeSpiritualJournal, AnalyzeSpiritualJournalOutput } from '@/ai/flows/ai-analyze-spiritual-journal';
 import {
@@ -26,38 +27,42 @@ import {
   DialogClose,
 } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useFirestore, useUser, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
+import { collection, query, orderBy, serverTimestamp, where } from 'firebase/firestore';
 
 const journalSchema = z.object({
-  entry: z.string().min(10, { message: 'L\'entrée de journal doit contenir au moins 10 caractères.' }),
+  title: z.string().min(3, { message: "Le titre doit contenir au moins 3 caractères." }),
+  entry: z.string().min(10, { message: "L'entrée de journal doit contenir au moins 10 caractères." }),
 });
 
 type JournalEntry = {
-  id: number;
+  id: string;
+  title: string;
   date: string;
   excerpt: string;
   content: string;
+  creationDate: any;
   analysis?: AnalyzeSpiritualJournalOutput;
 };
 
-const mockEntries: JournalEntry[] = [
-  {
-    id: 1,
-    date: 'Il y a 2 jours',
-    excerpt: 'J\'ai ressenti un profond sentiment de paix pendant ma prière matinale...',
-    content: 'J\'ai ressenti un profond sentiment de paix pendant ma prière matinale. Le monde semblait ralentir, et je pouvais entendre le murmure de Dieu dans la brise légère. J\'ai lu le Psaume 23, et il a résonné dans mon âme.',
-  },
-];
-
 export default function JournalPage() {
-  const [entries, setEntries] = useState<JournalEntry[]>(mockEntries);
-  const [selectedEntry, setSelectedEntry] = useState<JournalEntry | null>(entries[0]);
+  const { user } = useUser();
+  const firestore = useFirestore();
+  const [selectedEntry, setSelectedEntry] = useState<JournalEntry | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  
+  const journalEntriesQuery = useMemoFirebase(() => {
+    if (!user) return null;
+    return query(collection(firestore, `users/${user.uid}/journalEntries`), orderBy('creationDate', 'desc'));
+  }, [firestore, user]);
+
+  const { data: entries, isLoading: isLoadingEntries } = useCollection<JournalEntry>(journalEntriesQuery);
 
   const form = useForm<z.infer<typeof journalSchema>>({
     resolver: zodResolver(journalSchema),
-    defaultValues: { entry: '' },
+    defaultValues: { title: '', entry: '' },
   });
 
   const handleAnalyze = async (entry: JournalEntry) => {
@@ -65,9 +70,9 @@ export default function JournalPage() {
     setIsAnalyzing(true);
     try {
       const analysis = await analyzeSpiritualJournal({ journalEntry: entry.content });
-      const updatedEntries = entries.map(e => e.id === entry.id ? { ...e, analysis } : e);
-      setEntries(updatedEntries);
-      setSelectedEntry(updatedEntries.find(e => e.id === entry.id) || null);
+      if (selectedEntry && selectedEntry.id === entry.id) {
+        setSelectedEntry({ ...selectedEntry, analysis });
+      }
     } catch (error) {
       console.error("L'analyse a échoué:", error);
     } finally {
@@ -76,21 +81,30 @@ export default function JournalPage() {
   };
   
   async function onSubmit(values: z.infer<typeof journalSchema>) {
+    if (!user) return;
     setIsCreating(true);
-    const newEntry: JournalEntry = {
-      id: entries.length + 1,
-      date: 'À l\'instant',
-      excerpt: values.entry.substring(0, 50) + '...',
+
+    const newEntryData = {
+      userId: user.uid,
+      title: values.title,
       content: values.entry,
+      creationDate: serverTimestamp(),
+      lastModified: serverTimestamp(),
     };
-    // Simuler un appel API
-    await new Promise(resolve => setTimeout(resolve, 500));
-    setEntries([newEntry, ...entries]);
-    setSelectedEntry(newEntry);
+    
+    const entriesCollection = collection(firestore, `users/${user.uid}/journalEntries`);
+    addDocumentNonBlocking(entriesCollection, newEntryData);
+    
     setIsCreating(false);
     setIsDialogOpen(false);
     form.reset();
   }
+
+  const displayedEntries = entries?.map(e => ({
+    ...e,
+    excerpt: e.content.substring(0, 50) + '...',
+    date: e.creationDate?.toDate().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) || 'Date inconnue'
+  })) || [];
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
@@ -114,13 +128,26 @@ export default function JournalPage() {
               </DialogTrigger>
               <DialogContent>
                  <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     <DialogHeader>
                       <DialogTitle>Nouvelle entrée de journal</DialogTitle>
                       <DialogDescription>
                         Épanchez votre cœur. Qu'avez-vous sur le cœur aujourd'hui ?
                       </DialogDescription>
                     </DialogHeader>
+                     <FormField
+                      control={form.control}
+                      name="title"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Titre</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Réflexion sur la gratitude" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     <FormField
                       control={form.control}
                       name="entry"
@@ -153,18 +180,25 @@ export default function JournalPage() {
             </Dialog>
           </div>
           <div className="space-y-2">
-            {entries.map(entry => (
-              <Card
-                key={entry.id}
-                className={`cursor-pointer transition-all ${selectedEntry?.id === entry.id ? 'border-primary bg-primary/5' : 'hover:bg-secondary'}`}
-                onClick={() => setSelectedEntry(entry)}
-              >
-                <CardHeader>
-                  <CardTitle className="text-lg">{entry.date}</CardTitle>
-                  <CardDescription>{entry.excerpt}</CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
+            {isLoadingEntries ? (
+              <p>Chargement des entrées...</p>
+            ) : displayedEntries.length > 0 ? (
+              displayedEntries.map(entry => (
+                <Card
+                  key={entry.id}
+                  className={`cursor-pointer transition-all ${selectedEntry?.id === entry.id ? 'border-primary bg-primary/5' : 'hover:bg-secondary'}`}
+                  onClick={() => setSelectedEntry(entry)}
+                >
+                  <CardHeader>
+                    <CardTitle className="text-lg">{entry.title}</CardTitle>
+                    <CardDescription>{entry.excerpt}</CardDescription>
+                     <CardDescription className="text-xs pt-1">{entry.date}</CardDescription>
+                  </CardHeader>
+                </Card>
+              ))
+            ) : (
+              <p className="text-sm text-muted-foreground text-center py-4">Aucune entrée pour le moment.</p>
+            )}
           </div>
         </div>
 
@@ -172,7 +206,8 @@ export default function JournalPage() {
           {selectedEntry ? (
             <Card className="min-h-[60vh]">
               <CardHeader>
-                <CardTitle className="text-2xl">Réflexion d'{selectedEntry.date}</CardTitle>
+                <CardTitle className="text-2xl">{selectedEntry.title}</CardTitle>
+                <CardDescription>Réflexion du {selectedEntry.date}</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="whitespace-pre-wrap text-base leading-relaxed">{selectedEntry.content}</p>
