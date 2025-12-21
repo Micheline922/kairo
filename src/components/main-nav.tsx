@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
   BookOpen,
-  Bible,
+  BookMarked,
   Cross,
   HelpCircle,
   School,
@@ -21,7 +21,7 @@ import {
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/journal', icon: BookOpen, label: 'Spiritual Journal' },
-  { href: '/bible', icon: Bible, label: 'The Living Word' },
+  { href: '/bible', icon: BookMarked, label: 'The Living Word' },
   { href: '/fasting', icon: Cross, label: 'Fasting Altar' },
   { href: '/discern', icon: HelpCircle, label: 'Discern God\'s Will' },
   { href: '/academy', icon: School, label: 'The Academy' },
