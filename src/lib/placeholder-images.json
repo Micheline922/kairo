@@ -1,3 +1,40 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "login-background",
+      "description": "A serene landscape with mountains and a lake at sunrise",
+      "imageUrl": "https://images.unsplash.com/photo-1615134732800-ca7ef7a3388c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzZXJlbmUlMjBsYW5kc2NhcGV8ZW58MHx8fHwxNzY2MjQ5NDI0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "serene landscape"
+    },
+    {
+      "id": "journal-card",
+      "description": "An open journal with a pen on a wooden desk",
+      "imageUrl": "https://images.unsplash.com/photo-1578941838877-141265f3a898?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxqb3VybmFsJTIwd3JpdGluZ3xlbnwwfHx8fDE3NjYyMTg1NDZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "journal writing"
+    },
+    {
+      "id": "bible-card",
+      "description": "An old, well-read Bible with a leather cover",
+      "imageUrl": "https://images.unsplash.com/photo-1580501170888-80668882ca0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxvbGQlMjBiaWJsZXxlbnwwfHx8fDE3NjYyNzYxMzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "old bible"
+    },
+    {
+      "id": "fasting-card",
+      "description": "A person looking at a sunrise, symbolizing a new beginning",
+      "imageUrl": "https://images.unsplash.com/photo-1622832413761-9b0c63a9fbf8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxzdW5yaXNlJTIwcmVmbGVjdGlvbnxlbnwwfHx8fDE3NjYyNzYxMzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sunrise reflection"
+    },
+    {
+      "id": "academy-card",
+      "description": "A modern library with shelves full of books",
+      "imageUrl": "https://images.unsplash.com/photo-1526314114033-349ef6f72220?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxtb2Rlcm4lMjBsaWJyYXJ5fGVufDB8fHx8MTc2NjI3NjEzMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "modern library"
+    },
+    {
+      "id": "discern-card",
+      "description": "A winding path through a forest",
+      "imageUrl": "https://images.unsplash.com/photo-1531756716853-09a60d38d820?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmb3Jlc3QlMjBwYXRofGVufDB8fHx8MTc2NjE2MTE3Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "forest path"
+    }
+  ]
 }
