@@ -41,6 +41,7 @@ body {
     --sidebar-accent-foreground: 210 24% 32%;
     --sidebar-border: 210 15% 80%;
     --sidebar-ring: 210 24% 32%;
+    --animation-duration: 150ms;
   }
   .dark {
     --background: 222 20% 12%;
@@ -75,6 +76,7 @@ body {
     --sidebar-accent-foreground: 38 50% 95%;
     --sidebar-border: 222 20% 25%;
     --sidebar-ring: 210 30% 60%;
+    --animation-duration: 150ms;
   }
 }
 
