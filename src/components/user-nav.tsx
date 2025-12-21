@@ -17,7 +17,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuPortal,
 } from '@/components/ui/dropdown-menu';
-import { LogOut, User as UserIcon, Moon, Sun, Monitor, MoreVertical } from 'lucide-react';
+import { LogOut, User as UserIcon, Moon, Sun, Monitor, MoreVertical, Globe } from 'lucide-react';
 import { useSidebar } from '@/components/ui/sidebar';
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
@@ -65,6 +65,22 @@ export function UserNav() {
             </DropdownMenuItem>
             <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
+                    <Globe className="mr-2 h-4 w-4" />
+                    <span>Langue</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                    <DropdownMenuSubContent>
+                        <DropdownMenuItem>
+                            <span>Français</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <span>English</span>
+                        </DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+            </DropdownMenuSub>
+            <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
                     <Sun className="mr-2 h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                     <Moon className="absolute mr-2 h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                     <span>Thème</span>
@@ -107,45 +123,68 @@ export function UserNav() {
         <span className="text-sm font-medium text-sidebar-foreground truncate">{displayName}</span>
         <span className="text-xs text-muted-foreground truncate">{email}</span>
       </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-           <Button variant="ghost" size="icon" className="ml-auto h-8 w-8">
-            <MoreVertical className="h-4 w-4" />
-           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56" align="end" forceMount>
-            <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuSub>
-                <DropdownMenuSubTrigger>
-                    <Sun className="mr-2 h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                    <Moon className="absolute mr-2 h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                    <span>Thème</span>
-                </DropdownMenuSubTrigger>
-                <DropdownMenuPortal>
-                    <DropdownMenuSubContent>
-                        <DropdownMenuItem onClick={() => setTheme('light')}>
-                            <Sun className="mr-2 h-4 w-4" />
-                            <span>Clair</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTheme('dark')}>
-                            <Moon className="mr-2 h-4 w-4" />
-                            <span>Sombre</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTheme('system')}>
-                            <Monitor className="mr-2 h-4 w-4" />
-                            <span>Système</span>
-                        </DropdownMenuItem>
-                    </DropdownMenuSubContent>
-                </DropdownMenuPortal>
-            </DropdownMenuSub>
-           <DropdownMenuSeparator />
-           <DropdownMenuItem onClick={handleLogout}>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Se déconnecter</span>
-            </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+       <div className="ml-auto flex items-center">
+            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setTheme(useTheme().theme === 'dark' ? 'light' : 'dark')}>
+              <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <span className="sr-only">Changer le thème</span>
+            </Button>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                    <MoreVertical className="h-4 w-4" />
+                </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                    <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>
+                            <Globe className="mr-2 h-4 w-4" />
+                            <span>Langue</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                                <DropdownMenuItem>
+                                    <span>Français</span>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <span>English</span>
+                                </DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>
+                            <Sun className="mr-2 h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                            <Moon className="absolute mr-2 h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                            <span>Thème</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                                <DropdownMenuItem onClick={() => setTheme('light')}>
+                                    <Sun className="mr-2 h-4 w-4" />
+                                    <span>Clair</span>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setTheme('dark')}>
+                                    <Moon className="mr-2 h-4 w-4" />
+                                    <span>Sombre</span>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setTheme('system')}>
+                                    <Monitor className="mr-2 h-4 w-4" />
+                                    <span>Système</span>
+                                </DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Se déconnecter</span>
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+       </div>
     </div>
   );
 }
