@@ -160,6 +160,78 @@
         "type",
         "purpose"
       ]
+    },
+    "AcademyInsight": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AcademyInsight",
+      "type": "object",
+      "description": "Represents a saved explanation from the Academy.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the academy insight."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User."
+        },
+        "concept": {
+          "type": "string",
+          "description": "The modern concept that was explained."
+        },
+        "explanation": {
+          "type": "string",
+          "description": "The AI-generated biblical explanation."
+        },
+        "savedDate": {
+          "type": "string",
+          "description": "Date and time the insight was saved.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "concept",
+        "explanation",
+        "savedDate"
+      ]
+    },
+    "DivineGuidance": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "DivineGuidance",
+      "type": "object",
+      "description": "Represents a saved piece of guidance from the Discernment tool.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the divine guidance."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User."
+        },
+        "decisionContext": {
+          "type": "string",
+          "description": "The user's description of the decision."
+        },
+        "guidance": {
+          "type": "string",
+          "description": "The AI-generated biblical guidance."
+        },
+        "savedDate": {
+          "type": "string",
+          "description": "Date and time the guidance was saved.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "decisionContext",
+        "guidance",
+        "savedDate"
+      ]
     }
   },
   "auth": {
@@ -245,8 +317,50 @@
             }
           ]
         }
+      },
+      {
+        "path": "/users/{userId}/academyInsights/{academyInsightId}",
+        "definition": {
+          "entityName": "AcademyInsight",
+          "schema": {
+            "$ref": "#/backend/entities/AcademyInsight"
+          },
+          "description": "Stores saved explanations from the Academy for each user.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "academyInsightId",
+              "description": "The unique identifier for the academy insight."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/divineGuidances/{divineGuidanceId}",
+        "definition": {
+          "entityName": "DivineGuidance",
+          "schema": {
+            "$ref": "#/backend/entities/DivineGuidance"
+          },
+          "description": "Stores saved guidance from the Discernment tool for each user.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "divineGuidanceId",
+              "description": "The unique identifier for the divine guidance."
+            }
+          ]
+        }
       }
     ],
     "reasoning": "The Firestore data structure is designed to ensure data privacy and security for the KAIRO application, with a focus on authorization independence and ease of debugging. User data and their associated journal entries, pearls of wisdom, and fasting plans are stored under user-specific paths to enforce strict privacy. This design eliminates the need for complex security rules and enables secure list operations (QAPs). Authorization Independence is achieved by storing each user's data under their respective `userId`, removing the need to check parent document properties for authorization. This approach simplifies security rules to `request.auth.uid == resource.data.userId` and enables atomic batch operations. The structure is segregated by entity type, and the use of hierarchical paths makes security rules more manageable."
   }
 }
+
+    
