@@ -7,7 +7,7 @@ export function Logo({ className }: { className?: string }) {
       <div className="rounded-lg bg-primary p-2">
         <Feather className="h-6 w-6 text-primary-foreground" />
       </div>
-      <span className="text-2xl font-bold text-primary">Sanctuary</span>
+      <span className="text-2xl font-bold text-primary">Sanctuaire</span>
     </div>
   );
 }
