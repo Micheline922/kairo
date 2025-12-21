@@ -79,7 +79,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center bg-background p-4 overflow-hidden">
+    <div className="relative flex min-h-screen flex-col items-center justify-center bg-background p-4 overflow-hidden pb-16">
       {loginImage && (
          <Image
             src={loginImage.imageUrl}
@@ -117,7 +117,7 @@ export default function LoginPage() {
             </div>
         </div>
 
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center w-full">
             <Card className="z-10 w-full bg-background/80 backdrop-blur-sm shadow-2xl">
                 <form onSubmit={handleLogin}>
                 <CardHeader className="text-center">
