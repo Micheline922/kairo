@@ -27,9 +27,10 @@ import {
   DialogClose,
 } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { useFirestore, useUser, useCollection, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
+import { useFirestore, useUser, useCollection, useMemoFirebase, addDocumentNonBlocking, useAuth } from '@/firebase';
 import { collection, query, orderBy, serverTimestamp, where } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
+import { EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
 
 const journalSchema = z.object({
   title: z.string().min(3, { message: "Le titre doit contenir au moins 3 caractères." }),
@@ -46,10 +47,9 @@ type JournalEntry = {
   analysis?: AnalyzeSpiritualJournalOutput;
 };
 
-const incognitoPin = '1234'; // In a real app, this should be stored securely.
-
 export default function JournalPage() {
   const { user } = useUser();
+  const auth = useAuth();
   const firestore = useFirestore();
   const { toast } = useToast();
   const [selectedEntry, setSelectedEntry] = useState<JournalEntry | null>(null);
@@ -57,7 +57,7 @@ export default function JournalPage() {
   const [isCreating, setIsCreating] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isIncognitoLocked, setIsIncognitoLocked] = useState(true);
-  const [pin, setPin] = useState('');
+  const [password, setPassword] = useState('');
   
   const journalEntriesQuery = useMemoFirebase(() => {
     if (!user) return null;
@@ -106,15 +106,22 @@ export default function JournalPage() {
     form.reset();
   }
 
-  const handlePinSubmit = (e: React.FormEvent) => {
+  const handleUnlockSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (pin === incognitoPin) {
+    if (!user || !user.email) {
+      toast({ variant: 'destructive', title: 'Utilisateur non trouvé.' });
+      return;
+    }
+
+    const credential = EmailAuthProvider.credential(user.email, password);
+    try {
+      await reauthenticateWithCredential(user, credential);
       setIsIncognitoLocked(false);
-      setPin('');
+      setPassword('');
       toast({ title: 'Journal déverrouillé.' });
-    } else {
-      toast({ variant: 'destructive', title: 'Code PIN incorrect.' });
-      setPin('');
+    } catch (error) {
+      toast({ variant: 'destructive', title: 'Mot de passe incorrect.' });
+      setPassword('');
     }
   };
 
@@ -143,17 +150,14 @@ export default function JournalPage() {
             <Lock className="h-16 w-16 text-muted-foreground" />
             <CardTitle className="mt-6 text-2xl">Mode Confidentiel Activé</CardTitle>
             <CardDescription className="mt-2 max-w-sm">
-                Pour protéger votre vie privée, vos entrées sont masquées. Veuillez entrer votre code PIN pour les afficher.
+                Pour protéger votre vie privée, vos entrées sont masquées. Veuillez entrer votre mot de passe pour les afficher.
             </CardDescription>
-            <form onSubmit={handlePinSubmit} className="mt-6 flex max-w-xs w-full items-center space-x-2">
+            <form onSubmit={handleUnlockSubmit} className="mt-6 flex max-w-xs w-full items-center space-x-2">
                 <Input
                     type="password"
-                    placeholder="Code PIN à 4 chiffres"
-                    value={pin}
-                    onChange={(e) => setPin(e.target.value)}
-                    maxLength={4}
-                    pattern="\d{4}"
-                    className="text-center tracking-widest"
+                    placeholder="Votre mot de passe"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                 />
                 <Button type="submit">Déverrouiller</Button>
             </form>
