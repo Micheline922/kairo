@@ -59,6 +59,7 @@ export default function LoginPage() {
             src={loginImage.imageUrl}
             alt={loginImage.description}
             fill
+            priority
             className="object-cover opacity-20"
             data-ai-hint={loginImage.imageHint}
           />
