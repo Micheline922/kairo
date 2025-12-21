@@ -9,6 +9,7 @@ import {
   Cross,
   HelpCircle,
   School,
+  HandHelping,
 } from 'lucide-react';
 import { useLanguage } from '@/context/language-provider';
 
@@ -27,6 +28,7 @@ const navLabels = {
     fasting: 'Fasting Altar',
     discern: 'Discern God\'s Will',
     academy: 'The Academy',
+    prayerWall: 'Prayer Wall',
   },
   fr: {
     dashboard: 'Tableau de bord',
@@ -35,6 +37,7 @@ const navLabels = {
     fasting: 'Autel du Jeûne',
     discern: 'Discerner la Volonté de Dieu',
     academy: 'L\'Académie',
+    prayerWall: 'Mur de Prière',
   },
   es: {
     dashboard: 'Tablero',
@@ -43,6 +46,7 @@ const navLabels = {
     fasting: 'Altar de Ayuno',
     discern: 'Discernir la Voluntad de Dios',
     academy: 'La Academia',
+    prayerWall: 'Muro de Oración',
   },
   pt: {
     dashboard: 'Painel',
@@ -51,6 +55,7 @@ const navLabels = {
     fasting: 'Altar de Jejum',
     discern: 'Discernir a Vontade de Deus',
     academy: 'A Academia',
+    prayerWall: 'Mural de Oração',
   },
   sw: {
     dashboard: 'Dashibodi',
@@ -59,6 +64,7 @@ const navLabels = {
     fasting: 'Madhabahu ya Kufunga',
     discern: 'Kutambua Mapenzi ya Mungu',
     academy: 'Chuo',
+    prayerWall: 'Ukuta wa Maombi',
   },
 };
 
@@ -69,6 +75,7 @@ const navItems = [
   { href: '/fasting', icon: Cross, labelKey: 'fasting' },
   { href: '/discern', icon: HelpCircle, labelKey: 'discern' },
   { href: '/academy', icon: School, labelKey: 'academy' },
+  { href: '/prayer-wall', icon: HandHelping, labelKey: 'prayerWall' },
 ];
 
 export function MainNav() {

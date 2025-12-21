@@ -35,6 +35,12 @@
       "description": "A winding path through a forest",
       "imageUrl": "https://images.unsplash.com/photo-1531756716853-09a60d38d820?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmb3Jlc3QlMjBwYXRofGVufDB8fHx8MTc2NjE2MTE3Nnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "forest path"
+    },
+    {
+      "id": "prayer-wall-card",
+      "description": "Hands held together in prayer with soft light",
+      "imageUrl": "https://images.unsplash.com/photo-1583947458957-552693175b24?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwcmF5aW5nJTIwaGFuZHN8ZW58MHx8fHwxNzY2Mjc2MTMxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "praying hands"
     }
   ]
 }

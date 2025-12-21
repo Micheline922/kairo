@@ -236,6 +236,47 @@
         "guidance",
         "savedDate"
       ]
+    },
+    "PrayerRequest": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "PrayerRequest",
+      "type": "object",
+      "description": "Represents a single prayer request on the Prayer Wall.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the prayer request."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User."
+        },
+        "requestText": {
+          "type": "string",
+          "description": "The content of the prayer request."
+        },
+        "isAnswered": {
+          "type": "boolean",
+          "description": "Whether the prayer has been marked as answered."
+        },
+        "creationDate": {
+          "type": "string",
+          "description": "Date and time the prayer request was created.",
+          "format": "date-time"
+        },
+        "answeredDate": {
+          "type": "string",
+          "description": "Date and time the prayer was marked as answered.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "requestText",
+        "isAnswered",
+        "creationDate"
+      ]
     }
   },
   "auth": {
@@ -358,6 +399,26 @@
             {
               "name": "divineGuidanceId",
               "description": "The unique identifier for the divine guidance."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/prayerRequests/{prayerRequestId}",
+        "definition": {
+          "entityName": "PrayerRequest",
+          "schema": {
+            "$ref": "#/backend/entities/PrayerRequest"
+          },
+          "description": "Stores prayer requests for each user on their Prayer Wall.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "prayerRequestId",
+              "description": "The unique identifier for the prayer request."
             }
           ]
         }
