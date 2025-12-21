@@ -1,0 +1,22 @@
+
+{
+  "name": "KAIRO",
+  "short_name": "KAIRO",
+  "description": "C'est le moment que Dieu a choisi pour nous parler ou pour agir. Ne laissons pas passer cette chance.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8F5F1",
+  "theme_color": "#5C6B73",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
