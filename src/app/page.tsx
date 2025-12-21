@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Separator } from '@/components/ui/separator';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -56,10 +57,18 @@ export default function LoginPage() {
                 Your journal is encrypted and strictly private. 
             </p>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex-col gap-4">
             <Button type="submit" className="w-full">
+              Login with Password
+            </Button>
+            <div className="flex items-center w-full">
+                <Separator className="flex-1" />
+                <span className="px-4 text-xs text-muted-foreground">OR</span>
+                <Separator className="flex-1" />
+            </div>
+             <Button variant="outline" className="w-full" onClick={handleLogin}>
               <Fingerprint className="mr-2 h-4 w-4" />
-              Secure Login
+              Sign in with Biometrics
             </Button>
           </CardFooter>
         </form>
