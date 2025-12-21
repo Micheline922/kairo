@@ -48,7 +48,7 @@ type PearlOfWisdom = {
 
 // Mock Bible content
 const bibleData: { [key: string]: { [key: string]: string[] } } = {
-  'Genèse': {
+  'genèse': {
     '1': [
       "Au commencement, Dieu créa les cieux et la terre.",
       "La terre était informe et vide: il y avait des ténèbres à la surface de l'abîme, et l'esprit of Dieu se mouvait au-dessus des eaux.",
@@ -79,7 +79,7 @@ export default function BiblePage() {
   const [bibleDisplay, setBibleDisplay] = useState({
     book: 'Genèse',
     chapter: '1',
-    content: bibleData['Genèse']['1'],
+    content: bibleData['genèse']['1'],
   });
 
   const pearlsOfWisdomQuery = useMemoFirebase(() => {
@@ -118,7 +118,8 @@ export default function BiblePage() {
   }
 
   function onVerseSubmit(values: z.infer<typeof verseSearchSchema>) {
-    const bookData = bibleData[values.book as keyof typeof bibleData];
+    const bookKey = values.book.toLowerCase() as keyof typeof bibleData;
+    const bookData = bibleData[bookKey];
     if (bookData) {
       const chapterContent = bookData[values.chapter as keyof typeof bookData];
       if (chapterContent) {
@@ -347,3 +348,5 @@ export default function BiblePage() {
     </div>
   );
 }
+
+    
