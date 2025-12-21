@@ -99,7 +99,7 @@ export default function LoginPage() {
 
       <div className="z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 w-full max-w-6xl items-center">
         <div className="text-foreground">
-            <h2 className="text-5xl font-bold font-headline leading-tight">Votre Sanctuaire Digital pour une foi éclairée.</h2>
+            <h2 className="text-5xl font-bold font-headline leading-tight text-center lg:text-left">Le meilleur endroit pour une foi éclairée.</h2>
             <p className="mt-4 text-lg text-foreground/80">KAIRO est une retraite spirituelle privée conçue pour vous aider à approfondir votre relation avec Dieu. Voici ce qui vous attend :</p>
             <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {features.map((feature) => (
