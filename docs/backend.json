@@ -277,6 +277,47 @@
         "isAnswered",
         "creationDate"
       ]
+    },
+     "PrayerPlan": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "PrayerPlan",
+      "type": "object",
+      "description": "Represents a user's scheduled prayer plan.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the prayer plan."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title for the prayer (e.g., 'Morning Devotion')."
+        },
+        "time": {
+          "type": "string",
+          "description": "The scheduled time for the prayer (e.g., 'Matin', '18:00')."
+        },
+        "intention": {
+          "type": "string",
+          "description": "The specific intention or focus of the prayer."
+        },
+        "creationDate": {
+          "type": "string",
+          "description": "Date and time the prayer plan was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "title",
+        "time",
+        "intention",
+        "creationDate"
+      ]
     }
   },
   "auth": {
@@ -422,8 +463,30 @@
             }
           ]
         }
+      },
+      {
+        "path": "/users/{userId}/prayerPlans/{prayerPlanId}",
+        "definition": {
+          "entityName": "PrayerPlan",
+          "schema": {
+            "$ref": "#/backend/entities/PrayerPlan"
+          },
+          "description": "Stores prayer plans for each user.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "prayerPlanId",
+              "description": "The unique identifier for the prayer plan."
+            }
+          ]
+        }
       }
     ],
     "reasoning": "The Firestore data structure is designed to ensure data privacy and security for the KAIRO application, with a focus on authorization independence and ease of debugging. User data and their associated journal entries, pearls of wisdom, and fasting plans are stored under user-specific paths to enforce strict privacy. This design eliminates the need for complex security rules and enables secure list operations (QAPs). Authorization Independence is achieved by storing each user's data under their respective `userId`, removing the need to check parent document properties for authorization. This approach simplifies security rules to `request.auth.uid == resource.data.userId` and enables atomic batch operations. The structure is segregated by entity type, and the use of hierarchical paths makes security rules more manageable."
   }
 }
+
+    

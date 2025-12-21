@@ -158,5 +158,18 @@ service cloud.firestore {
       allow delete: if isExistingOwner(userId);
     }
 
+    // ----------------------------------------------------------------------
+    // Prayer Plan Rules
+    // ----------------------------------------------------------------------
+    match /users/{userId}/prayerPlans/{prayerPlanId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
   }
 }
+
+    
