@@ -21,12 +21,14 @@ import { LogOut, User as UserIcon, Moon, Sun, Monitor, MoreVertical, Globe } fro
 import { useSidebar } from '@/components/ui/sidebar';
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
+import { useLanguage } from '@/context/language-provider';
 
 export function UserNav() {
   const { state } = useSidebar();
   const auth = useAuth();
   const { user } = useUser();
   const { theme, setTheme } = useTheme();
+  const { setLanguage } = useLanguage();
 
   const handleLogout = () => {
     signOut(auth);
@@ -70,11 +72,11 @@ export function UserNav() {
                 </DropdownMenuSubTrigger>
                 <DropdownMenuPortal>
                     <DropdownMenuSubContent>
-                        <DropdownMenuItem><span>English</span></DropdownMenuItem>
-                        <DropdownMenuItem><span>Français</span></DropdownMenuItem>
-                        <DropdownMenuItem><span>Español</span></DropdownMenuItem>
-                        <DropdownMenuItem><span>Português</span></DropdownMenuItem>
-                        <DropdownMenuItem><span>Swahili</span></DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setLanguage('en')}><span>English</span></DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setLanguage('fr')}><span>Français</span></DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setLanguage('es')}><span>Español</span></DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setLanguage('pt')}><span>Português</span></DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setLanguage('sw')}><span>Swahili</span></DropdownMenuItem>
                     </DropdownMenuSubContent>
                 </DropdownMenuPortal>
             </DropdownMenuSub>
@@ -144,11 +146,11 @@ export function UserNav() {
                         </DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
-                                <DropdownMenuItem><span>English</span></DropdownMenuItem>
-                                <DropdownMenuItem><span>Français</span></DropdownMenuItem>
-                                <DropdownMenuItem><span>Español</span></DropdownMenuItem>
-                                <DropdownMenuItem><span>Português</span></DropdownMenuItem>
-                                <DropdownMenuItem><span>Swahili</span></DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setLanguage('en')}><span>English</span></DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setLanguage('fr')}><span>Français</span></DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setLanguage('es')}><span>Español</span></DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setLanguage('pt')}><span>Português</span></DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setLanguage('sw')}><span>Swahili</span></DropdownMenuItem>
                             </DropdownMenuSubContent>
                         </DropdownMenuPortal>
                     </DropdownMenuSub>

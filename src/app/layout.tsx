@@ -3,6 +3,7 @@ import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 import { FirebaseClientProvider } from '@/firebase';
 import { ThemeProvider } from '@/components/theme-provider';
+import { LanguageProvider } from '@/context/language-provider';
 
 export const metadata: Metadata = {
   title: 'Sanctuaire',
@@ -28,9 +29,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <FirebaseClientProvider>
-            {children}
-          </FirebaseClientProvider>
+          <LanguageProvider>
+            <FirebaseClientProvider>
+              {children}
+            </FirebaseClientProvider>
+          </LanguageProvider>
           <Toaster />
         </ThemeProvider>
       </body>
