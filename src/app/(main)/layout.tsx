@@ -1,3 +1,4 @@
+
 import { MainNav } from '@/components/main-nav';
 import { UserNav } from '@/components/user-nav';
 import { Logo } from '@/components/logo';
@@ -11,6 +12,8 @@ import {
   SidebarTrigger,
   SidebarSeparator,
 } from '@/components/ui/sidebar';
+import { ThemeToggle } from '@/components/theme-toggle';
+import { LanguageSwitcher } from '@/components/language-switcher';
 
 export default function MainLayout({
   children,
@@ -35,6 +38,8 @@ export default function MainLayout({
         <header className="flex h-14 items-center gap-4 border-b bg-background/50 px-6 backdrop-blur-sm sticky top-0 z-10">
             <SidebarTrigger className="md:hidden" />
             <div className="flex-1" />
+            <LanguageSwitcher />
+            <ThemeToggle />
         </header>
         <div className="flex-1 overflow-y-auto">{children}</div>
       </SidebarInset>

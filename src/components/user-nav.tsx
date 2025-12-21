@@ -2,7 +2,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useTheme } from 'next-themes';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,12 +12,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
-  DropdownMenuPortal,
 } from '@/components/ui/dropdown-menu';
-import { LogOut, User as UserIcon, Moon, Sun, Monitor, MoreVertical, Globe } from 'lucide-react';
+import { LogOut, User as UserIcon, MoreVertical } from 'lucide-react';
 import { useSidebar } from '@/components/ui/sidebar';
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
@@ -29,8 +24,7 @@ export function UserNav() {
   const { state } = useSidebar();
   const auth = useAuth();
   const { user } = useUser();
-  const { theme, setTheme } = useTheme();
-  const { language, setLanguage } = useLanguage();
+  const { language } = useLanguage();
   const t = translations[language];
 
   const handleLogout = () => {
@@ -68,44 +62,6 @@ export function UserNav() {
               <UserIcon className="mr-2 h-4 w-4" />
               <span>{t.profile}</span>
             </DropdownMenuItem>
-            <DropdownMenuSub>
-                <DropdownMenuSubTrigger>
-                    <Globe className="mr-2 h-4 w-4" />
-                    <span>{t.language}</span>
-                </DropdownMenuSubTrigger>
-                <DropdownMenuPortal>
-                    <DropdownMenuSubContent>
-                        <DropdownMenuItem onClick={() => setLanguage('en')}><span>English</span></DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setLanguage('fr')}><span>Français</span></DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setLanguage('es')}><span>Español</span></DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setLanguage('pt')}><span>Português</span></DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setLanguage('sw')}><span>Swahili</span></DropdownMenuItem>
-                    </DropdownMenuSubContent>
-                </DropdownMenuPortal>
-            </DropdownMenuSub>
-            <DropdownMenuSub>
-                <DropdownMenuSubTrigger>
-                    <Sun className="mr-2 h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                    <Moon className="absolute mr-2 h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                    <span>{t.theme}</span>
-                </DropdownMenuSubTrigger>
-                <DropdownMenuPortal>
-                    <DropdownMenuSubContent>
-                        <DropdownMenuItem onClick={() => setTheme('light')}>
-                            <Sun className="mr-2 h-4 w-4" />
-                            <span>{t.lightTheme}</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTheme('dark')}>
-                            <Moon className="mr-2 h-4 w-4" />
-                            <span>{t.darkTheme}</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTheme('system')}>
-                            <Monitor className="mr-2 h-4 w-4" />
-                            <span>{t.systemTheme}</span>
-                        </DropdownMenuItem>
-                    </DropdownMenuSubContent>
-                </DropdownMenuPortal>
-            </DropdownMenuSub>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
            <DropdownMenuItem onClick={handleLogout}>
@@ -128,11 +84,6 @@ export function UserNav() {
         <span className="text-xs text-muted-foreground truncate">{email}</span>
       </div>
        <div className="ml-auto flex items-center">
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} title={t.changeTheme}>
-              <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">{t.changeTheme}</span>
-            </Button>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -142,44 +93,10 @@ export function UserNav() {
                 <DropdownMenuContent className="w-56" align="end" forceMount>
                     <DropdownMenuLabel>{t.myAccount}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>
-                            <Globe className="mr-2 h-4 w-4" />
-                            <span>{t.language}</span>
-                        </DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-                                <DropdownMenuItem onClick={() => setLanguage('en')}><span>English</span></DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setLanguage('fr')}><span>Français</span></DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setLanguage('es')}><span>Español</span></DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setLanguage('pt')}><span>Português</span></DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setLanguage('sw')}><span>Swahili</span></DropdownMenuItem>
-                            </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                    </DropdownMenuSub>
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>
-                            <Sun className="mr-2 h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                            <Moon className="absolute mr-2 h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                            <span>{t.theme}</span>
-                        </DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-                                <DropdownMenuItem onClick={() => setTheme('light')}>
-                                    <Sun className="mr-2 h-4 w-4" />
-                                    <span>{t.lightTheme}</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setTheme('dark')}>
-                                    <Moon className="mr-2 h-4 w-4" />
-                                    <span>{t.darkTheme}</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setTheme('system')}>
-                                    <Monitor className="mr-2 h-4 w-4" />
-                                    <span>{t.systemTheme}</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                    </DropdownMenuSub>
+                     <DropdownMenuItem>
+                        <UserIcon className="mr-2 h-4 w-4" />
+                        <span>{t.profile}</span>
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
@@ -191,5 +108,3 @@ export function UserNav() {
     </div>
   );
 }
-
-    
