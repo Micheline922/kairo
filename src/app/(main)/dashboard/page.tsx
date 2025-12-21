@@ -23,7 +23,7 @@ export default function DashboardPage() {
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold font-headline">Bienvenue dans votre Sanctuaire</h1>
+        <h1 className="text-4xl font-bold font-headline">Bienvenue dans KAIRO</h1>
         <p className="text-lg text-muted-foreground mt-2">
           Votre retraite spirituelle privée. Trouvez la paix et la guidance.
         </p>
@@ -59,7 +59,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="mt-12">
-        <h2 className="text-3xl font-bold font-headline mb-6">Explorez votre Sanctuaire</h2>
+        <h2 className="text-3xl font-bold font-headline mb-6">Explorez KAIRO</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {quickLinks.map(link => {
             const image = PlaceHolderImages.find(p => p.id === link.imageId);

@@ -6,8 +6,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { LanguageProvider } from '@/context/language-provider';
 
 export const metadata: Metadata = {
-  title: 'Sanctuaire',
-  description: 'Une retraite spirituelle privée dans votre poche.',
+  title: 'KAIRO',
+  description: 'C\'est le moment que Dieu a choisi pour nous parler ou pour agir. Ne laissons pas passer cette chance.',
 };
 
 export default function RootLayout({

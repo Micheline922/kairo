@@ -70,7 +70,7 @@ export function Logo({ className }: { className?: string }) {
           />
         </svg>
       </div>
-      <span className="text-2xl font-bold text-primary">Sanctuaire</span>
+      <span className="text-2xl font-bold text-primary">KAIRO</span>
     </div>
   );
 }

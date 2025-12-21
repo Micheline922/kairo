@@ -47,7 +47,7 @@ export default function LoginPage() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center">
         <LoaderCircle className="h-12 w-12 animate-spin text-primary" />
-        <p className="mt-4 text-muted-foreground">Chargement de votre Sanctuaire...</p>
+        <p className="mt-4 text-muted-foreground">Chargement de votre KAIRO...</p>
       </div>
     );
   }
@@ -67,14 +67,14 @@ export default function LoginPage() {
       <div className="absolute top-8 left-8">
         <div className="flex items-center gap-2">
             <Feather className="h-6 w-6 text-primary" />
-            <h1 className="text-2xl font-bold text-primary">Sanctuaire</h1>
+            <h1 className="text-2xl font-bold text-primary">KAIRO</h1>
         </div>
       </div>
       <Card className="z-10 w-full max-w-md bg-background/80 backdrop-blur-sm">
         <form onSubmit={handleLogin}>
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-headline">Entrez dans le Sanctuaire</CardTitle>
-            <CardDescription>Une retraite spirituelle privée dans votre poche.</CardDescription>
+            <CardTitle className="text-3xl font-headline">Entrez dans KAIRO</CardTitle>
+            <CardDescription>C'est le moment que Dieu a choisi pour nous parler ou pour agir.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -106,7 +106,7 @@ export default function LoginPage() {
         </form>
       </Card>
       <footer className="absolute bottom-4 text-center text-sm text-muted-foreground z-10">
-        <p>&copy; {new Date().getFullYear()} Sanctuaire. Chaque interaction devrait ressembler à une prière.</p>
+        <p>&copy; {new Date().getFullYear()} KAIRO. Chaque interaction devrait ressembler à une prière.</p>
       </footer>
     </div>
   );
