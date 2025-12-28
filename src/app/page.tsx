@@ -48,6 +48,20 @@ export default function LoginPage() {
   
   const loginImage = PlaceHolderImages.find(p => p.id === 'login-background');
   
+  // Helper to access nested translation keys safely
+  const getTranslation = (key: string): string => {
+    const keys = key.split('.');
+    let result: any = t;
+    for (const k of keys) {
+      if (result && typeof result === 'object' && k in result) {
+        result = result[k];
+      } else {
+        return key; // Return the key itself if path is invalid
+      }
+    }
+    return typeof result === 'string' ? result : key;
+  };
+
   if (isUserLoading || user) {
     return (
       <div className="relative flex min-h-screen flex-col items-center justify-center bg-background p-4">
@@ -99,8 +113,8 @@ export default function LoginPage() {
                            <feature.icon className="h-6 w-6 text-primary" />
                         </div>
                         <div>
-                            <h3 className="font-semibold">{t[feature.title as keyof typeof t]}</h3>
-                            <p className="text-sm text-muted-foreground">{t[feature.description as keyof typeof t]}</p>
+                            <h3 className="font-semibold">{getTranslation(feature.title)}</h3>
+                            <p className="text-sm text-muted-foreground">{getTranslation(feature.description)}</p>
                         </div>
                     </div>
                 ))}
