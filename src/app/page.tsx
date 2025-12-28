@@ -4,15 +4,14 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Fingerprint, Feather, LoaderCircle, BookOpen, BookMarked, Cross, HelpCircle, School } from 'lucide-react';
+import { Feather, LoaderCircle, BookOpen, BookMarked, Cross, HelpCircle, School } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Separator } from '@/components/ui/separator';
-import { useAuth, useUser, initiateEmailSignIn, initiateAnonymousSignIn } from '@/firebase';
+import { useAuth, useUser, initiateEmailSignIn } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
 import { Logo } from '@/components/logo';
 import { useLanguage } from '@/context/language-provider';
@@ -51,12 +50,6 @@ export default function LoginPage() {
     initiateEmailSignIn(auth, email, password);
   };
   
-  const handleAnonymousLogin = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsLoggingIn(true);
-    initiateAnonymousSignIn(auth);
-  }
-
   const loginImage = PlaceHolderImages.find(p => p.id === 'login-background');
   
   if (isUserLoading || user) {
@@ -141,15 +134,6 @@ export default function LoginPage() {
                 <CardFooter className="flex-col gap-4">
                     <Button type="submit" className="w-full" disabled={isLoggingIn}>
                     {isLoggingIn ? <LoaderCircle className="animate-spin" /> : t.loginWithPassword}
-                    </Button>
-                    <div className="flex items-center w-full">
-                        <Separator className="flex-1" />
-                        <span className="px-4 text-xs text-muted-foreground">{t.or}</span>
-                        <Separator className="flex-1" />
-                    </div>
-                    <Button variant="outline" className="w-full" onClick={handleAnonymousLogin} disabled={isLoggingIn}>
-                    <Fingerprint className="mr-2 h-4 w-4" />
-                    {t.loginWithBiometrics}
                     </Button>
                 </CardFooter>
                 </form>
