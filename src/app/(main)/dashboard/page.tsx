@@ -44,6 +44,7 @@ export default function DashboardPage() {
   const [verse, setVerse] = useState<Verse | null>(null);
 
   useEffect(() => {
+    // This check avoids hydration errors by running client-side only
     setVerse(dailyVerses[Math.floor(Math.random() * dailyVerses.length)]);
   }, []);
 
@@ -104,7 +105,7 @@ export default function DashboardPage() {
 
       <div className="mt-12">
         <h2 className="text-2xl sm:text-3xl font-bold font-headline mb-6">{t.exploreKairo}</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {quickLinks.map(link => {
             const image = PlaceHolderImages.find(p => p.id === link.imageId);
             return (
