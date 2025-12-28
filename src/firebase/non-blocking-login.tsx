@@ -27,7 +27,7 @@ export function initiateEmailSignIn(authInstance: Auth, email: string, password:
   signInWithEmailAndPassword(authInstance, email, password)
     .catch((error) => {
       // If sign-in fails because the user doesn't exist, create a new account.
-      if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found') {
+      if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
         initiateEmailSignUp(authInstance, email, password);
       } else {
         // For other errors (like wrong password), log them.
