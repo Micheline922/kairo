@@ -2,20 +2,24 @@
 
 import { firebaseConfig } from '@/firebase/config';
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
-import { Auth, connectAuthEmulator, getAuth } from 'firebase/auth';
-import { Firestore, connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
+import { Auth, getAuth } from 'firebase/auth';
+import { Firestore, getFirestore } from 'firebase/firestore'
 
 function getSdks(firebaseApp: FirebaseApp) {
   const auth = getAuth(firebaseApp);
   const firestore = getFirestore(firebaseApp);
 
+  // NOTE: Emulator connection logic has been removed to ensure
+  // the app connects to production Firebase services when deployed.
+  // For local development with emulators, developers should
+  // temporarily uncomment and configure the connection logic below.
+
+  /*
   if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-    // Note: You can't use process.env.NEXT_PUBLIC_... here because this is not a Next.js file.
-    // We are deliberately not using NEXT_PUBLIC_... because we don't want to expose these to the client.
-    const firestoreHost = process.env.FIRESTORE_EMULATOR_HOST || 'localhost';
-    const firestorePort = parseInt(process.env.FIRESTORE_EMULATOR_PORT || '8080', 10);
-    const authHost = process.env.AUTH_EMULATOR_HOST || 'localhost';
-    const authPort = parseInt(process.env.AUTH_EMULATOR_PORT || '9099', 10);
+    const firestoreHost = 'localhost';
+    const firestorePort = 8080;
+    const authHost = 'localhost';
+    const authPort = 9099;
     
     console.log(`Connecting to Firestore emulator at http://${firestoreHost}:${firestorePort}`);
     connectFirestoreEmulator(firestore, firestoreHost, firestorePort);
@@ -23,6 +27,7 @@ function getSdks(firebaseApp: FirebaseApp) {
     console.log(`Connecting to Auth emulator at http://${authHost}:${authPort}`);
     connectAuthEmulator(auth, `http://${authHost}:${authPort}`, { disableWarnings: true });
   }
+  */
 
   return {
     firebaseApp,
