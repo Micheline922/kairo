@@ -32,7 +32,6 @@ export default function LoginPage() {
   const { toast } = useToast();
   const [email, setEmail] = useState('croyant@sanctuaire.app');
   const [password, setPassword] = useState('motdepasse123');
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const { language } = useLanguage();
   const t = translations[language];
 
@@ -44,7 +43,6 @@ export default function LoginPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoggingIn(true);
     initiateEmailSignIn(auth, email, password);
   };
   
@@ -130,8 +128,8 @@ export default function LoginPage() {
                     </p>
                 </CardContent>
                 <CardFooter className="flex-col gap-4">
-                    <Button type="submit" className="w-full" disabled={isLoggingIn}>
-                    {isLoggingIn ? <LoaderCircle className="animate-spin" /> : t.loginWithPassword}
+                    <Button type="submit" className="w-full">
+                      {t.loginWithPassword}
                     </Button>
                 </CardFooter>
                 </form>
@@ -145,5 +143,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-    
