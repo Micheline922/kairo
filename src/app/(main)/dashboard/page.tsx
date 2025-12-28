@@ -46,15 +46,18 @@ export default function DashboardPage() {
     setVerse(dailyVerses[Math.floor(Math.random() * dailyVerses.length)]);
   }, []);
 
-  // Helper to access nested translation keys
-  const getTranslation = (key: string) => {
+  // Helper to access nested translation keys safely
+  const getTranslation = (key: string): string => {
     const keys = key.split('.');
     let result: any = t;
     for (const k of keys) {
-      result = result[k];
-      if (result === undefined) return key;
+      if (result && typeof result === 'object' && k in result) {
+        result = result[k];
+      } else {
+        return key; // Return the key itself if path is invalid
+      }
     }
-    return result;
+    return typeof result === 'string' ? result : key;
   };
 
   return (

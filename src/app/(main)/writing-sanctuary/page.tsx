@@ -41,7 +41,21 @@ export default function WritingSanctuaryPage() {
   const [enhancedResult, setEnhancedResult] = useState<{ enhancedArticle: string; supportingVerses: string; } | null>(null);
   const [originalTitle, setOriginalTitle] = useState<string | null>(null);
   const { language } = useLanguage();
-  const t = translations[language] as any; // Using 'any' to simplify access to nested keys
+  const t = translations[language];
+
+  // Helper to access nested translation keys safely
+  const getTranslation = (key: string): string => {
+    const keys = key.split('.');
+    let result: any = t;
+    for (const k of keys) {
+      if (result && typeof result === 'object' && k in result) {
+        result = result[k];
+      } else {
+        return key; // Return the key itself if path is invalid
+      }
+    }
+    return typeof result === 'string' ? result : key;
+  };
 
   const articlesQuery = useMemoFirebase(() => {
     if (!user) return null;
@@ -66,8 +80,8 @@ export default function WritingSanctuaryPage() {
       console.error('Échec de l\'amélioration de l\'article:', error);
       toast({
         variant: 'destructive',
-        title: t.articlesBank.errorTitle,
-        description: t.articlesBank.errorDescription,
+        title: getTranslation('articlesBank.errorTitle'),
+        description: getTranslation('articlesBank.errorDescription'),
       });
     } finally {
       setIsEnhancing(false);
@@ -87,8 +101,8 @@ export default function WritingSanctuaryPage() {
     addDocumentNonBlocking(collection(firestore, `users/${user.uid}/writersSanctuary`), newArticle);
     
     toast({
-        title: t.articlesBank.saveSuccessTitle,
-        description: t.articlesBank.saveSuccessDescription.replace('{title}', originalTitle),
+        title: getTranslation('articlesBank.saveSuccessTitle'),
+        description: getTranslation('articlesBank.saveSuccessDescription').replace('{title}', originalTitle),
     });
   };
 
@@ -96,9 +110,9 @@ export default function WritingSanctuaryPage() {
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
        <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-4xl font-bold font-headline">{t.articlesBank.title}</h1>
+          <h1 className="text-4xl font-bold font-headline">{getTranslation('articlesBank.title')}</h1>
           <p className="text-lg text-muted-foreground mt-2">
-            {t.articlesBank.description}
+            {getTranslation('articlesBank.description')}
           </p>
         </div>
         <Button variant="outline" onClick={() => router.push('/dashboard')}>
@@ -111,9 +125,9 @@ export default function WritingSanctuaryPage() {
         <div className="lg:col-span-2">
             <Card className="max-w-4xl mx-auto">
               <CardHeader>
-                <CardTitle>{t.articlesBank.editorTitle}</CardTitle>
+                <CardTitle>{getTranslation('articlesBank.editorTitle')}</CardTitle>
                 <CardDescription>
-                  {t.articlesBank.editorDescription}
+                  {getTranslation('articlesBank.editorDescription')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -124,9 +138,9 @@ export default function WritingSanctuaryPage() {
                       name="title"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>{t.articlesBank.articleTitleLabel}</FormLabel>
+                          <FormLabel>{getTranslation('articlesBank.articleTitleLabel')}</FormLabel>
                           <FormControl>
-                            <Input placeholder={t.articlesBank.articleTitlePlaceholder} {...field} />
+                            <Input placeholder={getTranslation('articlesBank.articleTitlePlaceholder')} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -137,10 +151,10 @@ export default function WritingSanctuaryPage() {
                       name="draft"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>{t.articlesBank.draftLabel}</FormLabel>
+                          <FormLabel>{getTranslation('articlesBank.draftLabel')}</FormLabel>
                           <FormControl>
                             <Textarea
-                              placeholder={t.articlesBank.draftPlaceholder}
+                              placeholder={getTranslation('articlesBank.draftPlaceholder')}
                               className="min-h-[200px]"
                               {...field}
                             />
@@ -155,7 +169,7 @@ export default function WritingSanctuaryPage() {
                       ) : (
                         <Wand2 className="mr-2 h-4 w-4" />
                       )}
-                      {t.articlesBank.enhanceButton}
+                      {getTranslation('articlesBank.enhanceButton')}
                     </Button>
                   </form>
                 </Form>
@@ -163,7 +177,7 @@ export default function WritingSanctuaryPage() {
                 {isEnhancing && (
                     <div className="text-center text-muted-foreground py-16">
                     <LoaderCircle className="mx-auto h-8 w-8 animate-spin" />
-                    <p className="mt-2">{t.articlesBank.enhancingMessage}</p>
+                    <p className="mt-2">{getTranslation('articlesBank.enhancingMessage')}</p>
                     </div>
                 )}
                 {enhancedResult && (
@@ -171,7 +185,7 @@ export default function WritingSanctuaryPage() {
                         <div className="flex justify-between items-center mb-4">
                         <h3 className="text-xl font-semibold font-headline flex items-center gap-2 capitalize">
                             <Sparkles className="h-5 w-5 text-accent" />
-                            {t.articlesBank.enhancedArticleTitle}
+                            {getTranslation('articlesBank.enhancedArticleTitle')}
                         </h3>
                         <Button variant="outline" size="sm" onClick={handleSaveArticle}>
                             <Save className="mr-2 h-4 w-4" />
@@ -184,7 +198,7 @@ export default function WritingSanctuaryPage() {
                                 <p className="whitespace-pre-wrap text-base leading-relaxed">{enhancedResult.enhancedArticle}</p>
                             </div>
                             <div className="space-y-2">
-                                <h4 className="font-semibold text-lg flex items-center gap-2"><BookMarked className="h-5 w-5"/> {t.articlesBank.versesTitle}</h4>
+                                <h4 className="font-semibold text-lg flex items-center gap-2"><BookMarked className="h-5 w-5"/> {getTranslation('articlesBank.versesTitle')}</h4>
                                 <p className="whitespace-pre-wrap text-base leading-relaxed italic text-muted-foreground">{enhancedResult.supportingVerses}</p>
                             </div>
                         </div>
@@ -194,9 +208,9 @@ export default function WritingSanctuaryPage() {
                  {!isEnhancing && !enhancedResult && (
                    <div className="text-center py-16 border-2 border-dashed rounded-lg mt-8">
                       <PenSquare className="mx-auto h-12 w-12 text-muted-foreground" />
-                      <h3 className="mt-4 text-lg font-semibold">{t.articlesBank.waitingTitle}</h3>
+                      <h3 className="mt-4 text-lg font-semibold">{getTranslation('articlesBank.waitingTitle')}</h3>
                       <p className="mt-1 text-sm text-muted-foreground">
-                          {t.articlesBank.waitingDescription}
+                          {getTranslation('articlesBank.waitingDescription')}
                       </p>
                   </div>
                  )}
@@ -205,11 +219,11 @@ export default function WritingSanctuaryPage() {
         </div>
         <div className="space-y-8">
           <div>
-              <h2 className="text-2xl lg:text-3xl font-bold font-headline mb-4 flex items-center gap-3"><BookCopy /> {t.articlesBank.myArticlesTitle}</h2>
+              <h2 className="text-2xl lg:text-3xl font-bold font-headline mb-4 flex items-center gap-3"><BookCopy /> {getTranslation('articlesBank.myArticlesTitle')}</h2>
               <Card>
                   <CardContent className="pt-6 max-h-[60vh] overflow-y-auto">
                       {isLoadingArticles ? (
-                           <p className="text-sm text-muted-foreground text-center">{t.articlesBank.loadingArticles}</p>
+                           <p className="text-sm text-muted-foreground text-center">{getTranslation('articlesBank.loadingArticles')}</p>
                       ) : savedArticles && savedArticles.length > 0 ? (
                           <div className="space-y-4">
                               {savedArticles.map(article => (
@@ -221,8 +235,8 @@ export default function WritingSanctuaryPage() {
                           </div>
                       ) : (
                           <div className="text-center text-muted-foreground py-8">
-                              <p>{t.articlesBank.noArticlesSaved}</p>
-                              <p className="text-xs">{t.articlesBank.noArticlesHint}</p>
+                              <p>{getTranslation('articlesBank.noArticlesSaved')}</p>
+                              <p className="text-xs">{getTranslation('articlesBank.noArticlesHint')}</p>
                           </div>
                       )}
                   </CardContent>
