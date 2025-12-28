@@ -2,7 +2,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import {
   Card,
   CardContent,
@@ -12,21 +11,20 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, BookOpen, BookMarked, Cross, School, HelpCircle, HandHelping, HeartPulse, PenSquare } from 'lucide-react';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useLanguage } from '@/context/language-provider';
 import { translations } from '@/lib/translations';
 import { dailyVerses } from '@/lib/daily-verses';
 import { useState, useEffect } from 'react';
 
 const quickLinks = [
-    { title: 'journalTitle', description: 'journalDescription', href: '/journal', icon: BookOpen, imageId: 'journal-card' },
-    { title: 'bibleTitle', description: 'selectToSave', href: '/bible', icon: BookMarked, imageId: 'bible-card' },
-    { title: 'fastingAltar', description: 'fastingDescription', href: '/fasting', icon: Cross, imageId: 'fasting-card' },
-    { title: 'discernTitle', description: 'discernDescription', href: '/discern', icon: HelpCircle, imageId: 'discern-card' },
-    { title: 'academyTitle', description: 'academyDescription', href: '/academy', icon: School, imageId: 'academy-card' },
-    { title: 'prayerWallTitle', description: 'postPrayerDescription', href: '/prayer-wall', icon: HandHelping, imageId: 'prayer-wall-card' },
-    { title: 'meditationsTitle', description: 'meditationsDescription', href: '/meditations', icon: HeartPulse, imageId: 'meditation-card' },
-    { title: 'articlesBank.title', description: 'articlesBank.description', href: '/writing-sanctuary', icon: PenSquare, imageId: 'writing-sanctuary-card' },
+    { title: 'journalTitle', description: 'journalDescription', href: '/journal', icon: BookOpen },
+    { title: 'bibleTitle', description: 'selectToSave', href: '/bible', icon: BookMarked },
+    { title: 'fastingAltar', description: 'fastingDescription', href: '/fasting', icon: Cross },
+    { title: 'discernTitle', description: 'discernDescription', href: '/discern', icon: HelpCircle },
+    { title: 'academyTitle', description: 'academyDescription', href: '/academy', icon: School },
+    { title: 'prayerWallTitle', description: 'postPrayerDescription', href: '/prayer-wall', icon: HandHelping },
+    { title: 'meditationsTitle', description: 'meditationsDescription', href: '/meditations', icon: HeartPulse },
+    { title: 'articlesBank.title', description: 'articlesBank.description', href: '/writing-sanctuary', icon: PenSquare },
 ];
 
 type Verse = {
@@ -106,21 +104,8 @@ export default function DashboardPage() {
       <div className="mt-12">
         <h2 className="text-2xl sm:text-3xl font-bold font-headline mb-6">{t.exploreKairo}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {quickLinks.map(link => {
-            const image = PlaceHolderImages.find(p => p.id === link.imageId);
-            return (
-              <Card key={link.href} className="overflow-hidden group flex flex-col">
-                 {image && (
-                  <div className="overflow-hidden h-40 relative">
-                    <Image
-                      src={image.imageUrl}
-                      alt={image.description}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      data-ai-hint={image.imageHint}
-                    />
-                  </div>
-                )}
+          {quickLinks.map(link => (
+              <Card key={link.href} className="flex flex-col">
                 <CardHeader className="flex-1">
                   <CardTitle className="flex items-center gap-2">
                     <link.icon className="h-5 w-5 text-primary" />
@@ -137,7 +122,7 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
             )
-          })}
+          )}
         </div>
       </div>
     </div>
