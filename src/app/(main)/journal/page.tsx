@@ -105,9 +105,12 @@ export default function JournalPage() {
       lastModified: serverTimestamp(),
     };
     
-    const entriesCollection = collection(firestore, `users/${user.uid}/journalEntries`);
-    addDocumentNonBlocking(entriesCollection, newEntryData);
+    addDocumentNonBlocking(collection(firestore, `users/${user.uid}/journalEntries`), newEntryData);
     
+    toast({
+        title: t.entrySaved,
+    });
+
     setIsCreating(false);
     setIsDialogOpen(false);
     form.reset();
@@ -326,5 +329,3 @@ export default function JournalPage() {
     </div>
   );
 }
-
-    

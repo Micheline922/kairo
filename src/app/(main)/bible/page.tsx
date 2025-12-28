@@ -27,6 +27,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Textarea } from '@/components/ui/textarea';
 import { useLanguage } from '@/context/language-provider';
 import { translations } from '@/lib/translations';
+import { useToast } from '@/hooks/use-toast';
 
 const semanticSearchSchema = z.object({
   query: z.string().min(3, { message: 'La requête de recherche doit contenir au moins 3 caractères.' }),
@@ -75,6 +76,7 @@ export default function BiblePage() {
   const router = useRouter();
   const { user } = useUser();
   const firestore = useFirestore();
+  const { toast } = useToast();
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<AISemanticBibleSearchOutput['verses'] | null>(null);
   const [selection, setSelection] = useState<Range | null>(null);
@@ -179,6 +181,11 @@ export default function BiblePage() {
     };
     
     addDocumentNonBlocking(collection(firestore, `users/${user.uid}/pearlsOfWisdom`), newPearl);
+
+    toast({
+        title: 'Perle enregistrée !',
+        description: `Le verset ${verseReference} a été ajouté à vos perles.`,
+    });
 
     setIsSaving(false);
     setPopoverOpen(false);
