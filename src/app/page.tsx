@@ -38,9 +38,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!isUserLoading && user) {
-      setTimeout(() => {
-        router.push('/dashboard');
-      }, 1000); 
+      router.push('/dashboard');
     }
   }, [user, isUserLoading, router]);
 
