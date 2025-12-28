@@ -40,7 +40,7 @@ export default function MainLayout({
         </SidebarContent>
         <SidebarSeparator />
         <SidebarFooter>
-          <UserNav />
+          {isClient && <UserNav />}
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
