@@ -32,7 +32,7 @@ const navLabels = {
     academy: 'The Academy',
     prayerWall: 'Prayer Wall',
     meditations: 'Meditations',
-    writingSanctuary: 'Writing Sanctuary',
+    articlesBank: 'Articles Bank',
   },
   fr: {
     dashboard: 'Tableau de bord',
@@ -43,7 +43,7 @@ const navLabels = {
     academy: 'L\'Académie',
     prayerWall: 'Mur de Prière',
     meditations: 'Méditations',
-    writingSanctuary: 'Sanctuaire de l\'Écriture',
+    articlesBank: 'Banque des articles',
   },
   es: {
     dashboard: 'Tablero',
@@ -54,7 +54,7 @@ const navLabels = {
     academy: 'La Academia',
     prayerWall: 'Muro de Oración',
     meditations: 'Meditaciones',
-    writingSanctuary: 'Santuario de Escritura',
+    articlesBank: 'Banco de Artículos',
   },
   pt: {
     dashboard: 'Painel',
@@ -65,18 +65,18 @@ const navLabels = {
     academy: 'A Academia',
     prayerWall: 'Mural de Oração',
     meditations: 'Meditações',
-    writingSanctuary: 'Santuário da Escrita',
+    articlesBank: 'Banco de Artigos',
   },
   sw: {
     dashboard: 'Dashibodi',
     journal: 'Shajara ya Kiroho',
     bible: 'Biblia',
-    fasting: 'Madhabahu ya Kufunga',
+fasting: 'Madhabahu ya Kufunga',
     discern: 'Kutambua Mapenzi ya Mungu',
     academy: 'Chuo',
     prayerWall: 'Ukuta wa Maombi',
     meditations: 'Tafakari',
-    writingSanctuary: 'Patakatifu pa Kuandika',
+    articlesBank: 'Benki ya Vifungu',
   },
 };
 
@@ -89,7 +89,7 @@ const navItems = [
   { href: '/academy', icon: School, labelKey: 'academy' },
   { href: '/prayer-wall', icon: HandHelping, labelKey: 'prayerWall' },
   { href: '/meditations', icon: HeartPulse, labelKey: 'meditations' },
-  { href: '/writing-sanctuary', icon: PenSquare, labelKey: 'writingSanctuary' },
+  { href: '/writing-sanctuary', icon: PenSquare, labelKey: 'articlesBank' },
 ];
 
 export function MainNav() {

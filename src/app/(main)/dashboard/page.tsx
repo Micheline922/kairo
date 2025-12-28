@@ -26,7 +26,7 @@ const quickLinks = [
     { title: 'academyTitle', description: 'academyDescription', href: '/academy', icon: School, imageId: 'academy-card' },
     { title: 'prayerWallTitle', description: 'postPrayerDescription', href: '/prayer-wall', icon: HandHelping, imageId: 'prayer-wall-card' },
     { title: 'meditationsTitle', description: 'meditationsDescription', href: '/meditations', icon: HeartPulse, imageId: 'meditation-card' },
-    { title: 'writingSanctuary.title', description: 'writingSanctuary.description', href: '/writing-sanctuary', icon: PenSquare, imageId: 'writing-sanctuary-card' },
+    { title: 'articlesBank.title', description: 'articlesBank.description', href: '/writing-sanctuary', icon: PenSquare, imageId: 'writing-sanctuary-card' },
 ];
 
 type Verse = {

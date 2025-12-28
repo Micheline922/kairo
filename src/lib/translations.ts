@@ -33,7 +33,6 @@ export const translations = {
     password: 'Password',
     loginPrivacy: 'Your journal is encrypted and strictly private.',
     loginWithPassword: 'Log in with password',
-    loginWithBiometrics: 'Log in with biometrics',
     loginFooter: 'With all my heart, Micheline Ntale',
     welcomeMessage: 'Welcome to KAIRO',
     welcomeSubMessage: 'Your private spiritual retreat. Find peace and guidance.',
@@ -231,9 +230,9 @@ export const translations = {
     readyForCalm: 'Ready for a moment of calm?',
     readyForCalmHint: 'Enter a theme above to begin.',
 
-    // Writing Sanctuary
-    writingSanctuary: {
-        title: 'Writing Sanctuary',
+    // Articles Bank
+    articlesBank: {
+        title: 'Articles Bank',
         description: 'Where your thoughts are refined by divine wisdom.',
         editorTitle: 'AI-Powered Editor',
         editorDescription: 'Write your thoughts, and let the AI help you deepen them with biblical insights and supporting verses.',
@@ -248,7 +247,7 @@ export const translations = {
         errorTitle: 'Enhancement Failed',
         errorDescription: 'Sorry, the AI could not enhance your article at this time. Please try again.',
         saveSuccessTitle: 'Article Saved!',
-        saveSuccessDescription: 'Your article "{title}" has been saved to your sanctuary.',
+        saveSuccessDescription: 'Your article "{title}" has been saved to your articles bank.',
         myArticlesTitle: 'My Articles',
         loadingArticles: 'Loading your articles...',
         noArticlesSaved: 'No articles saved yet.',
@@ -290,7 +289,6 @@ export const translations = {
     password: 'Mot de passe',
     loginPrivacy: 'Votre journal est crypté et strictement privé.',
     loginWithPassword: 'Se connecter avec un mot de passe',
-    loginWithBiometrics: 'Se connecter avec la biométrie',
     loginFooter: 'Avec tout mon cœur, Micheline Ntale',
     welcomeMessage: 'Bienvenue dans KAIRO',
     welcomeSubMessage: 'Votre retraite spirituelle privée. Trouvez la paix et la guidance.',
@@ -488,9 +486,9 @@ export const translations = {
     readyForCalm: 'Prêt pour un moment de calme ?',
     readyForCalmHint: 'Entrez un thème ci-dessus pour commencer.',
 
-    // Writing Sanctuary
-    writingSanctuary: {
-        title: 'Sanctuaire de l\'Écriture',
+    // Articles Bank
+    articlesBank: {
+        title: 'Banque des articles',
         description: 'Là où vos pensées sont affinées par la sagesse divine.',
         editorTitle: 'Éditeur assisté par IA',
         editorDescription: 'Rédigez vos pensées, et laissez l\'IA vous aider à les approfondir avec des perspectives bibliques et des versets à l\'appui.',
@@ -505,7 +503,7 @@ export const translations = {
         errorTitle: 'Échec de l\'Amélioration',
         errorDescription: 'Désolé, l\'IA n\'a pas pu améliorer votre article pour le moment. Veuillez réessayer.',
         saveSuccessTitle: 'Article Enregistré !',
-        saveSuccessDescription: 'Votre article "{title}" a été sauvegardé dans votre sanctuaire.',
+        saveSuccessDescription: 'Votre article "{title}" a été sauvegardé dans votre banque d\'articles.',
         myArticlesTitle: 'Mes Articles',
         loadingArticles: 'Chargement de vos articles...',
         noArticlesSaved: 'Aucun article enregistré pour le moment.',
@@ -547,7 +545,6 @@ export const translations = {
     password: 'Contraseña',
     loginPrivacy: 'Tu diario está encriptado y es estrictamente privado.',
     loginWithPassword: 'Iniciar sesión con contraseña',
-    loginWithBiometrics: 'Iniciar sesión con biometría',
     loginFooter: 'Con todo mi corazón, Micheline Ntale',
     welcomeMessage: 'Bienvenido a KAIRO',
     welcomeSubMessage: 'Tu retiro espiritual privado. Encuentra paz y guía.',
@@ -745,9 +742,9 @@ export const translations = {
     readyForCalm: '¿Listo para un momento de calma?',
     readyForCalmHint: 'Introduce un tema arriba para empezar.',
 
-    // Writing Sanctuary
-    writingSanctuary: {
-        title: 'Santuario de Escritura',
+    // Articles Bank
+    articlesBank: {
+        title: 'Banco de Artículos',
         description: 'Donde tus pensamientos son refinados por la sabiduría divina.',
         editorTitle: 'Editor con IA',
         editorDescription: 'Escribe tus pensamientos y deja que la IA te ayude a profundizarlos con ideas bíblicas y versículos de apoyo.',
@@ -762,7 +759,7 @@ export const translations = {
         errorTitle: 'Fallo en la Mejora',
         errorDescription: 'Lo sentimos, la IA no pudo mejorar tu artículo en este momento. Por favor, inténtalo de nuevo.',
         saveSuccessTitle: '¡Artículo Guardado!',
-        saveSuccessDescription: 'Tu artículo "{title}" ha sido guardado en tu santuario.',
+        saveSuccessDescription: 'Tu artículo "{title}" ha sido guardado en tu banco de artículos.',
         myArticlesTitle: 'Mis Artículos',
         loadingArticles: 'Cargando tus artículos...',
         noArticlesSaved: 'No hay artículos guardados todavía.',
@@ -804,7 +801,6 @@ export const translations = {
     password: 'Senha',
     loginPrivacy: 'Seu diário é criptografado e estritamente privado.',
     loginWithPassword: 'Entrar com senha',
-    loginWithBiometrics: 'Entrar com biometria',
     loginFooter: 'Com todo o meu coração, Micheline Ntale',
     welcomeMessage: 'Bem-vindo ao KAIRO',
     welcomeSubMessage: 'Seu retiro espiritual privado. Encontre paz e orientação.',
@@ -1002,9 +998,9 @@ export const translations = {
     readyForCalm: 'Pronto para um momento de calma?',
     readyForCalmHint: 'Insira um tema acima para começar.',
 
-    // Writing Sanctuary
-    writingSanctuary: {
-        title: 'Santuário da Escrita',
+    // Articles Bank
+    articlesBank: {
+        title: 'Banco de Artigos',
         description: 'Onde seus pensamentos são refinados pela sabedoria divina.',
         editorTitle: 'Editor com IA',
         editorDescription: 'Escreva seus pensamentos e deixe a IA ajudá-lo a aprofundá-los com insights bíblicos e versículos de apoio.',
@@ -1019,7 +1015,7 @@ export const translations = {
         errorTitle: 'Falha na Melhoria',
         errorDescription: 'Desculpe, a IA não pôde melhorar seu artigo no momento. Por favor, tente novamente.',
         saveSuccessTitle: 'Artigo Salvo!',
-        saveSuccessDescription: 'Seu artigo "{title}" foi salvo em seu santuário.',
+        saveSuccessDescription: 'Seu artigo "{title}" foi salvo em seu banco de artigos.',
         myArticlesTitle: 'Meus Artigos',
         loadingArticles: 'Carregando seus artigos...',
         noArticlesSaved: 'Nenhum artigo salvo ainda.',
@@ -1061,7 +1057,6 @@ export const translations = {
     password: 'Nenosiri',
     loginPrivacy: 'Shajara yako imesimbwa kwa njia fiche na ni ya faragha kabisa.',
     loginWithPassword: 'Ingia kwa nenosiri',
-    loginWithBiometrics: 'Ingia kwa alama za vidole',
     loginFooter: 'Kwa moyo wangu wote, Micheline Ntale',
     welcomeMessage: 'Karibu KAIRO',
     welcomeSubMessage: 'Mafungo yako ya kiroho ya faragha. Pata amani na mwongozo.',
@@ -1259,9 +1254,9 @@ export const translations = {
     readyForCalm: 'Uko tayari kwa wakati wa utulivu?',
     readyForCalmHint: 'Weka mada hapo juu ili kuanza.',
 
-    // Writing Sanctuary
-    writingSanctuary: {
-        title: 'Patakatifu pa Kuandika',
+    // Articles Bank
+    articlesBank: {
+        title: 'Benki ya Vifungu',
         description: 'Ambapo mawazo yako yanasafishwa na hekima ya kimungu.',
         editorTitle: 'Mhariri anayeendeshwa na AI',
         editorDescription: 'Andika mawazo yako, na umruhusu AI akusaidie kuyaimarisha kwa maarifa ya kibiblia na mistari inayounga mkono.',
@@ -1276,7 +1271,7 @@ export const translations = {
         errorTitle: 'Uboreshaji Umeshindwa',
         errorDescription: 'Samahani, AI haikuweza kuboresha makala yako kwa wakati huu. Tafadhali jaribu tena.',
         saveSuccessTitle: 'Makala Imehifadhiwa!',
-        saveSuccessDescription: 'Makala yako "{title}" imehifadhiwa katika patakatifu pako.',
+        saveSuccessDescription: 'Makala yako "{title}" imehifadhiwa katika benki yako ya vifungu.',
         myArticlesTitle: 'Makala Zangu',
         loadingArticles: 'Inapakia makala zako...',
         noArticlesSaved: 'Hakuna makala zilizohifadhiwa bado.',
