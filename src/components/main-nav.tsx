@@ -11,6 +11,7 @@ import {
   School,
   HandHelping,
   HeartPulse,
+  PenSquare,
 } from 'lucide-react';
 import { useLanguage } from '@/context/language-provider';
 
@@ -31,6 +32,7 @@ const navLabels = {
     academy: 'The Academy',
     prayerWall: 'Prayer Wall',
     meditations: 'Meditations',
+    writingSanctuary: 'Writing Sanctuary',
   },
   fr: {
     dashboard: 'Tableau de bord',
@@ -41,6 +43,7 @@ const navLabels = {
     academy: 'L\'Académie',
     prayerWall: 'Mur de Prière',
     meditations: 'Méditations',
+    writingSanctuary: 'Sanctuaire de l\'Écriture',
   },
   es: {
     dashboard: 'Tablero',
@@ -51,6 +54,7 @@ const navLabels = {
     academy: 'La Academia',
     prayerWall: 'Muro de Oración',
     meditations: 'Meditaciones',
+    writingSanctuary: 'Santuario de Escritura',
   },
   pt: {
     dashboard: 'Painel',
@@ -61,6 +65,7 @@ const navLabels = {
     academy: 'A Academia',
     prayerWall: 'Mural de Oração',
     meditations: 'Meditações',
+    writingSanctuary: 'Santuário da Escrita',
   },
   sw: {
     dashboard: 'Dashibodi',
@@ -71,6 +76,7 @@ const navLabels = {
     academy: 'Chuo',
     prayerWall: 'Ukuta wa Maombi',
     meditations: 'Tafakari',
+    writingSanctuary: 'Patakatifu pa Kuandika',
   },
 };
 
@@ -83,6 +89,7 @@ const navItems = [
   { href: '/academy', icon: School, labelKey: 'academy' },
   { href: '/prayer-wall', icon: HandHelping, labelKey: 'prayerWall' },
   { href: '/meditations', icon: HeartPulse, labelKey: 'meditations' },
+  { href: '/writing-sanctuary', icon: PenSquare, labelKey: 'writingSanctuary' },
 ];
 
 export function MainNav() {

@@ -47,6 +47,12 @@
       "description": "A calm, still lake reflecting a colorful sky.",
       "imageUrl": "https://images.unsplash.com/photo-1476610887044-a6c4028b818f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjYWxtJTIwbGFrZXxlbnwwfHx8fDE3NjYyNzYyMzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "calm lake"
+    },
+    {
+      "id": "writing-sanctuary-card",
+      "description": "A person writing in a notebook with a fountain pen, with a cup of coffee nearby.",
+      "imageUrl": "https://images.unsplash.com/photo-1455390582262-044cdead277a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3cml0aW5nJTIwY29mZmVlfGVufDB8fHx8MTc2NjI3NjI1OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "writing coffee"
     }
   ]
 }

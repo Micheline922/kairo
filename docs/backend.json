@@ -318,6 +318,47 @@
         "intention",
         "creationDate"
       ]
+    },
+    "WritersSanctuaryArticle": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "WritersSanctuaryArticle",
+      "type": "object",
+      "description": "Represents an article written and enhanced in the Writer's Sanctuary.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the article."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User."
+        },
+        "title": {
+          "type": "string",
+          "description": "The original title of the article."
+        },
+        "enhancedArticle": {
+          "type": "string",
+          "description": "The AI-enhanced content of the article."
+        },
+        "supportingVerses": {
+          "type": "string",
+          "description": "A list of relevant bible verses that support the article."
+        },
+        "savedDate": {
+          "type": "string",
+          "description": "Date and time the article was saved.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "title",
+        "enhancedArticle",
+        "supportingVerses",
+        "savedDate"
+      ]
     }
   },
   "auth": {
@@ -483,10 +524,28 @@
             }
           ]
         }
+      },
+      {
+        "path": "/users/{userId}/writersSanctuary/{articleId}",
+        "definition": {
+          "entityName": "WritersSanctuaryArticle",
+          "schema": {
+            "$ref": "#/backend/entities/WritersSanctuaryArticle"
+          },
+          "description": "Stores articles from the Writer's Sanctuary for each user.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "articleId",
+              "description": "The unique identifier for the article."
+            }
+          ]
+        }
       }
     ],
     "reasoning": "The Firestore data structure is designed to ensure data privacy and security for the KAIRO application, with a focus on authorization independence and ease of debugging. User data and their associated journal entries, pearls of wisdom, and fasting plans are stored under user-specific paths to enforce strict privacy. This design eliminates the need for complex security rules and enables secure list operations (QAPs). Authorization Independence is achieved by storing each user's data under their respective `userId`, removing the need to check parent document properties for authorization. This approach simplifies security rules to `request.auth.uid == resource.data.userId` and enables atomic batch operations. The structure is segregated by entity type, and the use of hierarchical paths makes security rules more manageable."
   }
 }
-
-    

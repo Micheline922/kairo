@@ -230,6 +230,32 @@ export const translations = {
     meditationScript: 'Meditation Script',
     readyForCalm: 'Ready for a moment of calm?',
     readyForCalmHint: 'Enter a theme above to begin.',
+
+    // Writing Sanctuary
+    writingSanctuary: {
+        title: 'Writing Sanctuary',
+        description: 'Where your thoughts are refined by divine wisdom.',
+        editorTitle: 'AI-Powered Editor',
+        editorDescription: 'Write your thoughts, and let the AI help you deepen them with biblical insights and supporting verses.',
+        articleTitleLabel: 'Article Title',
+        articleTitlePlaceholder: 'e.g., The Modern Challenge of Faith',
+        draftLabel: 'Your Draft',
+        draftPlaceholder: 'Start writing your thoughts here...',
+        enhanceButton: 'Enhance with AI',
+        enhancingMessage: 'Weaving divine wisdom into your words...',
+        enhancedArticleTitle: 'Enhanced Article',
+        versesTitle: 'Supporting Verses',
+        errorTitle: 'Enhancement Failed',
+        errorDescription: 'Sorry, the AI could not enhance your article at this time. Please try again.',
+        saveSuccessTitle: 'Article Saved!',
+        saveSuccessDescription: 'Your article "{title}" has been saved to your sanctuary.',
+        myArticlesTitle: 'My Articles',
+        loadingArticles: 'Loading your articles...',
+        noArticlesSaved: 'No articles saved yet.',
+        noArticlesHint: 'Write and enhance an article to see it here.',
+        waitingTitle: 'Ready to Write?',
+        waitingDescription: 'Pen your thoughts above and let the AI illuminate them.'
+    }
   },
   fr: {
     // General
@@ -461,6 +487,32 @@ export const translations = {
     meditationScript: 'Script de Méditation',
     readyForCalm: 'Prêt pour un moment de calme ?',
     readyForCalmHint: 'Entrez un thème ci-dessus pour commencer.',
+
+    // Writing Sanctuary
+    writingSanctuary: {
+        title: 'Sanctuaire de l\'Écriture',
+        description: 'Là où vos pensées sont affinées par la sagesse divine.',
+        editorTitle: 'Éditeur assisté par IA',
+        editorDescription: 'Rédigez vos pensées, et laissez l\'IA vous aider à les approfondir avec des perspectives bibliques et des versets à l\'appui.',
+        articleTitleLabel: 'Titre de l\'article',
+        articleTitlePlaceholder: 'ex: Le Défi Moderne de la Foi',
+        draftLabel: 'Votre Brouillon',
+        draftPlaceholder: 'Commencez à rédiger vos pensées ici...',
+        enhanceButton: 'Améliorer avec l\'IA',
+        enhancingMessage: 'Tissage de la sagesse divine dans vos mots...',
+        enhancedArticleTitle: 'Article Amélioré',
+        versesTitle: 'Versets à l\'Appui',
+        errorTitle: 'Échec de l\'Amélioration',
+        errorDescription: 'Désolé, l\'IA n\'a pas pu améliorer votre article pour le moment. Veuillez réessayer.',
+        saveSuccessTitle: 'Article Enregistré !',
+        saveSuccessDescription: 'Votre article "{title}" a été sauvegardé dans votre sanctuaire.',
+        myArticlesTitle: 'Mes Articles',
+        loadingArticles: 'Chargement de vos articles...',
+        noArticlesSaved: 'Aucun article enregistré pour le moment.',
+        noArticlesHint: 'Écrivez et améliorez un article pour le voir ici.',
+        waitingTitle: 'Prêt à écrire ?',
+        waitingDescription: 'Exprimez vos pensées ci-dessus et laissez l\'IA les illuminer.'
+    }
   },
   es: {
     // General
@@ -692,6 +744,32 @@ export const translations = {
     meditationScript: 'Guion de la Meditación',
     readyForCalm: '¿Listo para un momento de calma?',
     readyForCalmHint: 'Introduce un tema arriba para empezar.',
+
+    // Writing Sanctuary
+    writingSanctuary: {
+        title: 'Santuario de Escritura',
+        description: 'Donde tus pensamientos son refinados por la sabiduría divina.',
+        editorTitle: 'Editor con IA',
+        editorDescription: 'Escribe tus pensamientos y deja que la IA te ayude a profundizarlos con ideas bíblicas y versículos de apoyo.',
+        articleTitleLabel: 'Título del Artículo',
+        articleTitlePlaceholder: 'ej: El Desafío Moderno de la Fe',
+        draftLabel: 'Tu Borrador',
+        draftPlaceholder: 'Empieza a escribir tus pensamientos aquí...',
+        enhanceButton: 'Mejorar con IA',
+        enhancingMessage: 'Tejiendo sabiduría divina en tus palabras...',
+        enhancedArticleTitle: 'Artículo Mejorado',
+        versesTitle: 'Versículos de Apoyo',
+        errorTitle: 'Fallo en la Mejora',
+        errorDescription: 'Lo sentimos, la IA no pudo mejorar tu artículo en este momento. Por favor, inténtalo de nuevo.',
+        saveSuccessTitle: '¡Artículo Guardado!',
+        saveSuccessDescription: 'Tu artículo "{title}" ha sido guardado en tu santuario.',
+        myArticlesTitle: 'Mis Artículos',
+        loadingArticles: 'Cargando tus artículos...',
+        noArticlesSaved: 'No hay artículos guardados todavía.',
+        noArticlesHint: 'Escribe y mejora un artículo para verlo aquí.',
+        waitingTitle: '¿Listo para Escribir?',
+        waitingDescription: 'Plasma tus pensamientos arriba y deja que la IA los ilumine.'
+    }
   },
   pt: {
     // General
@@ -923,6 +1001,32 @@ export const translations = {
     meditationScript: 'Roteiro da Meditação',
     readyForCalm: 'Pronto para um momento de calma?',
     readyForCalmHint: 'Insira um tema acima para começar.',
+
+    // Writing Sanctuary
+    writingSanctuary: {
+        title: 'Santuário da Escrita',
+        description: 'Onde seus pensamentos são refinados pela sabedoria divina.',
+        editorTitle: 'Editor com IA',
+        editorDescription: 'Escreva seus pensamentos e deixe a IA ajudá-lo a aprofundá-los com insights bíblicos e versículos de apoio.',
+        articleTitleLabel: 'Título do Artigo',
+        articleTitlePlaceholder: 'ex: O Desafio Moderno da Fé',
+        draftLabel: 'Seu Rascunho',
+        draftPlaceholder: 'Comece a escrever seus pensamentos aqui...',
+        enhanceButton: 'Melhorar com IA',
+        enhancingMessage: 'Tecendo sabedoria divina em suas palavras...',
+        enhancedArticleTitle: 'Artigo Melhorado',
+        versesTitle: 'Versículos de Apoio',
+        errorTitle: 'Falha na Melhoria',
+        errorDescription: 'Desculpe, a IA não pôde melhorar seu artigo no momento. Por favor, tente novamente.',
+        saveSuccessTitle: 'Artigo Salvo!',
+        saveSuccessDescription: 'Seu artigo "{title}" foi salvo em seu santuário.',
+        myArticlesTitle: 'Meus Artigos',
+        loadingArticles: 'Carregando seus artigos...',
+        noArticlesSaved: 'Nenhum artigo salvo ainda.',
+        noArticlesHint: 'Escreva e melhore um artigo para vê-lo aqui.',
+        waitingTitle: 'Pronto para Escrever?',
+        waitingDescription: 'Escreva seus pensamentos acima e deixe a IA iluminá-los.'
+    }
   },
   sw: {
     // General
@@ -1154,7 +1258,31 @@ export const translations = {
     meditationScript: 'Hati ya Tafakari',
     readyForCalm: 'Uko tayari kwa wakati wa utulivu?',
     readyForCalmHint: 'Weka mada hapo juu ili kuanza.',
+
+    // Writing Sanctuary
+    writingSanctuary: {
+        title: 'Patakatifu pa Kuandika',
+        description: 'Ambapo mawazo yako yanasafishwa na hekima ya kimungu.',
+        editorTitle: 'Mhariri anayeendeshwa na AI',
+        editorDescription: 'Andika mawazo yako, na umruhusu AI akusaidie kuyaimarisha kwa maarifa ya kibiblia na mistari inayounga mkono.',
+        articleTitleLabel: 'Kichwa cha Makala',
+        articleTitlePlaceholder: 'k.m., Changamoto ya Kisasa ya Imani',
+        draftLabel: 'Rasimu Yako',
+        draftPlaceholder: 'Anza kuandika mawazo yako hapa...',
+        enhanceButton: 'Boresha na AI',
+        enhancingMessage: 'Tunaingiza hekima ya kimungu katika maneno yako...',
+        enhancedArticleTitle: 'Makala Iliyoboreshwa',
+        versesTitle: 'Mistari ya Kusaidia',
+        errorTitle: 'Uboreshaji Umeshindwa',
+        errorDescription: 'Samahani, AI haikuweza kuboresha makala yako kwa wakati huu. Tafadhali jaribu tena.',
+        saveSuccessTitle: 'Makala Imehifadhiwa!',
+        saveSuccessDescription: 'Makala yako "{title}" imehifadhiwa katika patakatifu pako.',
+        myArticlesTitle: 'Makala Zangu',
+        loadingArticles: 'Inapakia makala zako...',
+        noArticlesSaved: 'Hakuna makala zilizohifadhiwa bado.',
+        noArticlesHint: 'Andika na uboreshe makala ili kuiona hapa.',
+        waitingTitle: 'Uko Tayari Kuandika?',
+        waitingDescription: 'Andika mawazo yako hapo juu na umruhusu AI ayaangazie.'
+    }
   },
 };
-
-    

@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, BookOpen, BookMarked, Cross, School, HelpCircle, HandHelping, HeartPulse } from 'lucide-react';
+import { ArrowRight, BookOpen, BookMarked, Cross, School, HelpCircle, HandHelping, HeartPulse, PenSquare } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useLanguage } from '@/context/language-provider';
 import { translations } from '@/lib/translations';
@@ -26,6 +26,7 @@ const quickLinks = [
     { title: 'academyTitle', description: 'academyDescription', href: '/academy', icon: School, imageId: 'academy-card' },
     { title: 'prayerWallTitle', description: 'postPrayerDescription', href: '/prayer-wall', icon: HandHelping, imageId: 'prayer-wall-card' },
     { title: 'meditationsTitle', description: 'meditationsDescription', href: '/meditations', icon: HeartPulse, imageId: 'meditation-card' },
+    { title: 'writingSanctuary.title', description: 'writingSanctuary.description', href: '/writing-sanctuary', icon: PenSquare, imageId: 'writing-sanctuary-card' },
 ];
 
 type Verse = {
@@ -45,6 +46,17 @@ export default function DashboardPage() {
   useEffect(() => {
     setVerse(dailyVerses[Math.floor(Math.random() * dailyVerses.length)]);
   }, []);
+
+  // Helper to access nested translation keys
+  const getTranslation = (key: string) => {
+    const keys = key.split('.');
+    let result: any = t;
+    for (const k of keys) {
+      result = result[k];
+      if (result === undefined) return key;
+    }
+    return result;
+  };
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
@@ -111,9 +123,9 @@ export default function DashboardPage() {
                 <CardHeader className="flex-1">
                   <CardTitle className="flex items-center gap-2">
                     <link.icon className="h-5 w-5 text-primary" />
-                    {t[link.title as keyof typeof t]}
+                    {getTranslation(link.title)}
                   </CardTitle>
-                  <CardDescription>{t[link.description as keyof typeof t]}</CardDescription>
+                  <CardDescription>{getTranslation(link.description)}</CardDescription>
                 </CardHeader>
                 <CardContent>
                    <Button asChild variant="outline" className="w-full">
@@ -130,5 +142,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-    
